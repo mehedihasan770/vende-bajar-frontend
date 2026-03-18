@@ -22,6 +22,7 @@ import AuthButtons from './navbarAllComponents/AuthButtons'
 import UserAvatarDropdown from './navbarAllComponents/UserAvatarDropdown'
 import DropdownMenu from './navbarAllComponents/DropdownMenu'
 import MobileMenuButton from './navbarAllComponents/MobileMenuButton'
+import { usePathname } from 'next/navigation'
 
 export interface NavItem {
   name: string
@@ -37,6 +38,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [cartCount, setCartCount] = useState(0)
+  const pathname = usePathname();
+
+  // যে পেজগুলোতে নেভবার এবং ফুটার দেখাতে চান না সেগুলোর লিস্ট
+  const disableNavbarFooter : string[] = ["/login", "/register", "/dashboard"];
 
   // Handle body scroll when mobile menu is open
   useEffect(() => {
@@ -74,6 +79,8 @@ const Navbar = () => {
     { name: 'Wishlist', href: '/wishlist', icon: HiOutlineHeart, color: 'text-secondary' },
     { name: 'Logout', href: '/logout', icon: HiOutlineLogout, color: 'text-primary' },
   ]
+
+  if (disableNavbarFooter.includes(pathname)) return null;
 
   return (
     <>
