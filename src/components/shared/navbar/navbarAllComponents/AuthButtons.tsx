@@ -16,6 +16,7 @@ const AuthButtons = () => {
               <span className="hidden xl:inline">Login</span>
             </motion.button>
           </Link>
+          <Link href={"/register"}>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -24,6 +25,7 @@ const AuthButtons = () => {
               <HiOutlineUser className="w-4 h-4 xl:w-5 xl:h-5" />
               <span className="hidden xl:inline">Register</span>
             </motion.button>
+          </Link>
         </div>
     );
 };

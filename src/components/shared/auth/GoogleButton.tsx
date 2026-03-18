@@ -17,7 +17,7 @@ const GoogleButton = () => {
           className="w-full cursor-pointer bg-white border-2 border-gray-200 text-gray-700 py-3 rounded-xl font-medium hover:border-primary hover:text-primary transition-all duration-300 flex items-center justify-center space-x-2 group"
         >
           <FcGoogle className="w-5 h-5" />
-          <span>Sign in with Google</span>
+          <span>Continue with Google</span>
         </motion.button>
     );
 };

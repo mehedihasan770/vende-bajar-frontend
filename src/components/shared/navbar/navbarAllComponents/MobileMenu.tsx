@@ -105,7 +105,7 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems, cartCount }: Mob
                   <span>Login</span>
                 </motion.button>
                 </Link>
-                <Link href={"/login"}>
+                <Link href={"/register"}>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
