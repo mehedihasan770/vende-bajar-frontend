@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Logo from "@/components/shared/Logo/Logo";
 import RegisterRight from "@/components/auth/RegisterPage/RegisterRight";
 import RegisterForm from "@/components/auth/RegisterPage/RegisterForm";
+import BackButton from "@/components/shared/auth/BackButton";
 
 const RegisterPage = () => {
   
@@ -38,8 +39,9 @@ const RegisterPage = () => {
               {/* Logo for mobile */}
               <motion.div
                 variants={fadeInUp}
-                className="mb-8 lg:hidden flex justify-center"
+                className="mb-2 lg:hidden flex flex-col items-center justify-center"
               >
+                <BackButton/>
                 <Logo />
               </motion.div>
 

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Logo from '@/components/shared/Logo/Logo'
 import LoginRightSide from '@/components/auth/loginPage/LoginRightSide'
 import LgoinForm from '@/components/auth/loginPage/LgoinForm'
+import BackButton from '@/components/shared/auth/BackButton'
 
 const LoginPage = () => {
 
@@ -36,8 +37,9 @@ const LoginPage = () => {
               {/* Logo for mobile */}
               <motion.div 
                 variants={fadeInUp}
-                className="mb-8 lg:hidden flex justify-center border-b-blue-800"
+                className="mb-2 lg:hidden flex flex-col items-center justify-center"
               >
+                <BackButton/>
                 <Logo />
               </motion.div>
 

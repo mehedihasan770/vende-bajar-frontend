@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Logo from '@/components/shared/Logo/Logo';
 import {  HiOutlineHeart, HiOutlineTruck, HiOutlineRefresh, HiOutlineGift } from 'react-icons/hi';
+import BackButton from '@/components/shared/auth/BackButton';
 
 const RegisterRight = () => {
 
@@ -26,6 +27,9 @@ const RegisterRight = () => {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="w-full lg:w-1/2 lg:border-0 border-t-2 border-secondary pt-5 lg:pt-0"
         >
+          <div className='hidden lg:flex justify-end mb-5'>
+            <BackButton/>
+          </div>
           <div className="mx-auto lg:ml-auto lg:mr-0">
             {/* Logo for desktop */}
             <motion.div 
