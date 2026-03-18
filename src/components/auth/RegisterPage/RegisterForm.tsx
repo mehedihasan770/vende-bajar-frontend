@@ -14,6 +14,7 @@ import {
 } from "react-icons/hi";
 import Link from "next/link";
 import GoogleButton from "@/components/shared/auth/GoogleButton";
+import PasswordStrengthIndicator from "./PasswordStrengthIndicator";
 
 type RegisterFormData = {
   fullName: string;
@@ -120,6 +121,7 @@ const RegisterForm = () => {
                 </motion.p>
               )}
             </div>
+
             {/* Email Field */}
             <div className="space-y-2">
               <label
@@ -166,6 +168,7 @@ const RegisterForm = () => {
               )}
             </div>
           </div>
+
           {/* Phone Field */}
           <div className="space-y-2">
             <label
@@ -212,6 +215,7 @@ const RegisterForm = () => {
             )}
           </div>
           {/* Password & Confirm Password */}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Password Field */}
             <div className="space-y-2">
@@ -274,6 +278,7 @@ const RegisterForm = () => {
               )}
             </div>
             {/* Confirm Password Field */}
+
             <div className="space-y-2">
               <label
                 htmlFor="confirmPassword"
@@ -332,49 +337,10 @@ const RegisterForm = () => {
               )}
             </div>
           </div>
+
           {/* Password Strength Indicator */}
           {password && password.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex items-center gap-2 text-sm"
-            >
-              <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{
-                    width:
-                      password.length < 6
-                        ? "33%"
-                        : password.match(/^(?=.*[A-Za-z])(?=.*\d)/)
-                          ? "100%"
-                          : "66%",
-                  }}
-                  className={`h-full ${
-                    password.length < 6
-                      ? "bg-red-500"
-                      : password.match(/^(?=.*[A-Za-z])(?=.*\d)/)
-                        ? "bg-green-500"
-                        : "bg-yellow-500"
-                  }`}
-                />
-              </div>
-              <span
-                className={
-                  password.length < 6
-                    ? "text-red-600"
-                    : password.match(/^(?=.*[A-Za-z])(?=.*\d)/)
-                      ? "text-green-600"
-                      : "text-yellow-600"
-                }
-              >
-                {password.length < 6
-                  ? "Weak"
-                  : password.match(/^(?=.*[A-Za-z])(?=.*\d)/)
-                    ? "Strong"
-                    : "Medium"}
-              </span>
-            </motion.div>
+            <PasswordStrengthIndicator password={password}/>
           )}
           {/* Terms & Conditions */}
           <div className="flex items-start space-x-2 mt-2">
@@ -443,13 +409,13 @@ const RegisterForm = () => {
           </div>
           <GoogleButton/>
           {/* Sign in link */}
-          <p className="text-center text-sm text-gray-600 mt-4">
+          <p className="text-sm text-gray-600 mt-2">
             Already have an account?{" "}
             <Link
               href="/login"
               className="text-secondary hover:text-primary font-semibold transition-colors duration-200"
             >
-              Sign in
+              Sign in now
             </Link>
           </p>
         </motion.form>

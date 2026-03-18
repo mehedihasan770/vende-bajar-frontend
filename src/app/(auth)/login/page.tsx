@@ -24,19 +24,19 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen w-full">
       <div className="min-h-screen py-5">
-        <div className="flex flex-col lg:flex-row-reverse min-h-screen items-center justify-center lg:justify-between">
+        <div className="flex flex-col lg:flex-row-reverse min-h-screen items-center justify-center lg:justify-between gap-20">
           {/* Left Side - Form Section */}
           <motion.div 
             initial="initial"
             animate="animate"
             variants={staggerContainer}
-            className="w-fit lg:ml-5"
+            className="w-full lg:w-lg"
           >
-            <div className="max-w-md mx-auto w-full">
+            <div className="">
               {/* Logo for mobile */}
               <motion.div 
                 variants={fadeInUp}
-                className="mb-8 lg:hidden flex justify-center"
+                className="mb-8 lg:hidden flex justify-center border-b-blue-800"
               >
                 <Logo />
               </motion.div>

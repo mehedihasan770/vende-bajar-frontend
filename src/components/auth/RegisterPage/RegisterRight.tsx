@@ -1,7 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
 import Logo from '@/components/shared/Logo/Logo';
-import { HiOutlineHeart, HiOutlineRefresh, HiOutlineStar, HiOutlineTruck } from 'react-icons/hi';
+import { HiOutlineStar, HiOutlineHeart, HiOutlineTruck, HiOutlineRefresh, HiOutlineUserGroup, HiOutlineGift } from 'react-icons/hi';
 
 const RegisterRight = () => {
 
@@ -11,94 +11,77 @@ const RegisterRight = () => {
         transition: { duration: 0.5 }
     }
 
-    const fadeInRight = {
-        initial: { opacity: 0, x: 20 },
-        animate: { opacity: 1, x: 0 },
-        transition: { duration: 0.5 }
-    }
-
     const staggerContainer = {
         animate: {
             transition: {
-                staggerChildren: 0.08
+                staggerChildren: 0.1
             }
         }
     }
 
     return (
         <motion.div 
-          variants={fadeInRight}
-          initial="initial"
-          animate="animate"
-          className="w-full lg:w-1/2"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="w-full lg:w-1/2 lg:border-0 border-t-2 border-secondary pt-5 lg:pt-0"
         >
-          <div className="">
+          <div className="mx-auto lg:ml-auto lg:mr-0">
             {/* Logo for desktop */}
             <motion.div 
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="hidden lg:flex justify-end mb-6"
+              className="hidden lg:flex mb-6"
             >
               <Logo />
             </motion.div>
             {/* Main Content */}
-            <div className="space-y-6 bg-white/40 backdrop-blur-sm p-6 rounded-3xl border border-white/50">
+            <div className="space-y-10">
               {/* Title */}
               <motion.h2 
-                variants={fadeInRight}
-                className="text-2xl lg:text-3xl font-bold text-accent text-right"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="text-2xl lg:text-4xl font-bold text-accent text-center lg:text-left"
               >
-                Join Our Community
+                Join Our Family
                 <br />
                 <span className="text-primary">10,000+</span> Happy{' '}
-                <span className="text-secondary">Shoppers</span>
+                <span className="text-secondary">Members</span>
               </motion.h2>
+              
               {/* Description */}
               <motion.p 
-                variants={fadeInRight}
-                className="text-gray-600 text-right leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="text-gray-600 leading-relaxed text-justify lg:text-left"
               >
-                Create an account to enjoy exclusive benefits and a seamless shopping experience.
+                Sign up today and unlock exclusive benefits. Get personalized recommendations, 
+                early access to sales, and a seamless shopping experience tailored just for you.
               </motion.p>
-              {/* Benefits Cards - 2x2 Grid */}
+              
+              {/* Benefits Cards */}
               <motion.div 
                 variants={staggerContainer}
-                className="grid grid-cols-2 gap-3"
+                initial="initial"
+                animate="animate"
+                className="grid grid-cols-2 gap-5"
               >
                 {[
-                  { icon: HiOutlineStar, title: 'Exclusive Offers', desc: 'Member-only deals', color: 'text-primary' },
-                  { icon: HiOutlineHeart, title: 'Wishlist', desc: 'Save favorites', color: 'text-secondary' },
-                  { icon: HiOutlineTruck, title: 'Free Shipping', desc: 'On orders $50+', color: 'text-primary' },
-                  { icon: HiOutlineRefresh, title: 'Easy Returns', desc: '30-day policy', color: 'text-secondary' },
-                ].map((benefit, index) => (
-                  <motion.div
-                    key={index}
-                    variants={fadeInUp}
-                    className="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-300 group"
-                  >
-                    <benefit.icon className={`w-6 h-6 ${benefit.color} mb-1 group-hover:scale-110 transition-transform duration-300`} />
-                    <div className="font-semibold text-accent">{benefit.title}</div>
-                    <div className="text-sm text-gray-500">{benefit.desc}</div>
-                  </motion.div>
-                ))}
-              </motion.div>
-              {/* Stats - 3 Column */}
-              <motion.div 
-                variants={staggerContainer}
-                className="grid grid-cols-3 gap-3 text-center"
-              >
-                {[
-                  { number: '50K+', label: 'Customers' },
-                  { number: '10K+', label: 'Products' },
-                  { number: '4.8', label: 'Rating' },
+                  { number: 'Exclusive', label: 'Member Deals', icon: HiOutlineGift, color: 'text-primary' },
+                  { number: 'Free', label: 'Shipping', icon: HiOutlineTruck, color: 'text-secondary' },
+                  { number: '30-Day', label: 'Returns', icon: HiOutlineRefresh, color: 'text-primary' },
+                  { number: 'VIP', label: 'Support', icon: HiOutlineHeart, color: 'text-secondary' },
                 ].map((stat, index) => (
                   <motion.div
                     key={index}
                     variants={fadeInUp}
-                    className="bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-gray-100"
+                    className="bg-linear-to-br from-gray-50 to-white p-6 rounded-2xl border border-gray-100 hover:border-secondary/20 transition-all duration-300 group"
                   >
-                    <div className="text-lg font-bold text-primary">{stat.number}</div>
+                    <stat.icon className={`w-8 h-8 ${stat.color} mb-3 group-hover:scale-110 transition-transform duration-300`} />
+                    <div className="text-2xl font-bold text-accent">{stat.number}</div>
                     <div className="text-sm text-gray-600">{stat.label}</div>
                   </motion.div>
                 ))}

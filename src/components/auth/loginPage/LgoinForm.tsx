@@ -57,7 +57,7 @@ const LgoinForm = () => {
     <motion.form
       variants={fadeInUp}
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-6"
+      className="space-y-6 w-full"
       noValidate
     >
       {/* Email Field */}
@@ -230,7 +230,7 @@ const LgoinForm = () => {
       <GoogleButton />
 
       {/* Sign up link */}
-      <p className="text-center text-gray-600">
+      <p className="text-sm text-gray-600">
         Don t have an account?{" "}
         <Link
           href="/register"

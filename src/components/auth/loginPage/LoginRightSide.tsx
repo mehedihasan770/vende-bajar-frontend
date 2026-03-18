@@ -24,7 +24,7 @@ const LoginRightSide = () => {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="w-full lg:w-1/2 px-2 lg:border-0 border-t-2 border-primary mt-10 pt-5 lg:mt-0 lg:pt-0"
+          className="w-full lg:w-1/2 lg:border-0 border-t-2 border-primary pt-5 lg:pt-0"
         >
           <div className="mx-auto lg:ml-auto lg:mr-0">
             {/* Logo for desktop */}
@@ -43,7 +43,7 @@ const LoginRightSide = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="text-3xl lg:text-4xl font-bold text-accent text-center lg:text-left"
+                className="text-2xl lg:text-4xl font-bold text-accent text-center lg:text-left"
               >
                 Discover Amazing
                 <br />

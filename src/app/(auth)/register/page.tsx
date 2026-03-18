@@ -26,13 +26,13 @@ const RegisterPage = () => {
   return (
     <div className="min-h-screen w-full">
       <div className="min-h-screen py-5">
-        <div className="flex flex-col lg:flex-row min-h-screen items-center justify-center lg:justify-between">
+        <div className="flex flex-col lg:flex-row min-h-screen items-center justify-center lg:justify-between gap-20">
           {/* Left Side - Form Section */}
           <motion.div
             initial="initial"
             animate="animate"
             variants={staggerContainer}
-            className="w-fit lg:ml-5"
+            className="w-full lg:w-lg"
           >
             <div className="w-full">
               {/* Logo for mobile */}
@@ -46,10 +46,10 @@ const RegisterPage = () => {
               {/* Header */}
               <motion.div
                 variants={fadeInUp}
-                className="mb-8 text-center lg:text-left"
+                className="mb-5 text-center lg:text-left"
               >
-                <h1 className="text-3xl md:text-4xl font-bold text-accent mb-2">
-                  Create Account 🚀
+                <h1 className="text-2xl md:text-4xl font-bold text-accent">
+                  Create Account
                 </h1>
                 <p className="text-gray-600">
                   Join <span className="text-primary font-semibold">Vende</span>
