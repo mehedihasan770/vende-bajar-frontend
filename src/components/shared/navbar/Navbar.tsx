@@ -2,15 +2,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { 
   HiOutlineHome, 
   HiOutlineShoppingBag, 
   HiOutlinePhone, 
   HiOutlineInformationCircle,
   HiOutlineLogout,
-  HiOutlineMenu,
-  HiOutlineX,
   HiOutlineUserCircle,
   HiOutlineHeart,
   HiOutlineChartBar,
@@ -18,7 +16,7 @@ import {
 } from 'react-icons/hi'
 import MobileMenu from './navbarAllComponents/MobileMenu'
 import { IconType } from 'react-icons'
-import Logo from './navbarAllComponents/Logo'
+import Logo from '../Logo/Logo'
 import NavLinks from './navbarAllComponents/NavLinks'
 import AuthButtons from './navbarAllComponents/AuthButtons'
 import UserAvatarDropdown from './navbarAllComponents/UserAvatarDropdown'
@@ -38,7 +36,7 @@ export interface DropdownItem extends NavItem {
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const [cartCount, setCartCount] = useState(3)
+  const [cartCount, setCartCount] = useState(0)
 
   // Handle body scroll when mobile menu is open
   useEffect(() => {
