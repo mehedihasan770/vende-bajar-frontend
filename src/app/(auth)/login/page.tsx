@@ -11,16 +11,10 @@ import {
   HiOutlineEye, 
   HiOutlineEyeOff,
   HiOutlineArrowRight,
-  HiOutlineShieldCheck,
-  HiOutlineTruck,
-  HiOutlineRefresh,
-  HiOutlineCreditCard,
-  HiOutlineStar,
-  HiOutlineShoppingBag,
-  HiOutlineHeart
 } from 'react-icons/hi'
 import { FcGoogle } from 'react-icons/fc'
 import Logo from '@/components/shared/Logo/Logo'
+import LoginRightSide from '@/components/auth/loginPage/LoginRightSide'
 
 type LoginFormData = {
   email: string
@@ -76,13 +70,13 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen w-full">
       <div className="min-h-screen py-5">
-        <div className="flex flex-col lg:flex-row min-h-screen items-center justify-between lg:space-x-36">
+        <div className="flex flex-col lg:flex-row-reverse min-h-screen items-center justify-center lg:justify-between">
           {/* Left Side - Form Section */}
           <motion.div 
             initial="initial"
             animate="animate"
             variants={staggerContainer}
-            className="w-fit"
+            className="w-fit lg:ml-5"
           >
             <div className="max-w-md mx-auto w-full">
               {/* Logo for mobile */}
@@ -284,76 +278,7 @@ const LoginPage = () => {
           </motion.div>
 
           {/* Right Side - Enhanced Branding Section */}
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="w-full lg:w-1/2"
-          >
-            <div className="mx-auto lg:ml-auto lg:mr-0">
-              {/* Logo for desktop */}
-              <motion.div 
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="hidden lg:flex mb-8"
-              >
-                <Logo />
-              </motion.div>
-
-              {/* Main Content */}
-              <div className="space-y-8">
-                {/* Title */}
-                <motion.h2 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="text-3xl lg:text-4xl font-bold text-accent"
-                >
-                  Discover Amazing
-                  <br />
-                  <span className="text-primary">Deals</span> &{' '}
-                  <span className="text-secondary">Offers</span>
-                </motion.h2>
-
-                {/* Description */}
-                <motion.p 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  className="text-gray-600 leading-relaxed"
-                >
-                  Join thousands of happy customers who shop with us everyday.
-                  Get exclusive access to special offers and new arrivals.
-                </motion.p>
-
-                {/* Stats Cards */}
-                <motion.div 
-                  variants={staggerContainer}
-                  initial="initial"
-                  animate="animate"
-                  className="grid grid-cols-2 gap-4"
-                >
-                  {[
-                    { number: '50K+', label: 'Happy Customers', icon: HiOutlineHeart, color: 'text-primary' },
-                    { number: '10K+', label: 'Products', icon: HiOutlineShoppingBag, color: 'text-secondary' },
-                    { number: '4.8', label: 'Rating', icon: HiOutlineStar, color: 'text-primary' },
-                    { number: '24/7', label: 'Support', icon: HiOutlineShieldCheck, color: 'text-secondary' },
-                  ].map((stat, index) => (
-                    <motion.div
-                      key={index}
-                      variants={fadeInUp}
-                      className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border border-gray-100 hover:border-primary/20 transition-all duration-300 group"
-                    >
-                      <stat.icon className={`w-8 h-8 ${stat.color} mb-3 group-hover:scale-110 transition-transform duration-300`} />
-                      <div className="text-2xl font-bold text-accent">{stat.number}</div>
-                      <div className="text-sm text-gray-600">{stat.label}</div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </div>
-            </div>
-          </motion.div>
+          <LoginRightSide/>
         </div>
       </div>
     </div>

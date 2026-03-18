@@ -93,17 +93,19 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems, cartCount }: Mob
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="space-y-2"
               >
+                <Link href={"/login"}>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full px-4 py-3 rounded-xl font-medium flex items-center justify-center space-x-2 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 group"
+                  className="w-full px-4 py-3 mb-2 rounded-xl font-medium flex items-center justify-center space-x-2 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 group"
                   onClick={onClose}
                 >
                   <HiOutlineLogin className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
                   <span>Login</span>
                 </motion.button>
+                </Link>
+                <Link href={"/login"}>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -113,6 +115,7 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems, cartCount }: Mob
                   <HiOutlineUser className="w-5 h-5" />
                   <span>Register</span>
                 </motion.button>
+                </Link>
               </motion.div>
 
               {/* Mobile Avatar Section */}
