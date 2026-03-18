@@ -74,7 +74,6 @@ export default function Home() {
           <h1>hallo Home</h1>
           <h1>hallo Home</h1>
           <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
       </main>
     </>
   );

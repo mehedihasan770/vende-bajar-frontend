@@ -14,7 +14,7 @@ const UserAvatarDropdown = ({setIsDropdownOpen, isDropdownOpen} : AuthButtonsPro
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="flex items-center space-x-1 lg:space-x-2 focus:outline-none group"
+          className="flex hidden items-center space-x-1 lg:space-x-2 focus:outline-none group"
         >
           <div className="relative w-8 h-8 lg:w-10 lg:h-10 rounded-full overflow-hidden border-2 border-primary group-hover:border-secondary transition-colors duration-300">
             <Image

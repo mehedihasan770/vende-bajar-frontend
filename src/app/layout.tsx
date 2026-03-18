@@ -59,7 +59,7 @@ export default function RootLayout({
         </header>
 
         {/* main contents */}
-        <main>
+        <main className="max-w-11/12 md:max-w-10/12 mx-auto">
           {children}
         </main>
 

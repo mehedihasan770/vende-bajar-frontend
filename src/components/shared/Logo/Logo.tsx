@@ -16,7 +16,7 @@ const Logo = () => {
                 alt="Vende Bajar"
                 width={100}
                 height={100}
-                className="w-full h-full object-contain"
+                className="xl:w-full xl:h-full object-contain"
                 priority
               />
             </div>

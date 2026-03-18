@@ -83,7 +83,7 @@ const Navbar = () => {
         transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
         className="fixed top-0 py-3 w-full z-50 shadow bg-white/20 dark:bg-black/20 backdrop-blur-sm"
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-11/12 md:max-w-10/12 mx-auto">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Logo/>
@@ -97,7 +97,7 @@ const Navbar = () => {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="relative p-2 text-gray-700 hover:text-primary transition-colors duration-300 rounded-full hover:bg-primary/10"
+                className="relative p-2 hidden text-gray-700 hover:text-primary transition-colors duration-300 rounded-full hover:bg-primary/10"
               >
                 <HiOutlineShoppingCart className="w-5 h-5 lg:w-6 lg:h-6" />
                 {cartCount > 0 && (
