@@ -76,7 +76,7 @@ const LoginRightSide = () => {
                   <motion.div
                     key={index}
                     variants={fadeInUp}
-                    className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border border-gray-100 hover:border-primary/20 transition-all duration-300 group"
+                    className="bg-lineatr-to-br from-gray-50 to-white p-6 rounded-2xl border border-gray-100 hover:border-primary/20 transition-all duration-300 group"
                   >
                     <stat.icon className={`w-8 h-8 ${stat.color} mb-3 group-hover:scale-110 transition-transform duration-300`} />
                     <div className="text-2xl font-bold text-accent">{stat.number}</div>
