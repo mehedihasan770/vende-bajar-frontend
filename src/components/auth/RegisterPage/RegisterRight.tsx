@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Logo from '@/components/shared/Logo/Logo';
-import { HiOutlineStar, HiOutlineHeart, HiOutlineTruck, HiOutlineRefresh, HiOutlineUserGroup, HiOutlineGift } from 'react-icons/hi';
+import {  HiOutlineHeart, HiOutlineTruck, HiOutlineRefresh, HiOutlineGift } from 'react-icons/hi';
 
 const RegisterRight = () => {
 
@@ -32,7 +32,7 @@ const RegisterRight = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="hidden lg:flex mb-6"
+              className="hidden lg:flex justify-end mb-6"
             >
               <Logo />
             </motion.div>
@@ -43,7 +43,7 @@ const RegisterRight = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="text-2xl lg:text-4xl font-bold text-accent text-center lg:text-left"
+                className="text-2xl lg:text-4xl font-bold text-accent text-center lg:text-right"
               >
                 Join Our Family
                 <br />
@@ -56,7 +56,7 @@ const RegisterRight = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
-                className="text-gray-600 leading-relaxed text-justify lg:text-left"
+                className="text-gray-600 leading-relaxed text-justify lg:text-right"
               >
                 Sign up today and unlock exclusive benefits. Get personalized recommendations, 
                 early access to sales, and a seamless shopping experience tailored just for you.
@@ -80,9 +80,11 @@ const RegisterRight = () => {
                     variants={fadeInUp}
                     className="bg-linear-to-br from-gray-50 to-white p-6 rounded-2xl border border-gray-100 hover:border-secondary/20 transition-all duration-300 group"
                   >
-                    <stat.icon className={`w-8 h-8 ${stat.color} mb-3 group-hover:scale-110 transition-transform duration-300`} />
-                    <div className="text-2xl font-bold text-accent">{stat.number}</div>
-                    <div className="text-sm text-gray-600">{stat.label}</div>
+                    <div className='flex justify-end'>
+                      <stat.icon className={`w-8 h-8 ${stat.color} mb-3 group-hover:scale-110 transition-transform duration-300`} />
+                    </div>
+                    <div className="lg:text-2xl text-right font-bold text-accent">{stat.number}</div>
+                    <div className="text-sm text-right text-gray-600">{stat.label}</div>
                   </motion.div>
                 ))}
               </motion.div>
