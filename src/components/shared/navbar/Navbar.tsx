@@ -24,6 +24,7 @@ import {
 import MobileMenu from './navbarAllComponents/MobileMenu'
 import { IconType } from 'react-icons'
 import Logo from './navbarAllComponents/Logo'
+import NavLinks from './navbarAllComponents/NavLinks'
 
 export interface NavItem { // এখানে export যোগ করুন
   name: string
@@ -101,22 +102,7 @@ const Navbar = () => {
             <Logo/>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="relative flex items-center space-x-1 px-3 lg:px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium group text-sm lg:text-base rounded-lg hover:bg-primary/5"
-                >
-                  <link.icon className="w-4 h-4 lg:w-5 lg:h-5 text-secondary group-hover:text-primary transition-all duration-300 group-hover:scale-110" />
-                  <span>{link.name}</span>
-                  <motion.span
-                    className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"
-                    layoutId="underline"
-                  />
-                </Link>
-              ))}
-            </div>
+            <NavLinks navLinks={navLinks}/>
 
             {/* Desktop Right Side */}
             <div className="hidden md:flex items-center space-x-2 lg:space-x-3">
