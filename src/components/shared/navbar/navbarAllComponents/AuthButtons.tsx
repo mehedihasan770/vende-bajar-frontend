@@ -1,0 +1,28 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { HiOutlineLogin, HiOutlineUser } from 'react-icons/hi';
+
+const AuthButtons = () => {
+    return (
+        <div className="flex items-center space-x-2">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg font-medium transition-all duration-300 flex items-center space-x-1 lg:space-x-2 border-2 border-primary text-primary hover:bg-primary hover:text-white text-sm lg:text-base group"
+                >
+                  <HiOutlineLogin className="w-4 h-4 lg:w-5 lg:h-5 group-hover:rotate-12 transition-transform duration-300" />
+                  <span className="hidden lg:inline">Login</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg font-medium text-white transition-all duration-300 flex items-center space-x-1 lg:space-x-2 bg-secondary hover:bg-secondary/90 text-sm lg:text-base shadow-md hover:shadow-lg"
+                >
+                  <HiOutlineUser className="w-4 h-4 lg:w-5 lg:h-5" />
+                  <span className="hidden lg:inline">Register</span>
+                </motion.button>
+              </div>
+    );
+};
+
+export default AuthButtons;

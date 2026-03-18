@@ -10,8 +10,6 @@ import {
   HiOutlineShoppingBag, 
   HiOutlinePhone, 
   HiOutlineInformationCircle,
-  HiOutlineUser,
-  HiOutlineLogin,
   HiOutlineLogout,
   HiOutlineMenu,
   HiOutlineX,
@@ -25,6 +23,7 @@ import MobileMenu from './navbarAllComponents/MobileMenu'
 import { IconType } from 'react-icons'
 import Logo from './navbarAllComponents/Logo'
 import NavLinks from './navbarAllComponents/NavLinks'
+import AuthButtons from './navbarAllComponents/AuthButtons'
 
 export interface NavItem { // এখানে export যোগ করুন
   name: string
@@ -121,24 +120,7 @@ const Navbar = () => {
               </motion.button>
 
               {/* Login/Register */}
-              <div className="flex items-center space-x-2">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg font-medium transition-all duration-300 flex items-center space-x-1 lg:space-x-2 border-2 border-primary text-primary hover:bg-primary hover:text-white text-sm lg:text-base group"
-                >
-                  <HiOutlineLogin className="w-4 h-4 lg:w-5 lg:h-5 group-hover:rotate-12 transition-transform duration-300" />
-                  <span className="hidden lg:inline">Login</span>
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg font-medium text-white transition-all duration-300 flex items-center space-x-1 lg:space-x-2 bg-secondary hover:bg-secondary/90 text-sm lg:text-base shadow-md hover:shadow-lg"
-                >
-                  <HiOutlineUser className="w-4 h-4 lg:w-5 lg:h-5" />
-                  <span className="hidden lg:inline">Register</span>
-                </motion.button>
-              </div>
+              <AuthButtons/>
 
               {/* Avatar with Dropdown */}
               <div className="relative">
