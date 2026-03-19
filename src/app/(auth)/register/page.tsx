@@ -7,8 +7,6 @@ import RegisterForm from "@/components/auth/RegisterPage/RegisterForm";
 import BackButton from "@/components/shared/auth/BackButton";
 
 const RegisterPage = () => {
-  
-
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },

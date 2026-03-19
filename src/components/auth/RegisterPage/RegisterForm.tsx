@@ -15,6 +15,9 @@ import {
 import Link from "next/link";
 import GoogleButton from "@/components/shared/auth/GoogleButton";
 import PasswordStrengthIndicator from "./PasswordStrengthIndicator";
+import { privateAxios } from "@/lib/axios";
+import axios from "axios";
+import { setAuthToken } from "@/utils/auth";
 
 type RegisterFormData = {
   fullName: string;
@@ -45,15 +48,30 @@ const RegisterForm = () => {
   const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Register data:", data);
-    } catch (error) {
+
+      const res = await privateAxios.post('/auth/register', data);
+      if (res.data?.token) {
+        setAuthToken(res.data.token);
+        console.log("Token saved to cookies successfully! ✅");
+      }
+
+    } catch (error: unknown) {
+
+      let message = "Registration failed. Please try again.";
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data?.message || message;
+      } else if (error instanceof Error) {
+        message = error.message;
+      }
       setError("root", {
         type: "manual",
-        message: "Registration failed. Please try again.",
+        message: message,
       });
+
     } finally {
+
       setIsLoading(false);
+
     }
   };
 
@@ -367,6 +385,7 @@ const RegisterForm = () => {
               </Link>
             </label>
           </div>
+
           {/* Root error */}
           {errors.root && (
             <motion.div
@@ -379,6 +398,7 @@ const RegisterForm = () => {
               </p>
             </motion.div>
           )}
+          
           {/* Submit Button */}
           <motion.button
             whileHover={{ scale: 1.02 }}
