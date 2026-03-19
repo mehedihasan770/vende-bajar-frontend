@@ -13,6 +13,9 @@ import {
 } from "react-icons/hi";
 import Link from "next/link";
 import GoogleButton from "../../shared/auth/GoogleButton";
+import { setAuthToken } from "@/utils/auth";
+import { publicAxios } from "@/lib/axios";
+import axios from "axios";
 
 type LoginFormData = {
   email: string;
@@ -35,12 +38,23 @@ const LgoinForm = () => {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Login data:", data);
-    } catch (error) {
+      
+      const res = await publicAxios.post('/auth/login', data);
+      if (res.data?.token) {
+        setAuthToken(res.data.token);
+        console.log("Token saved to cookies successfully! ✅");
+      }
+
+    } catch (error: unknown) {
+      let message = "Registration failed. Please try again.";
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data?.message || message;
+      } else if (error instanceof Error) {
+        message = error.message;
+      }
       setError("root", {
         type: "manual",
-        message: "Invalid email or password",
+        message: message,
       });
     } finally {
       setIsLoading(false);
