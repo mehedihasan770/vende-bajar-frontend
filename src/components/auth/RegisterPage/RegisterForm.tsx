@@ -18,6 +18,7 @@ import PasswordStrengthIndicator from "./PasswordStrengthIndicator";
 import { privateAxios } from "@/lib/axios";
 import axios from "axios";
 import { setAuthToken } from "@/utils/auth";
+import { useRouter } from "next/navigation";
 
 type RegisterFormData = {
   fullName: string;
@@ -32,6 +33,7 @@ const RegisterForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     const {
         register,
@@ -53,6 +55,7 @@ const RegisterForm = () => {
       if (res.data?.token) {
         setAuthToken(res.data.token);
         console.log("Token saved to cookies successfully! ✅");
+        router.push("/");
       }
 
     } catch (error: unknown) {

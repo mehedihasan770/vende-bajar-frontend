@@ -16,6 +16,7 @@ import GoogleButton from "../../shared/auth/GoogleButton";
 import { setAuthToken } from "@/utils/auth";
 import { publicAxios } from "@/lib/axios";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type LoginFormData = {
   email: string;
@@ -25,6 +26,7 @@ type LoginFormData = {
 const LgoinForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -43,6 +45,7 @@ const LgoinForm = () => {
       if (res.data?.token) {
         setAuthToken(res.data.token);
         console.log("Token saved to cookies successfully! ✅");
+        router.push("/");
       }
 
     } catch (error: unknown) {
