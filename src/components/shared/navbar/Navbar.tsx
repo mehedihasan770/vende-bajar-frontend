@@ -23,6 +23,7 @@ import UserAvatarDropdown from './navbarAllComponents/UserAvatarDropdown'
 import DropdownMenu from './navbarAllComponents/DropdownMenu'
 import MobileMenuButton from './navbarAllComponents/MobileMenuButton'
 import { usePathname } from 'next/navigation'
+import { getBrowserUser } from '@/utils/getBrowserUser'
 
 export interface NavItem {
   name: string
@@ -39,6 +40,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [cartCount, setCartCount] = useState(0)
   const pathname = usePathname();
+  const {isLoggedIn} = getBrowserUser();
 
   // যে পেজগুলোতে নেভবার এবং ফুটার দেখাতে চান না সেগুলোর লিস্ট
   const disableNavbarFooter : string[] = ["/login", "/register", "/dashboard"];
@@ -100,11 +102,13 @@ const Navbar = () => {
 
             {/* Desktop Right Side */}
             <div className="hidden md:flex items-center space-x-2 lg:space-x-3">
+              
               {/* Cart Icon */}
+              {isLoggedIn ?
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="relative p-2 hidden text-gray-700 hover:text-primary transition-colors duration-300 rounded-full hover:bg-primary/10"
+                className="relative p-2 text-gray-700 hover:text-primary transition-colors duration-300 rounded-full hover:bg-primary/10"
               >
                 <HiOutlineShoppingCart className="w-5 h-5 lg:w-6 lg:h-6" />
                 {cartCount > 0 && (
@@ -113,6 +117,7 @@ const Navbar = () => {
                   </span>
                 )}
               </motion.button>
+              : ""}
 
               {/* Login/Register */}
               <AuthButtons/>

@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
 interface AuthResponse {
@@ -9,10 +9,8 @@ interface AuthResponse {
   isLoggedIn: boolean;
 }
 
-export const getServerUser = async (): Promise<AuthResponse> => {
-  const cookieStore = await cookies(); 
-  const token = cookieStore.get("vende_token")?.value;
-  console.log("Token Found:", token);
+export const getBrowserUser = (): AuthResponse => {
+  const token = Cookies.get("vende_token");
 
   const defaultResponse: AuthResponse = {
     isLoggedIn: false,
@@ -22,6 +20,7 @@ export const getServerUser = async (): Promise<AuthResponse> => {
 
   try {
     const decoded: AuthResponse = jwtDecode(token);
+    
     return {
       id: decoded.id,
       fullName: decoded.fullName || "",

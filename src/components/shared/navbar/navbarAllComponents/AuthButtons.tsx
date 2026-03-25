@@ -2,8 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { HiOutlineLogin, HiOutlineUser } from 'react-icons/hi';
 import Link from 'next/link';
+import { getBrowserUser } from '@/utils/getBrowserUser';
 
 const AuthButtons = () => {
+    const { isLoggedIn } = getBrowserUser();
+
+    if(isLoggedIn) return;
+
     return (
         <div className="flex items-center space-x-2">
           <Link href={"/login"}>
