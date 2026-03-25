@@ -17,6 +17,7 @@ import { setAuthToken } from "@/utils/auth";
 import { publicAxios } from "@/lib/axios";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 type LoginFormData = {
   email: string;
@@ -26,6 +27,7 @@ type LoginFormData = {
 const LgoinForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { refreshUser } = useAuth();
   const router = useRouter();
 
   const {
@@ -45,6 +47,7 @@ const LgoinForm = () => {
       if (res.data?.token) {
         setAuthToken(res.data.token);
         console.log("Token saved to cookies successfully! ✅");
+        refreshUser();
         router.push("/");
       }
 

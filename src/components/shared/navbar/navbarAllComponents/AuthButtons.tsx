@@ -2,12 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { HiOutlineLogin, HiOutlineUser } from 'react-icons/hi';
 import Link from 'next/link';
-import { getBrowserUser } from '@/utils/getBrowserUser';
+import { useAuth } from '@/context/AuthContext';
 
 const AuthButtons = () => {
-    const { isLoggedIn } = getBrowserUser();
-
-    if(isLoggedIn) return;
+    const { user, loading } = useAuth();
+    if (loading || user?.isLoggedIn) return null;
 
     return (
         <div className="flex items-center space-x-2">

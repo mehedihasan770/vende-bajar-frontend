@@ -56,6 +56,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* navar component */}
+        <AuthProvider>
         <header>
           <Navbar/>
         </header>
@@ -63,9 +64,7 @@ export default function RootLayout({
         {/* main contents */}
         <main className="max-w-11/12 md:max-w-10/12 mx-auto">
           <QueryProvider>
-            <AuthProvider>
-              {children}
-            </AuthProvider>
+            {children}
           </QueryProvider>
         </main>
 
@@ -73,6 +72,7 @@ export default function RootLayout({
         <footer>
 
         </footer>
+        </AuthProvider>
       </body>
     </html>
   );

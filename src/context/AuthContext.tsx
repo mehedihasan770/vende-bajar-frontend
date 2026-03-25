@@ -3,28 +3,45 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { getBrowserUser } from "@/utils/getBrowserUser";
 import Cookies from "js-cookie";
 
-const AuthContext = createContext<unknown>(null);
+interface UserType {
+  id?: string;
+  fullName?: string;
+  email?: string;
+  role?: string;
+  isLoggedIn: boolean;
+}
+
+interface AuthContextType {
+  user: UserType | null;
+  setUser: React.Dispatch<React.SetStateAction<UserType | null>>;
+  logout: () => void;
+  loading: boolean;
+  refreshUser: () => void;
+}
+
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<unknown>(null);
+  const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const data = getBrowserUser();
     setTimeout(() => {
-        setUser(data);
-        setLoading(false);
+      setUser(data);
+    setLoading(false);
     },0)
   }, []);
 
   const logout = () => {
     Cookies.remove("vende_token", { path: '/' });
-    setUser({ isLoggedIn: false });
+    setUser({ isLoggedIn: false }); 
   };
 
   const refreshUser = () => {
     const data = getBrowserUser();
-    setUser(data);
+    setUser(data); 
   };
 
   return (
@@ -34,4 +51,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};

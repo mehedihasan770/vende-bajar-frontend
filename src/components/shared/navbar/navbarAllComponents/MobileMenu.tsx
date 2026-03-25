@@ -2,22 +2,23 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { 
-  HiOutlineShoppingCart,
   HiOutlineLogin,
   HiOutlineUser,
-  HiOutlineUserCircle
+  HiOutlineUserCircle,
+  HiOutlineLogout
 } from 'react-icons/hi'
 import { DropdownItem, NavItem } from '../Navbar'
+import { useAuth } from '@/context/AuthContext'
 
 interface MobileMenuProps {
   isOpen: boolean
   onClose: () => void
   navLinks: NavItem[]
   dropdownItems: DropdownItem[]
-  cartCount: number
 }
 
-const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems, cartCount }: MobileMenuProps) => {
+const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProps) => {
+  const { user, loading, logout } = useAuth();
   return (
     <AnimatePresence>
       {isOpen && (
@@ -62,24 +63,6 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems, cartCount }: Mob
                 ))}
               </div>
 
-              {/* Cart Section */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="my-4"
-              >
-                <div className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-xl">
-                  <div className="flex items-center space-x-3">
-                    <HiOutlineShoppingCart className="w-5 h-5 text-secondary" />
-                    <span className="font-medium text-accent">Your Cart</span>
-                  </div>
-                  <span className="bg-primary text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold">
-                    {cartCount}
-                  </span>
-                </div>
-              </motion.div>
-
               {/* Divider */}
               <motion.div 
                 initial={{ scaleX: 0 }}
@@ -89,6 +72,7 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems, cartCount }: Mob
               />
 
               {/* Mobile Login/Register */}
+              {!loading && !user?.isLoggedIn && (
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -117,8 +101,10 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems, cartCount }: Mob
                 </motion.button>
                 </Link>
               </motion.div>
+              )}
 
               {/* Mobile Avatar Section */}
+              {user?.isLoggedIn && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -166,8 +152,24 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems, cartCount }: Mob
                       </Link>
                     </motion.div>
                   ))}
+                  <motion.div
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 9 * 0.05 }}
+                  >
+                    <button
+                      className={`flex items-center cursor-pointer w-full space-x-3 px-4 py-2.5 hover:bg-gray-50 transition-all duration-200 group border-t border-gray-100 mt-1}`}
+                      onClick={() => logout()}
+                    >
+                      <HiOutlineLogout className={`w-5 h-5 group-hover:scale-110 text-primary transition-transform duration-200`} />
+                      <span className={`text-sm text-primary font-medium`}>
+                        Logout
+                      </span>
+                    </button>
+                  </motion.div>
                 </div>
               </motion.div>
+              )}
             </div>
           </motion.div>
         </>

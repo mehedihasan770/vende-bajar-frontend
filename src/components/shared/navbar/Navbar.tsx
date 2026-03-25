@@ -8,11 +8,9 @@ import {
   HiOutlineShoppingBag, 
   HiOutlinePhone, 
   HiOutlineInformationCircle,
-  HiOutlineLogout,
   HiOutlineUserCircle,
   HiOutlineHeart,
   HiOutlineChartBar,
-  HiOutlineShoppingCart
 } from 'react-icons/hi'
 import MobileMenu from './navbarAllComponents/MobileMenu'
 import { IconType } from 'react-icons'
@@ -23,7 +21,7 @@ import UserAvatarDropdown from './navbarAllComponents/UserAvatarDropdown'
 import DropdownMenu from './navbarAllComponents/DropdownMenu'
 import MobileMenuButton from './navbarAllComponents/MobileMenuButton'
 import { usePathname } from 'next/navigation'
-import { getBrowserUser } from '@/utils/getBrowserUser'
+import CurtButton from './navbarAllComponents/CurtButton'
 
 export interface NavItem {
   name: string
@@ -38,9 +36,7 @@ export interface DropdownItem extends NavItem {
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const [cartCount, setCartCount] = useState(0)
   const pathname = usePathname();
-  const {isLoggedIn} = getBrowserUser();
 
   // যে পেজগুলোতে নেভবার এবং ফুটার দেখাতে চান না সেগুলোর লিস্ট
   const disableNavbarFooter : string[] = ["/login", "/register", "/dashboard"];
@@ -79,7 +75,6 @@ const Navbar = () => {
     { name: 'Dashboard', href: '/dashboard', icon: HiOutlineChartBar, color: 'text-primary' },
     { name: 'Profile', href: '/profile', icon: HiOutlineUserCircle, color: 'text-secondary' },
     { name: 'Wishlist', href: '/wishlist', icon: HiOutlineHeart, color: 'text-secondary' },
-    { name: 'Logout', href: '/logout', icon: HiOutlineLogout, color: 'text-primary' },
   ]
 
   if (disableNavbarFooter.includes(pathname)) return null;
@@ -104,20 +99,7 @@ const Navbar = () => {
             <div className="hidden md:flex items-center space-x-2 lg:space-x-3">
               
               {/* Cart Icon */}
-              {isLoggedIn ?
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="relative p-2 text-gray-700 hover:text-primary transition-colors duration-300 rounded-full hover:bg-primary/10"
-              >
-                <HiOutlineShoppingCart className="w-5 h-5 lg:w-6 lg:h-6" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                    {cartCount}
-                  </span>
-                )}
-              </motion.button>
-              : ""}
+              <CurtButton/>
 
               {/* Login/Register */}
               <AuthButtons/>
@@ -132,7 +114,10 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Menu Button */}
-            <MobileMenuButton setIsOpen={setIsOpen} isOpen={isOpen} />
+              <div className=' flex justify-center space-x-2 md:hidden'>
+                <CurtButton/>
+                <MobileMenuButton setIsOpen={setIsOpen} isOpen={isOpen} />
+              </div>
           </div>
         </div>
       </motion.nav>
@@ -143,7 +128,6 @@ const Navbar = () => {
         onClose={() => setIsOpen(false)}
         navLinks={navLinks}
         dropdownItems={dropdownItems}
-        cartCount={cartCount}
       />
 
       {/* Spacer */}

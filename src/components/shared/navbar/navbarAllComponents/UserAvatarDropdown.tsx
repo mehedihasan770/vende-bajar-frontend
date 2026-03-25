@@ -1,8 +1,11 @@
+"use client"
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { HiOutlineChevronDown } from 'react-icons/hi';
 import { getBrowserUser } from '@/utils/getBrowserUser';
+import { useAuth } from '@/context/AuthContext';
 
 interface AuthButtonsProps {
   isDropdownOpen: boolean;
@@ -10,8 +13,8 @@ interface AuthButtonsProps {
 }
 
 const UserAvatarDropdown = ({setIsDropdownOpen, isDropdownOpen} : AuthButtonsProps) => {
-    const {isLoggedIn} = getBrowserUser();
-    if(!isLoggedIn) return;
+    const { user, loading } = useAuth();
+    if (loading || !user?.isLoggedIn) return null;
     
     return (
         <motion.button
