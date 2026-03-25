@@ -12,7 +12,7 @@ const CurtButton = () => {
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className="relative p-2 cursor-pointer text-gray-700 hover:text-primary transition-colors duration-300 rounded-full bg-gray-100 hover:bg-primary/10"
+          className="relative p-2 lg:p-2.5 cursor-pointer text-gray-700 hover:text-primary transition-colors duration-300 rounded-full bg-gray-100 hover:bg-primary/10"
         >
           <HiOutlineShoppingCart className="w-5 h-5 lg:w-6 lg:h-6" />
           {cartCount > 0 && (

@@ -224,7 +224,7 @@ const LgoinForm = () => {
         whileTap={{ scale: 0.98 }}
         type="submit"
         disabled={isLoading || isSubmitting}
-        className="w-full bg-primary text-white py-3 rounded-xl font-medium hover:bg-primary/90 transition-all duration-300 flex items-center justify-center space-x-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-primary cursor-pointer text-white py-3 rounded-xl font-medium hover:bg-primary/90 transition-all duration-300 flex items-center justify-center space-x-2 group disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading || isSubmitting ? (
           <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />

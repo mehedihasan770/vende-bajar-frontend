@@ -1,8 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion'
 import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
-import CurtButton from './CurtButton';
-import { div } from 'framer-motion/client';
 
 interface MibileMenu {
   setIsOpen: (value: boolean) => void;

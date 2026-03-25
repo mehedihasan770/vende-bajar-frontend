@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { DropdownItem } from '../Navbar';
 import { HiOutlineLogout } from 'react-icons/hi';
 import { useAuth } from '@/context/AuthContext';
+import { useUser } from '@/hooks/useUser';
 
 interface AuthButtonsProps {
   isDropdownOpen: boolean;
@@ -12,7 +13,9 @@ interface AuthButtonsProps {
 }
 
 const DropdownMenu = ({isDropdownOpen, setIsDropdownOpen, dropdownItems} : AuthButtonsProps) => {
-    const { user, logout } = useAuth();
+    const { logout } = useAuth();
+    const { data } = useUser();
+    const { fullName, email} = data || {}
 
     return (
         <AnimatePresence>
@@ -25,8 +28,8 @@ const DropdownMenu = ({isDropdownOpen, setIsDropdownOpen, dropdownItems} : AuthB
               className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-50 border border-gray-100"
             >
               <div className="px-4 py-3 border-b border-gray-100">
-                <p className="text-sm font-semibold text-accent">{user?.fullName || "User Name"}</p>
-                <p className="text-xs text-gray-500">{user?.email || "User Email"}</p>
+                <p className="text-sm font-semibold text-accent">{fullName}</p>
+                <p className="text-xs text-gray-500">{email}</p>
               </div>
               
               {dropdownItems.map((item, index) => (

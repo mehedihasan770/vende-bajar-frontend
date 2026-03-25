@@ -4,11 +4,11 @@ import Image from 'next/image'
 import { 
   HiOutlineLogin,
   HiOutlineUser,
-  HiOutlineUserCircle,
   HiOutlineLogout
 } from 'react-icons/hi'
 import { DropdownItem, NavItem } from '../Navbar'
 import { useAuth } from '@/context/AuthContext'
+import { useUser } from '@/hooks/useUser'
 
 interface MobileMenuProps {
   isOpen: boolean
@@ -19,6 +19,9 @@ interface MobileMenuProps {
 
 const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProps) => {
   const { user, loading, logout } = useAuth();
+  const { data } = useUser();
+  const { fullName, email, profileImage } = data || {}
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -114,17 +117,16 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
                 <div className="flex items-center space-x-3 px-4 py-3 bg-linear-to-r from-primary/5 to-secondary/5 rounded-xl">
                   <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary">
                     <Image
-                      src="/avatar-placeholder.jpg"
+                      src={profileImage}
                       alt="User Avatar"
                       fill
                       className="object-cover"
                     />
                   </div>
                   <div>
-                    <span className="font-semibold text-accent block">John Doe</span>
+                    <span className="font-semibold text-accent block">{fullName}</span>
                     <span className="text-xs text-secondary flex items-center space-x-1">
-                      <HiOutlineUserCircle className="w-3 h-3" />
-                      <span>View Profile</span>
+                      {email}
                     </span>
                   </div>
                 </div>

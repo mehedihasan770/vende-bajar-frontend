@@ -53,19 +53,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning={true}
       >
-        {/* navar component */}
+        
+        <QueryProvider>
         <AuthProvider>
+        {/* navar component */}
         <header>
           <Navbar/>
         </header>
 
         {/* main contents */}
         <main className="max-w-11/12 md:max-w-10/12 mx-auto">
-          <QueryProvider>
-            {children}
-          </QueryProvider>
+          {children}
         </main>
 
         {/* footer component */}
@@ -73,6 +73,7 @@ export default function RootLayout({
 
         </footer>
         </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );
