@@ -1,11 +1,10 @@
-import React from 'react';
+import { getServerUser } from "@/utils/getServerUser";
+import { redirect } from "next/navigation";
 
-const page = () => {
-    return (
-        <div>
-            hallo dasboard
-        </div>
-    );
+const DashboardPage = async () => {
+  const user = await getServerUser();
+  redirect(`/dashboard/${user?.role || 'user'}`);
+  return null;
 };
 
-export default page;
+export default DashboardPage;

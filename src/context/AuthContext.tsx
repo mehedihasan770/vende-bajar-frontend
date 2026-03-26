@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getBrowserUser } from "@/utils/getBrowserUser";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 interface UserType {
   id?: string;
@@ -25,6 +26,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const data = getBrowserUser();
@@ -36,7 +38,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     Cookies.remove("vende_token", { path: '/' });
-    setUser({ isLoggedIn: false }); 
+    setUser({ isLoggedIn: false });
+    router.refresh();
   };
 
   const refreshUser = () => {

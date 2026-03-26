@@ -1,11 +1,11 @@
 import React from 'react';
 
-const AdminPage = () => {
+const UserPage = () => {
     return (
         <div>
-            /dashboard/admin
+            /dashboard/user
         </div>
     );
 };
 
-export default AdminPage;
+export default UserPage;
