@@ -1,4 +1,4 @@
-const DashboardRootLayout = ({ children }: { children: React.ReactNode }) => {
+const VendorLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <section>
       {children}
@@ -6,4 +6,4 @@ const DashboardRootLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default DashboardRootLayout;
+export default VendorLayout;
