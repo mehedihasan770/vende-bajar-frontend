@@ -5,7 +5,7 @@ const DashboardRootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen flex gap-4">
       {/* ১. সাইডবার - ডেক্সটপে ফিক্সড থাকবে */}
-      <aside className="hidden h-full lg:block w-72 shrink-0 sticky top-0">
+      <aside className="hidden h-full lg:block shrink-0 sticky top-0">
         <Sidebar />
       </aside>
 
