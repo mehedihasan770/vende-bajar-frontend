@@ -38,8 +38,10 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const pathname = usePathname();
 
-  // যে পেজগুলোতে নেভবার এবং ফুটার দেখাতে চান না সেগুলোর লিস্ট
-  const disableNavbarFooter : string[] = ["/login", "/register", "/dashboard"];
+  const disableNavbarFooter : string[] = ["/login", "/register"];
+  const isAuthOrDashboard = disableNavbarFooter.some((route) => 
+    pathname === route || pathname.startsWith("/dashboard/")
+  );
 
   // Handle body scroll when mobile menu is open
   useEffect(() => {
@@ -77,7 +79,7 @@ const Navbar = () => {
     { name: 'Wishlist', href: '/wishlist', icon: HiOutlineHeart, color: 'text-secondary' },
   ]
 
-  if (disableNavbarFooter.includes(pathname)) return null;
+  if (isAuthOrDashboard) return null;
 
   return (
     <>

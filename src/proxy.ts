@@ -10,7 +10,7 @@ interface AuthResponse {
   isLoggedIn: boolean;
 }
 
-export const middleware = (request: NextRequest) => {
+export const proxy = (request: NextRequest) => {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('vende_token')?.value;
 
