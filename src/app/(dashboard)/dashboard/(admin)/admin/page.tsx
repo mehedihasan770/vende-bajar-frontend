@@ -6,59 +6,7 @@ const AdminPage = () => {
             <h1 className='font-bold'>/dashboard/admin</h1>
             <h1>/dashboard/admin</h1>
             <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
-            <h1>/dashboard/admin</h1>
+           
             <h1>/dashboard/admin</h1>
             <h1>/dashboard/admin</h1>
             <h1>/dashboard/admin</h1>
