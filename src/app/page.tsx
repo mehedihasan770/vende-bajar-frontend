@@ -14,13 +14,13 @@ export default function Home() {
             <HeroSlider/>
           </section>
           <section>
-            <CategorySection/>
-          </section>
-          <section>
             <FlashSale/>
           </section>
           <section>
             <FeaturedProducts/>
+          </section>
+          <section>
+            <CategorySection/>
           </section>
       </main>
     </>
