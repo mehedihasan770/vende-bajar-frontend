@@ -1,3 +1,5 @@
+import HeroSlider from "@/components/home/heroSection/HeroSlider";
+
 export default function Home() {
 
 
@@ -5,73 +7,9 @@ export default function Home() {
     <>
       {/* main content */}
       <main>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
-          <h1>hallo Home</h1>
+          <section>
+            <HeroSlider/>
+          </section>
       </main>
     </>
   );
