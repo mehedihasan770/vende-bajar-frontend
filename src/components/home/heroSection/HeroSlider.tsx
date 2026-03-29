@@ -11,7 +11,7 @@ import {
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
-  const [particles, setParticles] = useState<any[]>([]) // এরর ফিক্সের জন্য স্টেট
+  const [particles, setParticles] = useState<any[]>([])
 
   const slides = useMemo(() => [
     {
@@ -52,7 +52,7 @@ const HeroSection = () => {
     }
   ], [])
 
-  // ⚠️ Math.random() এরর ফিক্স: মাউন্ট হওয়ার পর ডাটা জেনারেট হবে
+
   useEffect(() => {
     const generatedParticles = [...Array(15)].map((_, i) => ({
       id: i,
@@ -80,9 +80,9 @@ const HeroSection = () => {
 
   const getColorClasses = (color: string, type: string) => {
     const colors = {
-      primary: { bg: 'bg-primary', text: 'text-primary', hover: 'hover:bg-primary/90', border: 'border-primary/50', gradient: 'from-primary via-primary/80 to-primary/60', bgLight: 'bg-primary/20' },
-      secondary: { bg: 'bg-secondary', text: 'text-secondary', hover: 'hover:bg-secondary/90', border: 'border-secondary/50', gradient: 'from-secondary via-secondary/80 to-secondary/60', bgLight: 'bg-secondary/20' },
-      accent: { bg: 'bg-accent', text: 'text-accent', hover: 'hover:bg-accent/90', border: 'border-accent/50', gradient: 'from-accent via-accent/80 to-accent/60', bgLight: 'bg-accent/20' }
+      primary: { bg: 'bg-primary', text: 'text-primary', hover: 'hover:bg-primary/90', border: 'border-primary/50', linear: 'from-primary via-primary/80 to-primary/60', bgLight: 'bg-primary/20' },
+      secondary: { bg: 'bg-secondary', text: 'text-secondary', hover: 'hover:bg-secondary/90', border: 'border-secondary/50', linear: 'from-secondary via-secondary/80 to-secondary/60', bgLight: 'bg-secondary/20' },
+      accent: { bg: 'bg-accent', text: 'text-accent', hover: 'hover:bg-accent/90', border: 'border-accent/50', linear: 'from-accent via-accent/80 to-accent/60', bgLight: 'bg-accent/20' }
     }
     return colors[color as keyof typeof colors]?.[type as keyof typeof colors.primary] || ''
   }
@@ -95,10 +95,10 @@ const HeroSection = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
-            initial={{ opacity: 0 }} // শুধু অপাসিটি ০ (হিডেন)
-            animate={{ opacity: 1 }} // অপাসিটি ১ (ভিজিবল)
-            exit={{ opacity: 0 }}    // অপাসিটি ০ (আবার হিডেন)
-            transition={{ duration: 1.2, ease: "easeInOut" }} // স্মুথ ১.২ সেকেন্ড ফেইড
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}  
+            transition={{ duration: 1.2, ease: "easeInOut" }} 
             className="absolute inset-0 rounded-2xl"
           >
             <div className="absolute inset-0 rounded-2xl overflow-hidden">
@@ -109,8 +109,8 @@ const HeroSection = () => {
                 className="object-cover rounded-2xl"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/40 rounded-2xl" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30 rounded-2xl" />
+              <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/70 to-black/40 rounded-2xl" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-black/30 rounded-2xl" />
             </div>
           </motion.div>
         </AnimatePresence>
@@ -162,7 +162,7 @@ const HeroSection = () => {
                 className="text-4xl sm:text-7xl font-black text-white mb-4 leading-[1.1]"
               >
                 {slides[currentSlide].title}<br/>
-                <span className={`bg-gradient-to-r ${getColorClasses(slides[currentSlide].color, 'gradient')} bg-clip-text text-transparent`}>
+                <span className={`bg-linear-to-r ${getColorClasses(slides[currentSlide].color, 'linear')} bg-clip-text text-transparent`}>
                   {slides[currentSlide].subtitle}
                 </span>
               </motion.h1>
