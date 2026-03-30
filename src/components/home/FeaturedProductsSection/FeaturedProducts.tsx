@@ -76,7 +76,7 @@ const FeaturedProducts = () => {
                     {item.oldPrice > item.price && <span className="text-[10px] text-gray-400 line-through">৳{item.oldPrice}</span>}
                   </div>
                   <div className="flex gap-1.5 mt-auto">
-                    <Link href={`/product/${item._id}`} className="flex-1 py-1.5 sm:py-2 bg-secondary/10 text-secondary border border-secondary/10 rounded-lg font-bold text-[9px] sm:text-[11px] uppercase tracking-tighter hover:bg-secondary hover:text-white transition-all flex items-center justify-center gap-1 active:scale-95"><Eye size={12} className="hidden sm:block" />View</Link>
+                    <Link href={`/products/${item._id}`} className="flex-1 py-1.5 sm:py-2 bg-secondary/10 text-secondary border border-secondary/10 rounded-lg font-bold text-[9px] sm:text-[11px] uppercase tracking-tighter hover:bg-secondary hover:text-white transition-all flex items-center justify-center gap-1 active:scale-95"><Eye size={12} className="hidden sm:block" />View</Link>
                     <button className="p-1.5 sm:p-2 bg-primary text-white rounded-lg font-bold hover:bg-gray-900 transition-all active:scale-95 shadow-sm"><ShoppingCart size={14} /></button>
                   </div>
                 </div>

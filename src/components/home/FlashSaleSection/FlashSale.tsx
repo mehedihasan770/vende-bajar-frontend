@@ -30,7 +30,7 @@ const FlashSale = () => {
     { id: 2, name: "Smart Fitness Watch S2", price: 85, oldPrice: 110, discount: 20, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop" },
     { id: 3, name: "Mechanical Gaming Keyboard", price: 65, oldPrice: 95, discount: 30, image: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=500&h=500&fit=crop" },
     { id: 4, name: "Ultra HD Action Camera", price: 150, oldPrice: 200, discount: 25, image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500&h=500&fit=crop" },
-    { id: 4, name: "Ultra HD Action Camera", price: 150, oldPrice: 200, discount: 25, image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500&h=500&fit=crop" },
+    { id: 5, name: "Ultra HD Action Camera", price: 150, oldPrice: 200, discount: 25, image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500&h=500&fit=crop" },
   ]
 
   return (
@@ -76,7 +76,7 @@ const FlashSale = () => {
                   <span className="text-[10px] text-gray-400 line-through">৳{item.oldPrice}</span>
                 </div>
                 <div className="flex gap-1.5 mt-auto">
-                  <Link href={`/product/${item.id}`} className="flex-1 py-1.5 sm:py-2 bg-secondary/5 text-secondary border border-secondary/10 rounded-lg font-bold text-[9px] sm:text-[11px] uppercase tracking-tighter hover:bg-secondary hover:text-white transition-all flex items-center justify-center gap-1 active:scale-95">View</Link>
+                  <Link href={`/products/${item.id}`} className="flex-1 py-1.5 sm:py-2 bg-secondary/5 text-secondary border border-secondary/10 rounded-lg font-bold text-[9px] sm:text-[11px] uppercase tracking-tighter hover:bg-secondary hover:text-white transition-all flex items-center justify-center gap-1 active:scale-95">View</Link>
                   <button className="p-1.5 sm:p-2 bg-primary text-white rounded-lg font-bold hover:bg-gray-950 transition-all active:scale-95 shadow-sm"><ShoppingCart size={14} /></button>
                 </div>
               </div>
