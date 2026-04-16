@@ -40,8 +40,8 @@ export const ImageGallery = ({
 
   return (
     <div className="space-y-3 sm:space-y-4">
-      {/* মেইন ইমেজ */}
-      <div className="relative aspect-square bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-md border border-gray-100 group">
+
+      <div className="relative aspect-square bg-white rounded-2xl sm:rounded-2xl overflow-hidden shadow-md border border-gray-100 group">
         <AnimatePresence mode="wait">
           <motion.div
             key={selectedImage}
@@ -86,12 +86,11 @@ export const ImageGallery = ({
         
         {isNewArrival && (
           <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-secondary text-white px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs font-bold shadow-lg z-10">
-            নতুন
+            New
           </div>
         )}
       </div>
 
-      {/* থাম্বনেইল ইমেজ */}
       {images.length > 1 && (
         <div className="flex gap-2 sm:gap-3 overflow-x-auto pb-1">
           {images.map((img, idx) => (

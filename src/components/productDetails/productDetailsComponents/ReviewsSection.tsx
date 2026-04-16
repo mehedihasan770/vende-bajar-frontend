@@ -1,8 +1,8 @@
 // components/product/ReviewsSection.tsx
 import Link from 'next/link';
 import { HiOutlineUser, HiOutlineThumbUp, HiOutlineFlag, HiOutlineChevronRight, HiOutlineStar } from 'react-icons/hi';
+import AddReviewForm from './AddReviewForm';
 
-// এই কম্পোনেন্টের নিজস্ব টাইপ
 interface Review {
   id: number;
   user: string;
@@ -15,10 +15,9 @@ interface Review {
 interface ReviewsSectionProps {
   productId: string;
   reviews: Review[];
-  totalReviews: number;
 }
 
-export const ReviewsSection = ({ productId, reviews, totalReviews }: ReviewsSectionProps) => {
+export const ReviewsSection = ({ productId, reviews }: ReviewsSectionProps) => {
   const renderStars = (rating: number) => {
     return [...Array(5)].map((_, i) => (
       <HiOutlineStar
@@ -30,9 +29,10 @@ export const ReviewsSection = ({ productId, reviews, totalReviews }: ReviewsSect
 
   return (
     <div className="mt-8 sm:mt-10 lg:mt-12">
+      <AddReviewForm productId={productId}/>
       <div className="flex items-center justify-between flex-wrap gap-3 mb-4 sm:mb-5">
         <h2 className="text-lg sm:text-xl font-bold text-accent">
-          গ্রাহকদের রিভিউ ({totalReviews})
+          গ্রাহকদের রিভিউ 10
         </h2>
         <Link 
           href={`/products/${productId}/reviews`}

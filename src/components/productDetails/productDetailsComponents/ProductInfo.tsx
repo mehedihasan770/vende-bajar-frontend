@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { 
   HiOutlineShoppingBag, 
   HiOutlineHeart, 
-  HiOutlineStar,
   HiOutlineTruck,
   HiOutlineShieldCheck,
   HiOutlineRefresh,
@@ -13,8 +12,8 @@ import {
   HiOutlineMinus,
   HiOutlinePlus
 } from 'react-icons/hi';
+import ProductRating from './ProductRating';
 
-// এই কম্পোনেন্টের নিজস্ব টাইপ
 interface ProductInfoProps {
   product: {
     _id: string;
@@ -42,49 +41,34 @@ export const ProductInfo = ({
 
   const discountAmount = product.oldPrice - product.price;
 
-  const renderStars = (rating: number) => {
-    return [...Array(5)].map((_, i) => (
-      <HiOutlineStar
-        key={i}
-        className={`w-3 h-3 sm:w-4 sm:h-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
-      />
-    ));
-  };
-
   return (
     <div className="space-y-4 sm:space-y-5">
-      {/* ব্র্যান্ড এবং টাইটেল */}
+
       <div>
         {product.brand && (
           <Link 
-            href={`/products?brand=${encodeURIComponent(product.brand)}`}
+            href={`/products}`}
             className="text-secondary hover:text-primary font-medium text-xs sm:text-sm uppercase tracking-wide transition-colors inline-block"
           >
             {product.brand}
           </Link>
         )}
-        <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-accent mt-1 leading-tight">
+        <h1 className="text-lg sm:text-xl xl:text-2xl font-bold text-accent mt-1 leading-tight">
           {product.name}
         </h1>
-        <p className="text-gray-500 text-xs sm:text-sm mt-1">{product.shortDescription}</p>
+        <p className="text-gray-500 text-xs mt-1">{product.shortDescription}</p>
       </div>
 
-      {/* রেটিং */}
       <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-        <div className="flex items-center gap-0.5">
-          {renderStars(product.rating)}
-        </div>
-        <span className="text-xs sm:text-sm text-gray-500">
-          {product.numReviews}টি রিভিউ
-        </span>
+        <ProductRating rating={product.rating} totalReviews={product.numReviews} />
+
         {product.isBestSeller && (
           <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-accent/10 text-accent text-[10px] sm:text-xs rounded-full font-medium">
-            বestseller
+            estseller
           </span>
         )}
       </div>
 
-      {/* প্রাইস */}
       <div className="flex items-baseline gap-2 sm:gap-3 flex-wrap">
         <span className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">
           ৳{product.price.toLocaleString()}
@@ -95,23 +79,21 @@ export const ProductInfo = ({
               ৳{product.oldPrice.toLocaleString()}
             </span>
             <span className="text-xs sm:text-sm text-green-600 font-medium">
-              বাচলো ৳{discountAmount.toLocaleString()}
+              Save ৳{discountAmount.toLocaleString()}
             </span>
           </>
         )}
       </div>
 
-      {/* স্টক স্ট্যাটাস */}
       <div className="flex items-center gap-2">
         <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${product.stock > 0 ? 'bg-green-500' : 'bg-red-500'}`} />
         <span className={`text-xs sm:text-sm font-medium ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}>
-          {product.stock > 0 ? `স্টকে আছে (${product.stock}টি উপলব্ধ)` : 'স্টকে নেই'}
+          {product.stock > 0 ? `In Stock (${product.stock} items left)` : 'Out of Stock'}
         </span>
       </div>
 
-      {/* কোয়ান্টিটি সিলেক্টর */}
       <div>
-        <h3 className="text-xs sm:text-sm font-medium text-accent mb-1.5 sm:mb-2">পরিমাণ</h3>
+        <h3 className="text-xs sm:text-sm font-medium text-accent mb-1.5 sm:mb-2">Quantity</h3>
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -126,29 +108,27 @@ export const ProductInfo = ({
           >
             <HiOutlinePlus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
           </button>
-          <span className="text-xs text-gray-500">উপলব্ধ: {product.stock}</span>
+          <span className="text-xs text-gray-500">Stocks: {product.stock}</span>
         </div>
       </div>
 
-      {/* অ্যাকশন বাটন */}
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-1">
+      <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 pt-1">
         <button
           disabled={product.stock === 0}
-          className="flex-1 bg-primary text-white py-2.5 sm:py-3 rounded-xl font-semibold text-sm sm:text-base hover:bg-primary/90 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 bg-primary text-white py-2.5 lg:py-3 border border-primary rounded-2xl font-semibold text-sm sm:text-base hover:bg-primary/90 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <HiOutlineShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
-          কার্টে যোগ করুন
+          Add to Cart
         </button>
         
         <button
-          className="px-4 sm:px-5 py-2.5 sm:py-3 border-2 border-primary text-primary rounded-xl font-semibold text-sm sm:text-base hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2"
+          className="py-2.5 lg:py-3 px-2 border-2 border-primary text-primary rounded-2xl font-semibold text-sm sm:text-base hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2"
         >
           <HiOutlineHeart className="w-4 h-4 sm:w-5 sm:h-5" />
-          উইশলিস্টে যোগ করুন
+          Wishlist
         </button>
       </div>
 
-      {/* ডেলিভারি ইনফো */}
       <div className="grid grid-cols-2 gap-2 sm:gap-3 pt-1 border-t border-gray-100">
         <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600">
           <HiOutlineTruck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-secondary" />

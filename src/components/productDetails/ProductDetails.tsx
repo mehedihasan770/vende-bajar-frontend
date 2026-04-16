@@ -11,7 +11,6 @@ import { ProductTabs } from './productDetailsComponents/ProductTabs';
 import { ReviewsSection } from './productDetailsComponents/ReviewsSection';
 import { RelatedProducts } from './productDetailsComponents/RelatedProducts';
 
-// ============= টাইপ ডিফাইনেশন =============
 // interface ProductSpecifications {
 //   [key: string]: string | string[] | number | undefined;
 // }
@@ -66,7 +65,6 @@ interface RelatedProduct {
   rating: number;
 }
 
-// ============= স্ট্যাটিক ডাটা =============
 const staticReviews: Review[] = [
   {
     id: 1,
@@ -129,23 +127,17 @@ const staticRelatedProducts: RelatedProduct[] = [
   }
 ];
 
-// ============= API ফেচ ফাংশন =============
-
-// ============= মেইন কম্পোনেন্ট =============
-
 interface ID {
   id: string;
 }
 
 export default function ProductDetailsPage({id} : ID) {
   
-  // স্টেট
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
   const [activeTab, setActiveTab] = useState<'description' | 'specifications'>('description');
 
-  // React Query দিয়ে প্রোডাক্ট ডাটা ফেচ
   const { 
     data: product, 
     isLoading: productLoading, 
@@ -154,18 +146,15 @@ export default function ProductDetailsPage({id} : ID) {
     queryKey: ['product', id],
     queryFn: async () => {
       const res = await publicAxios.get(`/products/${id}`)
-      console.log(res.data, "hallo data")
-      return res.data
+      return res.data;
     },
     enabled: !!id,
     staleTime: 5 * 60 * 1000,
   });
 
-  // স্ট্যাটিক ডাটা
   const reviews = staticReviews;
   const relatedProducts = staticRelatedProducts;
 
-  // লোডিং
   if (productLoading) {
     return (
       <div className="flex justify-center items-center min-h-100">
@@ -177,40 +166,36 @@ export default function ProductDetailsPage({id} : ID) {
     );
   }
 
-  // এরর
   if (productError) {
     return (
       <div className="flex flex-col items-center justify-center min-h-100 text-center">
         <div className="text-red-500 text-6xl mb-4">⚠️</div>
-        <h3 className="text-lg font-semibold text-accent mb-2">প্রোডাক্ট লোড করতে সমস্যা হয়েছে</h3>
-        <p className="text-gray-500">পুনরায় চেষ্টা করুন</p>
+        <h3 className="text-lg font-semibold text-accent mb-2">Failed to load products</h3>
+        <p className="text-gray-500">Please try again</p>
       </div>
     );
   }
 
-  // প্রোডাক্ট না থাকলে
   if (!product) {
     return (
       <div className="flex flex-col items-center justify-center min-h-100 text-center">
         <div className="text-gray-400 text-6xl mb-4">📦</div>
-        <h3 className="text-lg font-semibold text-accent mb-2">প্রোডাক্টটি পাওয়া যায়নি</h3>
+        <h3 className="text-lg font-semibold text-accent mb-2">Products Not Found</h3>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen py-6 sm:py-8 lg:py-10">
-      <div className="container mx-auto px-4">
-        {/* ব্রেডক্রাম্ব */}
+      <div>
+
         <Breadcrumb
           category={product.category} 
           productName={product.name} 
         />
 
-        {/* ২ কলাম লেআউট */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 lg:gap-10">
           
-          {/* ইমেজ গ্যালারি কম্পোনেন্ট */}
           <ImageGallery
             images={[product.thumbnail, ...product.images]}
             productName={product.name}
@@ -221,7 +206,6 @@ export default function ProductDetailsPage({id} : ID) {
             setSelectedImage={setSelectedImage}
           />
 
-          {/* প্রোডাক্ট ইনফো কম্পোনেন্ট */}
           <ProductInfo
             product={product}
             quantity={quantity}
@@ -231,18 +215,15 @@ export default function ProductDetailsPage({id} : ID) {
           />
         </div>
 
-        {/* ট্যাবস কম্পোনেন্ট */}
         <ProductTabs
           product={product}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
 
-        {/* রিভিউ সেকশন কম্পোনেন্ট */}
         <ReviewsSection
           productId={id}
           reviews={reviews}
-          totalReviews={product.numReviews}
         />
 
         {/* সম্পর্কিত প্রোডাক্ট কম্পোনেন্ট */}
