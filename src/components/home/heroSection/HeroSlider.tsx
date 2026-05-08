@@ -8,7 +8,7 @@ import Image from 'next/image';
 const slides = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=2000",
+    image: "https://images.unsplash.com/photo-1508296695146-257a814070b4?q=80&w=2000",
     badge: "New Collection",
     title: { first: "CRAFTING THE", highlight: "FUTURE", last: "OF VISION" },
     descHeader: "Elevate Your Perspective.",
@@ -16,7 +16,7 @@ const slides = [
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=2000",
+    image: "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?q=80&w=2000",
     badge: "Premium Series",
     title: { first: "REDEFINE YOUR", highlight: "REALITY", last: "TODAY" },
     descHeader: "Immersive Experience.",
@@ -44,7 +44,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative -mt-16 sm:-mt-20 left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-[100vw] h-[100dvh] overflow-hidden bg-[#FBFBFD]">
+    <section className="relative -mt-16 sm:-mt-20 left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen h-dvh overflow-hidden bg-[#FBFBFD]">
 
       {/* Background Image & Premium Apple-style Light Overlays */}
       <div className="absolute inset-0 z-0">
@@ -68,8 +68,8 @@ const HeroSection = () => {
         </AnimatePresence>
 
         {/* Soft white washes for perfect text legibility, fading to transparent on the right so the image pops beautifully */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#FBFBFD]/100 via-[#FBFBFD]/85 to-transparent pointer-events-none z-10"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#FBFBFD]/60 via-transparent to-transparent pointer-events-none z-10"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-[#FBFBFD] via-[#FBFBFD]/85 to-transparent pointer-events-none z-10"></div>
+        <div className="absolute inset-0 bg-linear-to-t from-[#FBFBFD]/60 via-transparent to-transparent pointer-events-none z-10"></div>
       </div>
 
       {/* Prominent BOLD GAZE Watermark */}
@@ -140,7 +140,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="w-full md:w-[410px] p-8 rounded-[2rem] bg-white/60 backdrop-blur-3xl border border-white shadow-[0_20px_50px_rgb(0,0,0,0.05)] flex flex-col gap-6"
+            className="w-full md:w-102.5 p-8 rounded-4xl bg-white/60 backdrop-blur-3xl border border-white shadow-[0_20px_50px_rgb(0,0,0,0.05)] flex flex-col gap-6"
           >
             {/* Context Text */}
             <AnimatePresence mode="wait">
@@ -173,7 +173,7 @@ const HeroSection = () => {
             </div>
 
             {/* Thin Divider Line */}
-            <div className="h-[1px] w-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-100"></div>
+            <div className="h-px w-full bg-linear-to-r from-gray-200 via-gray-300 to-gray-100"></div>
 
             {/* Social Proof Context */}
             <div className="flex items-center justify-between">
@@ -208,7 +208,7 @@ const HeroSection = () => {
           {/* Scroll Down Indicator */}
           <div className="hidden md:flex flex-col items-center gap-2 opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
             <span className="text-[10px] font-bold tracking-[0.2em] text-gray-500 uppercase origin-center rotate-90 mb-7">Scroll</span>
-            <div className="w-[1px] h-12 bg-gradient-to-b from-gray-400 to-transparent"></div>
+            <div className="w-px h-12 bg-linear-to-b from-gray-400 to-transparent"></div>
           </div>
         </div>
 
