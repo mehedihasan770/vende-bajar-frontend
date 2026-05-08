@@ -1,3 +1,4 @@
+'use client';
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -9,6 +10,7 @@ import {
 import { DropdownItem, NavItem } from '../Navbar'
 import { useAuth } from '@/context/AuthContext'
 import { useUser } from '@/hooks/useUser'
+import { usePathname } from 'next/navigation'
 
 interface MobileMenuProps {
   isOpen: boolean
@@ -18,6 +20,7 @@ interface MobileMenuProps {
 }
 
 const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProps) => {
+  const pathname = usePathname();
   const { user, loading, logout } = useAuth();
   const { data } = useUser();
   const { fullName, email, profileImage } = data || {}
@@ -56,11 +59,21 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
                   >
                     <Link
                       href={link.href}
-                      className="flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-primary/5 transition-all duration-200 group"
+                      className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group border-l-4 ${
+                        pathname === link.href
+                          ? 'bg-primary/10 border-primary text-primary'
+                          : 'border-transparent hover:bg-primary/5 hover:border-transparent'
+                      }`}
                       onClick={onClose}
                     >
-                      <link.icon className="w-5 h-5 text-secondary group-hover:text-primary group-hover:scale-110 transition-all duration-200" />
-                      <span className="text-gray-700 font-medium group-hover:text-primary">{link.name}</span>
+                      <link.icon className={`w-5 h-5 transition-all duration-200 ${
+                        pathname === link.href
+                          ? 'text-primary scale-110'
+                          : 'text-secondary group-hover:text-primary group-hover:scale-110'
+                      }`} />
+                      <span className={`font-medium ${
+                        pathname === link.href ? 'text-primary font-semibold' : 'text-gray-700 group-hover:text-primary'
+                      }`}>{link.name}</span>
                     </Link>
                   </motion.div>
                 ))}
