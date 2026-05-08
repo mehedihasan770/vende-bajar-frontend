@@ -21,18 +21,18 @@ export const metadata: Metadata = {
     default: "Vende Bajar | Luxury E-commerce Showcase",
     template: "%s | Vende Bajar",
   },
-  
+
   description: "A high-end conceptual E-commerce platform built with Next.js, TypeScript, and AI. Featuring a unique 'Absurd Luxury' theme, showcasing advanced UI/UX, role-based dashboards, and AI-powered product insights.",
-  
+
   keywords: [
-    "Next.js Project", 
-    "MERN Stack Developer Portfolio", 
-    "TypeScript E-commerce", 
-    "AI Integration", 
-    "Tailwind CSS Design", 
+    "Next.js Project",
+    "MERN Stack Developer Portfolio",
+    "TypeScript E-commerce",
+    "AI Integration",
+    "Tailwind CSS Design",
     "Full-stack Web Application"
   ],
-  
+
   authors: [{ name: "MD Mehedi Hasan", url: "https://your-portfolio-link.com" }],
   creator: "MD Mehedi Hasan",
 
@@ -52,28 +52,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="overflow-x-hidden">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning={true}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`} suppressHydrationWarning={true}
       >
         <QueryProvider>
-        <AuthProvider>
-        {/* navar component */}
-        <Toaster position="top-center" reverseOrder={false} /> 
-        <header>
-          <Navbar/>
-        </header>
+          <AuthProvider>
+            {/* navar component */}
+            <Toaster position="top-center" reverseOrder={false} />
+            <header>
+              <Navbar />
+            </header>
 
-        {/* main contents */}
-        <main className="max-w-11/12 md:max-w-10/12 mx-auto">
-          {children}
-        </main>
+            {/* main contents */}
+            <main className="max-w-11/12 md:max-w-10/12 mx-auto">
+              {children}
+            </main>
 
-        {/* footer component */}
-        <footer>
+            {/* footer component */}
+            <footer>
 
-        </footer>
-        </AuthProvider>
+            </footer>
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>
