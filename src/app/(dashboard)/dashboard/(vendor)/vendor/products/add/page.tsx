@@ -147,8 +147,8 @@ const AddProductPage = () => {
                                 </InputGroup>
 
                                 <div className="grid grid-cols-2 gap-4">
-                                    <InputGroup label="Slug">
-                                        <input {...register("slug")} type="text" placeholder="slug-path" className={inputClasses} />
+                                    <InputGroup label="Slug" required error={errors.slug?.message}>
+                                        <input {...register("slug", { required: "Slug is required" })} type="text" placeholder="slug-path" className={inputClasses} />
                                     </InputGroup>
                                     <InputGroup label="Brand" required error={errors.brand?.message}>
                                         <input {...register("brand", { required: "Brand is required" })} type="text" placeholder="Brand" className={inputClasses} />
@@ -164,8 +164,8 @@ const AddProductPage = () => {
                                             <option value="Home">Home</option>
                                         </select>
                                     </InputGroup>
-                                    <InputGroup label="Sub-Category">
-                                        <input {...register("subCategory")} type="text" placeholder="Sub Category" className={inputClasses} />
+                                    <InputGroup label="Sub-Category" required error={errors.subCategory?.message}>
+                                        <input {...register("subCategory", { required: "Sub-Category is required" })} type="text" placeholder="Sub Category" className={inputClasses} />
                                     </InputGroup>
                                 </div>
                             </div>
@@ -178,20 +178,20 @@ const AddProductPage = () => {
                                     <InputGroup label="Price (৳)" required error={errors.price?.message}>
                                         <input {...register("price", { required: "Price is required" })} type="number" placeholder="0.00" className={`${inputClasses} text-primary`} />
                                     </InputGroup>
-                                    <InputGroup label="Old Price">
-                                        <input {...register("oldPrice")} type="number" placeholder="0.00" className={inputClasses} />
+                                    <InputGroup label="Old Price" required error={errors.oldPrice?.message}>
+                                        <input {...register("oldPrice", { required: "Old Price is required" })} type="number" placeholder="0.00" className={inputClasses} />
                                     </InputGroup>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
-                                    <InputGroup label="Cost Price">
-                                        <input {...register("costPrice")} type="number" placeholder="0.00" className={inputClasses} />
+                                    <InputGroup label="Cost Price" required error={errors.costPrice?.message}>
+                                        <input {...register("costPrice", { required: "Cost Price is required" })} type="number" placeholder="0.00" className={inputClasses} />
                                     </InputGroup>
                                     <InputGroup label="Stock" required error={errors.stock?.message}>
                                         <input {...register("stock", { required: "Stock is required" })} type="number" placeholder="0" className={inputClasses} />
                                     </InputGroup>
                                 </div>
-                                <InputGroup label="SKU">
-                                    <input {...register("sku")} type="text" placeholder="Unique SKU" className={inputClasses} />
+                                <InputGroup label="SKU" required error={errors.sku?.message}>
+                                    <input {...register("sku", { required: "SKU is required" })} type="text" placeholder="Unique SKU" className={inputClasses} />
                                 </InputGroup>
                             </div>
                         </SectionCard>
@@ -200,8 +200,8 @@ const AddProductPage = () => {
                     {/* Narrative */}
                     <SectionCard title="Description" icon={<FileText size={16} />} color="accent">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <InputGroup label="Short Description">
-                                <textarea {...register("shortDescription")} rows={4} placeholder="Brief summary..." className={`${inputClasses} resize-none`} />
+                            <InputGroup label="Short Description" required error={errors.shortDescription?.message}>
+                                <textarea {...register("shortDescription", { required: "Short Description is required" })} rows={4} placeholder="Brief summary..." className={`${inputClasses} resize-none`} />
                             </InputGroup>
                             <InputGroup label="Full Description" required error={errors.description?.message}>
                                 <textarea {...register("description", { required: "Description is required" })} rows={4} placeholder="Full product details..." className={`${inputClasses} resize-none`} />
