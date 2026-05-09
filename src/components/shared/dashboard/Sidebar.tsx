@@ -94,9 +94,16 @@ const Sidebar = () => {
         <nav className="flex-1 px-4 pb-6 space-y-1 overflow-y-auto custom-scrollbar">
 
           {currentMenu.map((item, index) => {
+            // Find if there's a more specific match in the menu
+            const hasMoreSpecificMatch = currentMenu.some(
+              (other) => other.href !== item.href && 
+                         other.href.startsWith(item.href) && 
+                         pathname.startsWith(other.href)
+            );
+
             const isActive = item.name === 'Overview' 
               ? pathname === item.href 
-              : pathname.startsWith(item.href)
+              : (pathname === item.href || (pathname.startsWith(item.href + '/') && !hasMoreSpecificMatch));
             // লাস্ট ২ টা আইটেমের আগে লাইন দেওয়ার লজিক
             const isLastTwo = index === currentMenu.length - 2
 
