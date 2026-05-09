@@ -24,7 +24,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
 
       <div className="flex flex-col xl:flex-row gap-6 xl:gap-8">
         {/* Sidebar */}
-        <aside className="w-full xl:w-52 flex-shrink-0">
+        <aside className="w-full xl:w-52 flex-shrink-0 xl:sticky xl:top-8 self-start">
           <nav className="flex flex-row xl:flex-col gap-2 overflow-x-auto pb-2 xl:pb-0 custom-scrollbar">
             {sidebarLinks.map((link) => {
               const isActive = pathname === link.href;
