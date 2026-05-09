@@ -55,7 +55,7 @@ export default function BannerSettingsPage() {
       };
 
       // API তে slideNumber প্যারামিটার হিসেবে পাঠানো হচ্ছে (req.params)
-      const res = await privateAxios.put(`/admin/banner/update/${activeSlide}`, payload);
+      const res = await privateAxios.put(`/sliders/${activeSlide}`, payload);
       
       if (res.data) {
         toast.success(`Slide ${activeSlide} updated successfully!`);
