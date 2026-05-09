@@ -22,6 +22,7 @@ import DropdownMenu from './navbarAllComponents/DropdownMenu'
 import MobileMenuButton from './navbarAllComponents/MobileMenuButton'
 import { usePathname } from 'next/navigation'
 import CurtButton from './navbarAllComponents/CurtButton'
+import WishlistButton from './navbarAllComponents/WishlistButton'
 
 export interface NavItem {
   name: string
@@ -76,7 +77,6 @@ const Navbar = () => {
   const dropdownItems = [
     { name: 'Dashboard', href: '/dashboard', icon: HiOutlineChartBar, color: 'text-primary' },
     { name: 'Profile', href: '/profile', icon: HiOutlineUserCircle, color: 'text-secondary' },
-    { name: 'Wishlist', href: '/wishlist', icon: HiOutlineHeart, color: 'text-secondary' },
   ]
 
   if (isAuthOrDashboard) return null;
@@ -104,6 +104,9 @@ const Navbar = () => {
 
               {/* Actions Group - Floating Box Style */}
               <div className="flex items-center gap-2 lg:gap-3 bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-2 lg:px-3 py-1 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)]">
+                {/* Wishlist Icon */}
+                <WishlistButton/>
+
                 {/* Cart Icon */}
                 <CurtButton/>
 
@@ -122,6 +125,7 @@ const Navbar = () => {
 
             {/* Mobile Actions Group - Floating Box Style */}
             <div className='flex items-center gap-2 md:hidden bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-1.5 py-1 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)]'>
+              <WishlistButton />
               <CurtButton />
               <MobileMenuButton setIsOpen={setIsOpen} isOpen={isOpen} />
             </div>
