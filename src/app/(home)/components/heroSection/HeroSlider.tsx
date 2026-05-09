@@ -55,7 +55,7 @@ const HeroSection = () => {
         <div className="pt-20 md:pt-28"></div>
 
         {/* Center canvas – left & right panels */}
-        <div className="w-full px-6 sm:px-12 md:px-20 lg:px-24 xl:px-32 flex-1 flex flex-col md:flex-row items-center justify-between gap-12 pb-16 lg:pb-24">
+        <div className="w-11/12 md:w-10/12 mx-auto flex-1 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 sm:gap-12 pb-16 lg:pb-24">
           {/* Left side – badge, title, CTA */}
           <HeroContent currentSlide={currentSlide} slides={apiSlides} />
 
