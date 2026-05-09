@@ -23,7 +23,7 @@ export default function BannerSettingsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
   
-  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<BannerFormData>();
+  const { register, handleSubmit, formState: { errors, isDirty }, reset, watch } = useForm<BannerFormData>();
   const formValues = watch();
   const currentImage = formValues.image;
 
@@ -69,6 +69,11 @@ export default function BannerSettingsPage() {
   }, [activeSlide, slidersData, reset]);
 
   const onSubmit = async (data: BannerFormData) => {
+    if (!isDirty) {
+      toast.error("You haven't made any changes to this slide.");
+      return;
+    }
+
     setIsLoading(true);
     try {
       // Data Formatting Logic
