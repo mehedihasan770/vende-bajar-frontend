@@ -94,24 +94,31 @@ const Navbar = () => {
             {/* Logo */}
             <Logo/>
 
-            {/* Desktop Navigation */}
-            <NavLinks navLinks={navLinks}/>
+            {/* Desktop Right Section (Links + Actions) */}
+            <div className="hidden md:flex items-center gap-3 lg:gap-5 xl:gap-6">
+              {/* Desktop Navigation */}
+              <div className="flex items-center pr-2">
+                <NavLinks navLinks={navLinks}/>
+              </div>
 
-            {/* Desktop Right Side */}
-            <div className="hidden md:flex items-center space-x-2 lg:space-x-3">
-              
-              {/* Cart Icon */}
-              <CurtButton/>
+              {/* Vertical Divider */}
+              <div className="hidden lg:block w-[1.5px] h-6 bg-gray-200/80 dark:bg-gray-700/80 rounded-full"></div>
 
-              {/* Login/Register */}
-              <AuthButtons/>
+              {/* Desktop Actions */}
+              <div className="flex items-center space-x-2 lg:space-x-3 lg:pl-2">
+                {/* Cart Icon */}
+                <CurtButton/>
 
-              {/* Avatar with Dropdown */}
-              <div className="relative">
-                <UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} isDropdownOpen={isDropdownOpen}/>
+                {/* Login/Register */}
+                <AuthButtons/>
 
-                {/* Dropdown Menu */}
-                <DropdownMenu isDropdownOpen={isDropdownOpen} setIsDropdownOpen={setIsDropdownOpen} dropdownItems={dropdownItems}/>
+                {/* Avatar with Dropdown */}
+                <div className="relative">
+                  <UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} isDropdownOpen={isDropdownOpen}/>
+
+                  {/* Dropdown Menu */}
+                  <DropdownMenu isDropdownOpen={isDropdownOpen} setIsDropdownOpen={setIsDropdownOpen} dropdownItems={dropdownItems}/>
+                </div>
               </div>
             </div>
 
