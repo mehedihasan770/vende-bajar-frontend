@@ -2,6 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { Settings, Image as ImageIcon, User, Shield } from 'lucide-react';
 
 const sidebarLinks = [
@@ -32,13 +33,20 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`flex flex-shrink-0 items-center gap-2.5 px-4 py-3 rounded-xl transition-all duration-300 font-medium text-sm md:text-base ${
+                  className={`relative flex flex-shrink-0 whitespace-nowrap items-center gap-2.5 px-4 py-3 rounded-2xl transition-all duration-300 font-bold text-sm md:text-base group z-10 ${
                     isActive 
-                      ? 'bg-indigo-50 text-indigo-700 shadow-sm border border-indigo-100/50' 
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'text-white shadow-lg shadow-orange-200/50' 
+                      : 'text-gray-500 hover:bg-orange-50 hover:text-primary'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 md:w-5 md:h-5 ${isActive ? 'text-indigo-600' : 'text-gray-400'}`} />
+                  {isActive && (
+                    <motion.div 
+                      layoutId="settings-active-pill"
+                      className="absolute inset-0 bg-primary rounded-2xl -z-10"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <Icon className={`w-4 h-4 md:w-[18px] md:h-[18px] ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-primary'}`} strokeWidth={isActive ? 2.5 : 2} />
                   {link.name}
                 </Link>
               );
