@@ -30,9 +30,9 @@ const SlideBackground = ({ currentSlide, slides }: SlideBackgroundProps) => {
         </motion.div>
       </AnimatePresence>
 
-      {/* Soft white washes for perfect text legibility */}
-      <div className="absolute inset-0 bg-linear-to-r from-[#FBFBFD] via-[#FBFBFD]/85 to-transparent pointer-events-none z-10"></div>
-      <div className="absolute inset-0 bg-linear-to-t from-[#FBFBFD]/60 via-transparent to-transparent pointer-events-none z-10"></div>
+      {/* Soft white washes for perfect text legibility but reduced to let product shine */}
+      <div className="absolute inset-0 bg-linear-to-r from-[#FBFBFD] via-[#FBFBFD]/60 to-transparent pointer-events-none z-10"></div>
+      <div className="absolute inset-0 bg-linear-to-t from-[#FBFBFD]/50 via-transparent to-transparent pointer-events-none z-10"></div>
     </div>
   );
 };
