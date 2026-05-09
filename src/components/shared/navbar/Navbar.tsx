@@ -87,7 +87,7 @@ const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
-        className="fixed top-0 py-3 w-full z-50 shadow bg-white/20 dark:bg-black/20 backdrop-blur-sm"
+        className="fixed top-0 py-3 w-full z-50 bg-transparent"
       >
         <div className="max-w-11/12 md:max-w-10/12 mx-auto">
           <div className="flex items-center justify-between">
