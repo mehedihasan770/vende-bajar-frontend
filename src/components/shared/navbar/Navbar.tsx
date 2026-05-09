@@ -3,10 +3,10 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  HiOutlineHome, 
-  HiOutlineShoppingBag, 
-  HiOutlinePhone, 
+import {
+  HiOutlineHome,
+  HiOutlineShoppingBag,
+  HiOutlinePhone,
   HiOutlineInformationCircle,
   HiOutlineUserCircle,
   HiOutlineHeart,
@@ -38,8 +38,8 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const pathname = usePathname();
 
-  const disableNavbarFooter : string[] = ["/login", "/register"];
-  const isAuthOrDashboard = disableNavbarFooter.some((route) => 
+  const disableNavbarFooter: string[] = ["/login", "/register"];
+  const isAuthOrDashboard = disableNavbarFooter.some((route) =>
     pathname === route || pathname.startsWith("/dashboard/")
   );
 
@@ -92,28 +92,26 @@ const Navbar = () => {
         <div className="max-w-11/12 md:max-w-10/12 mx-auto">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Logo/>
+            <Logo />
 
             {/* Desktop Right Section (Links + Actions) */}
-            <div className="hidden md:flex items-center gap-3 lg:gap-5 xl:gap-6">
-              {/* Desktop Navigation */}
-              <div className="flex items-center pr-2">
+            <div className="hidden md:flex items-center gap-4 lg:gap-6">
+              
+              {/* Navigation Group - Floating Box Style */}
+              <div className="flex items-center bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-1.5 py-1 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)]">
                 <NavLinks navLinks={navLinks}/>
               </div>
 
-              {/* Vertical Divider */}
-              <div className="hidden lg:block w-[1.5px] h-6 bg-gray-200/80 dark:bg-gray-700/80 rounded-full"></div>
-
-              {/* Desktop Actions */}
-              <div className="flex items-center space-x-2 lg:space-x-3 lg:pl-2">
+              {/* Actions Group - Floating Box Style */}
+              <div className="flex items-center bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-2 lg:px-3 py-1 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)]">
                 {/* Cart Icon */}
                 <CurtButton/>
 
-                {/* Login/Register */}
+                {/* Login/Register or Avatar */}
                 <AuthButtons/>
 
                 {/* Avatar with Dropdown */}
-                <div className="relative">
+                <div className="relative flex items-center">
                   <UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} isDropdownOpen={isDropdownOpen}/>
 
                   {/* Dropdown Menu */}
@@ -123,16 +121,16 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Menu Button */}
-              <div className=' flex justify-center space-x-2 md:hidden'>
-                <CurtButton/>
-                <MobileMenuButton setIsOpen={setIsOpen} isOpen={isOpen} />
-              </div>
+            <div className=' flex justify-center space-x-2 md:hidden'>
+              <CurtButton />
+              <MobileMenuButton setIsOpen={setIsOpen} isOpen={isOpen} />
+            </div>
           </div>
         </div>
       </motion.nav>
 
       {/* Mobile Menu Component */}
-      <MobileMenu 
+      <MobileMenu
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         navLinks={navLinks}
