@@ -5,6 +5,7 @@ import axios from 'axios';
 import { privateAxios } from "@/lib/axios";
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Upload, X, Save, Image as ImageIcon, Layers } from 'lucide-react';
 
 type BannerFormData = {
@@ -20,24 +21,51 @@ type BannerFormData = {
 export default function BannerSettingsPage() {
   const [activeSlide, setActiveSlide] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
   
   const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<BannerFormData>();
   const currentImage = watch('image');
 
-  // যখন ট্যাব পরিবর্তন হবে, তখন ফর্মটি রিসেট করতে পারেন বা পূর্বের ডেটা লোড করতে পারেন
-  // (এখানে আপনার দেওয়া ডেমো ডেটা সেট করা হলো, পরে API থেকে ডেটা এনে এখানে সেট করবেন)
+  // React Query দিয়ে ডেটা ফেচ করা
+  const { data: queryData, isLoading: isFetching } = useQuery({
+    queryKey: ['adminSliders'],
+    queryFn: async () => {
+      const res = await privateAxios.get('/sliders');
+      return res.data;
+    },
+    staleTime: 1000 * 60 * 5, // ৫ মিনিট ক্যাশ থাকবে
+  });
+
+  const slidersData = queryData?.data || [];
+
+  // যখন ট্যাব পরিবর্তন হবে বা ডেটা ফেচ হবে, তখন ফর্মটি রিসেট করা
   useEffect(() => {
-    const demoData = {
-      badge: "New Collection",
-      titleFirst: "CRAFTING THE",
-      titleHighlight: "FUTURE",
-      titleLast: "OF VISION",
-      descHeader: "Elevate Your Perspective.",
-      descBody: "Make your smart glasses an extension of your personal style. Choose from elegant frames paired with cutting-edge AR technology.",
-      image: "https://images.unsplash.com/photo-1508296695146-257a814070b4?q=80&w=2000"
-    };
-    reset(demoData); 
-  }, [activeSlide, reset]);
+    // বর্তমান স্লাইডের ডেটা ফিল্টার করা
+    const currentSlideData = slidersData.find((s: any) => s.slideNumber === activeSlide);
+    
+    if (currentSlideData) {
+      reset({
+        badge: currentSlideData.badge || "",
+        titleFirst: currentSlideData.title?.first || "",
+        titleHighlight: currentSlideData.title?.highlight || "",
+        titleLast: currentSlideData.title?.last || "",
+        descHeader: currentSlideData.descHeader || "",
+        descBody: currentSlideData.descBody || "",
+        image: currentSlideData.image || ""
+      });
+    } else {
+      // ডেটা না থাকলে ফর্ম খালি করে দেওয়া
+      reset({
+        badge: "",
+        titleFirst: "",
+        titleHighlight: "",
+        titleLast: "",
+        descHeader: "",
+        descBody: "",
+        image: ""
+      });
+    }
+  }, [activeSlide, slidersData, reset]);
 
   const onSubmit = async (data: BannerFormData) => {
     setIsLoading(true);
@@ -59,6 +87,8 @@ export default function BannerSettingsPage() {
       
       if (res.data) {
         toast.success(`Slide ${activeSlide} updated successfully!`);
+        // ডেটা আপডেট হওয়ার পর ক্যাশ ইনভ্যালিডেট করে নতুন ডেটা লোড করা
+        queryClient.invalidateQueries({ queryKey: ['adminSliders'] });
       }
     } catch (error: unknown) {
       let message = `Failed to update Slide ${activeSlide}.`;
