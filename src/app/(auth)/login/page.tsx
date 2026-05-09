@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion'
 import Logo from '@/components/shared/Logo/Logo'
-import LoginRightSide from '@/components/auth/loginPage/LoginRightSide'
-import LgoinForm from '@/components/auth/loginPage/LgoinForm'
+import LoginRightSide from './components/LoginRightSide'
+import LoginForm from './components/LoginForm'
 import BackButton from '@/components/shared/auth/BackButton'
 
 const LoginPage = () => {
@@ -55,8 +55,8 @@ const LoginPage = () => {
                 </p>
               </motion.div>
 
-              {/* Longin Form */}
-              <LgoinForm/>
+              {/* Login Form */}
+              <LoginForm/>
             </div>
           </motion.div>
 

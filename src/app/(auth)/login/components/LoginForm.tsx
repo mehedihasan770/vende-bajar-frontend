@@ -12,7 +12,7 @@ import {
   HiOutlineMail,
 } from "react-icons/hi";
 import Link from "next/link";
-import GoogleButton from "../../shared/auth/GoogleButton";
+import GoogleButton from "@/components/shared/auth/GoogleButton";
 import { setAuthToken } from "@/utils/auth";
 import { publicAxios } from "@/lib/axios";
 import axios from "axios";
@@ -24,7 +24,7 @@ type LoginFormData = {
   password: string;
 };
 
-const LgoinForm = () => {
+const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { refreshUser } = useAuth();
@@ -263,4 +263,4 @@ const LgoinForm = () => {
   );
 };
 
-export default LgoinForm;
+export default LoginForm;

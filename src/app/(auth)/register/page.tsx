@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import Logo from "@/components/shared/Logo/Logo";
-import RegisterRight from "@/components/auth/RegisterPage/RegisterRight";
-import RegisterForm from "@/components/auth/RegisterPage/RegisterForm";
+import RegisterRight from "./components/RegisterRight";
+import RegisterForm from "./components/RegisterForm";
 import BackButton from "@/components/shared/auth/BackButton";
 
 const RegisterPage = () => {
