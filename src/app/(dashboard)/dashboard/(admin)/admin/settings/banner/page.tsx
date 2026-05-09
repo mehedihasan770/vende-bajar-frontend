@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { privateAxios } from "@/lib/axios";
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { Upload, X, Save, Image as ImageIcon, Layers } from 'lucide-react';
@@ -41,22 +42,25 @@ export default function BannerSettingsPage() {
   const onSubmit = async (data: BannerFormData) => {
     setIsLoading(true);
     try {
-      // API payload. You can change this to match your backend's expected structure.
       const payload = {
         slideNumber: activeSlide,
         ...data
       };
 
-      // Example of how to send the JSON data:
-      // const response = await axios.post('https://your-api-domain.com/api/v1/banner/update', payload);
+      // ডেমো API কল, আপনার আসল রাউট বসিয়ে নেবেন
+      const res = await privateAxios.post('/admin/banner/update', payload);
       
-      // Simulation
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      toast.success(`Slide ${activeSlide} updated successfully!`);
-    } catch (error) {
-      toast.error(`Failed to update Slide ${activeSlide}.`);
-      console.error(error);
+      if (res.data) {
+        toast.success(`Slide ${activeSlide} updated successfully!`);
+      }
+    } catch (error: unknown) {
+      let message = `Failed to update Slide ${activeSlide}.`;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data?.message || message;
+      } else if (error instanceof Error) {
+        message = error.message;
+      }
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
