@@ -1,7 +1,7 @@
-import CategorySection from "@/components/home/CategorySection/CategorySection";
-import FeaturedProducts from "@/components/home/FeaturedProductsSection/FeaturedProducts";
-import FlashSale from "@/components/home/FlashSaleSection/FlashSale";
-import HeroSlider from "@/components/home/heroSection/HeroSlider";
+import CategorySection from "./components/CategorySection/CategorySection";
+import FeaturedProducts from "./components/FeaturedProductsSection/FeaturedProducts";
+import FlashSale from "./components/FlashSaleSection/FlashSale";
+import HeroSlider from "./components/heroSection/HeroSlider";
 
 export default function Home() {
 
