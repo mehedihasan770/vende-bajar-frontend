@@ -13,7 +13,7 @@ const MobileMenuButton = ({setIsOpen, isOpen} : MibileMenu) => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 rounded-lg cursor-pointer bg-primary hover:bg-primary/90 transition-colors duration-300 focus:outline-none shadow-md"
+          className="md:hidden p-2 rounded-lg cursor-pointer bg-primary hover:bg-primary/90 transition-colors duration-300 focus:outline-none"
         >
           <AnimatePresence mode="wait">
             {isOpen ? (
