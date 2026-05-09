@@ -7,8 +7,12 @@ import { motion } from 'framer-motion';
 import { Upload, X, Save, Image as ImageIcon, Layers } from 'lucide-react';
 
 type BannerFormData = {
-  title: string;
-  description: string;
+  badge: string;
+  titleFirst: string;
+  titleHighlight: string;
+  titleLast: string;
+  descHeader: string;
+  descBody: string;
 };
 
 export default function BannerSettingsPage() {
@@ -27,11 +31,17 @@ export default function BannerSettingsPage() {
   const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm<BannerFormData>();
 
   // যখন ট্যাব পরিবর্তন হবে, তখন ফর্মটি রিসেট করতে পারেন বা পূর্বের ডেটা লোড করতে পারেন
-  // (বর্তমানে API থেকে ডেটা আনার কোড নেই, তাই শুধু ইমেজ স্টেট দেখানো হলো)
+  // (এখানে আপনার দেওয়া ডেমো ডেটা সেট করা হলো, পরে API থেকে ডেটা এনে এখানে সেট করবেন)
   useEffect(() => {
-    // এখানে আপনি API থেকে নির্দিষ্ট স্লাইডের (activeSlide) ডেটা ফেচ করে ফর্মে সেট করতে পারেন
-    // setValue('title', fetch করা টাইটেল)
-    reset({ title: '', description: '' }); 
+    const demoData = {
+      badge: "New Collection",
+      titleFirst: "CRAFTING THE",
+      titleHighlight: "FUTURE",
+      titleLast: "OF VISION",
+      descHeader: "Elevate Your Perspective.",
+      descBody: "Make your smart glasses an extension of your personal style. Choose from elegant frames paired with cutting-edge AR technology."
+    };
+    reset(demoData); 
   }, [activeSlide, reset]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,8 +77,12 @@ export default function BannerSettingsPage() {
     try {
       const formData = new FormData();
       formData.append('slideNumber', activeSlide.toString()); // API কে বোঝানোর জন্য যে এটি কোন স্লাইড
-      formData.append('title', data.title);
-      formData.append('description', data.description);
+      formData.append('badge', data.badge);
+      formData.append('titleFirst', data.titleFirst);
+      formData.append('titleHighlight', data.titleHighlight);
+      formData.append('titleLast', data.titleLast);
+      formData.append('descHeader', data.descHeader);
+      formData.append('descBody', data.descBody);
       
       if (currentSlideImage) {
         formData.append('image', currentSlideImage);
@@ -138,28 +152,73 @@ export default function BannerSettingsPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 md:space-y-6 max-w-3xl">
           <div className="grid grid-cols-1 gap-5 md:gap-6">
-            {/* Title Field */}
+            {/* Badge Field */}
             <div className="col-span-1">
-              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1.5 md:mb-2">Slide {activeSlide} Title <span className="text-red-500">*</span></label>
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1.5 md:mb-2">Badge Text</label>
               <input
                 type="text"
-                {...register("title", { required: "Title is required" })}
-                className={`w-full px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base rounded-lg md:rounded-xl border ${errors.title ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-200 focus:ring-indigo-500/20 focus:border-indigo-500'} focus:outline-none focus:ring-4 transition-all`}
-                placeholder={`e.g. Special Offer on Slide ${activeSlide}`}
+                {...register("badge")}
+                className="w-full px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base rounded-lg md:rounded-xl border border-gray-200 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none focus:ring-4 transition-all"
+                placeholder="e.g. New Collection"
               />
-              {errors.title && <span className="text-red-500 text-xs mt-1.5 block">{errors.title.message}</span>}
             </div>
 
-            {/* Description Field */}
+            {/* Title Fields (3 Parts) */}
             <div className="col-span-1">
-              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1.5 md:mb-2">Slide {activeSlide} Description <span className="text-red-500">*</span></label>
-              <textarea
-                {...register("description", { required: "Description is required" })}
-                rows={4}
-                className={`w-full px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base rounded-lg md:rounded-xl border ${errors.description ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-200 focus:ring-indigo-500/20 focus:border-indigo-500'} focus:outline-none focus:ring-4 transition-all resize-none`}
-                placeholder="Write a short description..."
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1.5 md:mb-2">Slide Title Parts <span className="text-red-500">*</span></label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+                <div>
+                  <input
+                    type="text"
+                    {...register("titleFirst", { required: "First part is required" })}
+                    className="w-full px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base rounded-lg md:rounded-xl border border-gray-200 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none focus:ring-4 transition-all"
+                    placeholder="First (e.g. CRAFTING THE)"
+                  />
+                  {errors.titleFirst && <span className="text-red-500 text-xs mt-1 block">{errors.titleFirst.message}</span>}
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    {...register("titleHighlight", { required: "Highlight is required" })}
+                    className="w-full px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base rounded-lg md:rounded-xl border border-indigo-200 bg-indigo-50/30 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none focus:ring-4 transition-all"
+                    placeholder="Highlight (e.g. FUTURE)"
+                  />
+                  {errors.titleHighlight && <span className="text-red-500 text-xs mt-1 block">{errors.titleHighlight.message}</span>}
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    {...register("titleLast", { required: "Last part is required" })}
+                    className="w-full px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base rounded-lg md:rounded-xl border border-gray-200 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none focus:ring-4 transition-all"
+                    placeholder="Last (e.g. OF VISION)"
+                  />
+                  {errors.titleLast && <span className="text-red-500 text-xs mt-1 block">{errors.titleLast.message}</span>}
+                </div>
+              </div>
+            </div>
+
+            {/* Description Header */}
+            <div className="col-span-1">
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1.5 md:mb-2">Description Header <span className="text-red-500">*</span></label>
+              <input
+                type="text"
+                {...register("descHeader", { required: "Description header is required" })}
+                className="w-full px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base rounded-lg md:rounded-xl border border-gray-200 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none focus:ring-4 transition-all"
+                placeholder="e.g. Elevate Your Perspective."
               />
-              {errors.description && <span className="text-red-500 text-xs mt-1.5 block">{errors.description.message}</span>}
+              {errors.descHeader && <span className="text-red-500 text-xs mt-1 block">{errors.descHeader.message}</span>}
+            </div>
+
+            {/* Description Body */}
+            <div className="col-span-1">
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1.5 md:mb-2">Description Body <span className="text-red-500">*</span></label>
+              <textarea
+                {...register("descBody", { required: "Description body is required" })}
+                rows={3}
+                className="w-full px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base rounded-lg md:rounded-xl border border-gray-200 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none focus:ring-4 transition-all resize-none"
+                placeholder="Write the detailed description..."
+              />
+              {errors.descBody && <span className="text-red-500 text-xs mt-1 block">{errors.descBody.message}</span>}
             </div>
 
             {/* Image Upload Field */}
