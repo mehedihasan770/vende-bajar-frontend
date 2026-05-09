@@ -93,7 +93,9 @@ const Sidebar = () => {
         <nav className="flex-1 px-4 pb-6 space-y-1 overflow-y-auto custom-scrollbar">
 
           {currentMenu.map((item, index) => {
-            const isActive = pathname === item.href
+            const isActive = item.name === 'Overview' 
+              ? pathname === item.href 
+              : pathname.startsWith(item.href)
             // লাস্ট ২ টা আইটেমের আগে লাইন দেওয়ার লজিক
             const isLastTwo = index === currentMenu.length - 2
 
