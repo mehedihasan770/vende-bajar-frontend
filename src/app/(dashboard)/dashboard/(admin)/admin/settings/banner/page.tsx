@@ -43,12 +43,19 @@ export default function BannerSettingsPage() {
     setIsLoading(true);
     try {
       const payload = {
-        slideNumber: activeSlide,
-        ...data
+        badge: data.badge,
+        title: {
+          first: data.titleFirst,
+          highlight: data.titleHighlight,
+          last: data.titleLast
+        },
+        descHeader: data.descHeader,
+        descBody: data.descBody,
+        image: data.image
       };
 
-      // ডেমো API কল, যেহেতু আগে থেকেই ডেটাবেসে স্লাইড থাকবে, তাই এটি PUT রিকোয়েস্ট (আপডেট)
-      const res = await privateAxios.put('/admin/banner/update', payload);
+      // API তে slideNumber প্যারামিটার হিসেবে পাঠানো হচ্ছে (req.params)
+      const res = await privateAxios.put(`/admin/banner/update/${activeSlide}`, payload);
       
       if (res.data) {
         toast.success(`Slide ${activeSlide} updated successfully!`);
