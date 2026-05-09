@@ -5,95 +5,95 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Upload, Plus, Package, DollarSign, Tag, FileText, 
     Info, Image as ImageIcon, Video, Settings, BarChart, 
-    ChevronDown, Trash2, Check, AlertCircle, X
+    Trash2, ChevronDown 
 } from 'lucide-react';
+import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import { publicAxios } from '@/lib/axios';
 import { getBrowserUser } from '@/utils/getBrowserUser';
+import { publicAxios } from '@/lib/axios';
+
+interface ProductFormValues {
+    vendorEmail: string;
+    name: string;
+    slug: string;
+    description: string;
+    shortDescription: string;
+    category: string;
+    subCategory: string;
+    brand: string;
+    price: number;
+    oldPrice?: number;
+    costPrice?: number;
+    stock: number;
+    sku: string;
+    thumbnail: string;
+    images: string[];
+    videoUrl: string;
+    specifications: { key: string; value: string }[];
+    isFeatured: boolean;
+    isFlashSale: boolean;
+    isNewArrival: boolean;
+    isBestSeller: boolean;
+    status: string;
+    metaTitle: string;
+    metaDescription: string;
+}
 
 const AddProductPage = () => {
     const user = getBrowserUser();
     const [isLoading, setIsLoading] = useState(false);
-    
-    const [formData, setFormData] = useState({
-        vendorEmail: user?.email || '',
-        name: '',
-        slug: '',
-        description: '',
-        shortDescription: '',
-        category: '',
-        subCategory: '',
-        brand: '',
-        price: '',
-        oldPrice: '',
-        costPrice: '',
-        stock: '0',
-        sku: '',
-        thumbnail: '',
-        images: [] as string[],
-        videoUrl: '',
-        specifications: [] as { key: string, value: string }[],
-        isFeatured: false,
-        isFlashSale: false,
-        isNewArrival: true,
-        isBestSeller: false,
-        status: 'active',
-        metaTitle: '',
-        metaDescription: '',
+
+    const { register, control, handleSubmit, formState: { errors } } = useForm<ProductFormValues>({
+        defaultValues: {
+            vendorEmail: user?.email || '',
+            name: '',
+            slug: '',
+            description: '',
+            shortDescription: '',
+            category: '',
+            subCategory: '',
+            brand: '',
+            price: 0,
+            stock: 0,
+            specifications: [{ key: '', value: '' }],
+            isFeatured: false,
+            isFlashSale: false,
+            isNewArrival: true,
+            isBestSeller: false,
+            status: 'active',
+            metaTitle: '',
+            metaDescription: '',
+        }
     });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value, type } = e.target;
-        if (type === 'checkbox') {
-            const checked = (e.target as HTMLInputElement).checked;
-            setFormData(prev => ({ ...prev, [name]: checked }));
-        } else {
-            setFormData(prev => ({ ...prev, [name]: value }));
-        }
-    };
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "specifications"
+    });
 
-    const addSpecification = () => {
-        setFormData(prev => ({
-            ...prev,
-            specifications: [...prev.specifications, { key: '', value: '' }]
-        }));
-    };
-
-    const removeSpecification = (index: number) => {
-        setFormData(prev => ({
-            ...prev,
-            specifications: prev.specifications.filter((_, i) => i !== index)
-        }));
-    };
-
-    const handleSpecChange = (index: number, field: 'key' | 'value', value: string) => {
-        const newSpecs = [...formData.specifications];
-        newSpecs[index][field] = value;
-        setFormData(prev => ({ ...prev, specifications: newSpecs }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const onSubmit = async (data: ProductFormValues) => {
         setIsLoading(true);
         try {
-            const specsObject = formData.specifications.reduce((acc, spec) => {
+            const specsObject = data.specifications.reduce((acc, spec) => {
                 if (spec.key && spec.value) acc[spec.key] = spec.value;
                 return acc;
             }, {} as Record<string, string>);
 
             const finalData = {
-                ...formData,
+                ...data,
                 specifications: specsObject,
-                price: Number(formData.price),
-                oldPrice: formData.oldPrice ? Number(formData.oldPrice) : undefined,
-                costPrice: formData.costPrice ? Number(formData.costPrice) : undefined,
-                stock: Number(formData.stock),
+                price: Number(data.price),
+                oldPrice: data.oldPrice ? Number(data.oldPrice) : undefined,
+                costPrice: data.costPrice ? Number(data.costPrice) : undefined,
+                stock: Number(data.stock),
             };
 
             const response = await publicAxios.post('/products', finalData);
-            if (response.data.success) toast.success('Product added successfully!');
+            if (response.data.success) {
+                toast.success('Product published successfully!');
+            }
         } catch (error: any) {
-            toast.error(error?.response?.data?.message || 'Failed to add product');
+            toast.error(error?.response?.data?.message || 'Failed to publish product');
         } finally {
             setIsLoading(false);
         }
@@ -109,15 +109,15 @@ const AddProductPage = () => {
                     <h1 className="text-2xl sm:text-3xl font-black text-accent dark:text-white tracking-tight">
                         Add New <span className="text-primary">Product</span>
                     </h1>
-                    <p className="text-gray-500 text-xs mt-1 font-medium italic">Configure your premium listing according to standard specifications.</p>
+                    <p className="text-gray-500 text-xs mt-1 font-medium italic">Configure your premium listing with React Hook Form.</p>
                 </motion.div>
                 
                 <div className="flex gap-2">
-                    <button className="px-5 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl font-bold text-accent dark:text-white text-xs hover:border-primary/30 transition-all shadow-sm">
+                    <button type="button" className="px-5 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl font-bold text-accent dark:text-white text-xs hover:border-primary/30 transition-all shadow-sm">
                         Draft
                     </button>
                     <button 
-                        onClick={handleSubmit}
+                        onClick={handleSubmit(onSubmit)}
                         disabled={isLoading}
                         className="px-6 py-2.5 bg-primary text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-primary/20 hover:bg-accent transition-all active:scale-95 disabled:opacity-50"
                     >
@@ -128,38 +128,44 @@ const AddProductPage = () => {
 
             <form className="grid grid-cols-1 xl:grid-cols-4 gap-6">
                 
-                {/* Left Side - 3 Columns on Large screens */}
+                {/* Left Side */}
                 <div className="xl:col-span-3 space-y-6">
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Basic Info */}
                         <SectionCard title="Basic Details" icon={<Info size={16} />} color="primary">
                             <div className="space-y-4">
-                                <InputGroup label="Product Name" required>
+                                <InputGroup label="Product Name" required error={errors.name?.message}>
                                     <IconInput icon={<Package size={16} />}>
-                                        <input name="name" value={formData.name} onChange={handleInputChange} type="text" placeholder="Product Name" className={`${inputClasses} pl-10`} />
+                                        <input 
+                                            {...register("name", { required: "Product name is required" })}
+                                            type="text" 
+                                            placeholder="Product Name" 
+                                            className={`${inputClasses} pl-10`} 
+                                        />
                                     </IconInput>
                                 </InputGroup>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <InputGroup label="Slug">
-                                        <input name="slug" value={formData.slug} onChange={handleInputChange} type="text" placeholder="slug-path" className={inputClasses} />
+                                        <input {...register("slug")} type="text" placeholder="slug-path" className={inputClasses} />
                                     </InputGroup>
-                                    <InputGroup label="Brand" required>
-                                        <input name="brand" value={formData.brand} onChange={handleInputChange} type="text" placeholder="Brand" className={inputClasses} />
+                                    <InputGroup label="Brand" required error={errors.brand?.message}>
+                                        <input {...register("brand", { required: "Brand is required" })} type="text" placeholder="Brand" className={inputClasses} />
                                     </InputGroup>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
-                                    <InputGroup label="Category" required>
-                                        <select name="category" value={formData.category} onChange={handleInputChange} className={`${inputClasses} appearance-none`}>
+                                    <InputGroup label="Category" required error={errors.category?.message}>
+                                        <select {...register("category", { required: "Category is required" })} className={`${inputClasses} appearance-none`}>
                                             <option value="">Select</option>
                                             <option value="Electronics">Electronics</option>
                                             <option value="Fashion">Fashion</option>
+                                            <option value="Home">Home</option>
                                         </select>
                                     </InputGroup>
                                     <InputGroup label="Sub-Category">
-                                        <input name="subCategory" value={formData.subCategory} onChange={handleInputChange} type="text" placeholder="Sub Category" className={inputClasses} />
+                                        <input {...register("subCategory")} type="text" placeholder="Sub Category" className={inputClasses} />
                                     </InputGroup>
                                 </div>
                             </div>
@@ -169,23 +175,23 @@ const AddProductPage = () => {
                         <SectionCard title="Commerce" icon={<DollarSign size={16} />} color="secondary">
                             <div className="space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
-                                    <InputGroup label="Price (৳)" required>
-                                        <input name="price" value={formData.price} onChange={handleInputChange} type="number" placeholder="0.00" className={`${inputClasses} text-primary`} />
+                                    <InputGroup label="Price (৳)" required error={errors.price?.message}>
+                                        <input {...register("price", { required: "Price is required" })} type="number" placeholder="0.00" className={`${inputClasses} text-primary`} />
                                     </InputGroup>
                                     <InputGroup label="Old Price">
-                                        <input name="oldPrice" value={formData.oldPrice} onChange={handleInputChange} type="number" placeholder="0.00" className={inputClasses} />
+                                        <input {...register("oldPrice")} type="number" placeholder="0.00" className={inputClasses} />
                                     </InputGroup>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <InputGroup label="Cost Price">
-                                        <input name="costPrice" value={formData.costPrice} onChange={handleInputChange} type="number" placeholder="0.00" className={inputClasses} />
+                                        <input {...register("costPrice")} type="number" placeholder="0.00" className={inputClasses} />
                                     </InputGroup>
-                                    <InputGroup label="Stock" required>
-                                        <input name="stock" value={formData.stock} onChange={handleInputChange} type="number" placeholder="0" className={inputClasses} />
+                                    <InputGroup label="Stock" required error={errors.stock?.message}>
+                                        <input {...register("stock", { required: "Stock is required" })} type="number" placeholder="0" className={inputClasses} />
                                     </InputGroup>
                                 </div>
                                 <InputGroup label="SKU">
-                                    <input name="sku" value={formData.sku} onChange={handleInputChange} type="text" placeholder="Unique SKU" className={inputClasses} />
+                                    <input {...register("sku")} type="text" placeholder="Unique SKU" className={inputClasses} />
                                 </InputGroup>
                             </div>
                         </SectionCard>
@@ -195,10 +201,10 @@ const AddProductPage = () => {
                     <SectionCard title="Description" icon={<FileText size={16} />} color="accent">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <InputGroup label="Short Description">
-                                <textarea name="shortDescription" value={formData.shortDescription} onChange={handleInputChange} rows={4} placeholder="Brief summary..." className={`${inputClasses} resize-none`} />
+                                <textarea {...register("shortDescription")} rows={4} placeholder="Brief summary..." className={`${inputClasses} resize-none`} />
                             </InputGroup>
-                            <InputGroup label="Full Description" required>
-                                <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} placeholder="Full product details..." className={`${inputClasses} resize-none`} />
+                            <InputGroup label="Full Description" required error={errors.description?.message}>
+                                <textarea {...register("description", { required: "Description is required" })} rows={4} placeholder="Full product details..." className={`${inputClasses} resize-none`} />
                             </InputGroup>
                         </div>
                     </SectionCard>
@@ -206,32 +212,40 @@ const AddProductPage = () => {
                     {/* Specifications */}
                     <SectionCard title="Technical Specs" icon={<Settings size={16} />} color="primary">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {formData.specifications.map((spec, index) => (
-                                <div key={index} className="flex items-center gap-2">
-                                    <input placeholder="Key" value={spec.key} onChange={(e) => handleSpecChange(index, 'key', e.target.value)} className={`${inputClasses} py-2 px-3`} />
-                                    <input placeholder="Value" value={spec.value} onChange={(e) => handleSpecChange(index, 'value', e.target.value)} className={`${inputClasses} py-2 px-3`} />
-                                    <button type="button" onClick={() => removeSpecification(index)} className="p-2 text-red-400 hover:bg-red-50 rounded-lg">
+                            {fields.map((field, index) => (
+                                <div key={field.id} className="flex items-center gap-2">
+                                    <input 
+                                        {...register(`specifications.${index}.key` as const)}
+                                        placeholder="Key" 
+                                        className={`${inputClasses} py-2 px-3`} 
+                                    />
+                                    <input 
+                                        {...register(`specifications.${index}.value` as const)}
+                                        placeholder="Value" 
+                                        className={`${inputClasses} py-2 px-3`} 
+                                    />
+                                    <button type="button" onClick={() => remove(index)} className="p-2 text-red-400 hover:bg-red-50 rounded-lg">
                                         <Trash2 size={14} />
                                     </button>
                                 </div>
                             ))}
-                            <button type="button" onClick={addSpecification} className="py-2 border border-dashed border-gray-300 rounded-xl text-gray-400 text-xs font-bold hover:text-primary flex items-center justify-center gap-1">
+                            <button type="button" onClick={() => append({ key: '', value: '' })} className="py-2 border border-dashed border-gray-300 rounded-xl text-gray-400 text-xs font-bold hover:text-primary flex items-center justify-center gap-1">
                                 <Plus size={14} /> Add Spec
                             </button>
                         </div>
                     </SectionCard>
                 </div>
 
-                {/* Right Side - 1 Column */}
+                {/* Right Side */}
                 <div className="space-y-6">
                     {/* Media */}
                     <SectionCard title="Media" icon={<ImageIcon size={16} />} color="primary">
                         <div className="space-y-4">
-                            <InputGroup label="Thumbnail URL" required>
-                                <input name="thumbnail" value={formData.thumbnail} onChange={handleInputChange} type="text" placeholder="URL" className={inputClasses} />
+                            <InputGroup label="Thumbnail URL" required error={errors.thumbnail?.message}>
+                                <input {...register("thumbnail", { required: "Thumbnail is required" })} type="text" placeholder="URL" className={inputClasses} />
                             </InputGroup>
                             <InputGroup label="Video URL">
-                                <input name="videoUrl" value={formData.videoUrl} onChange={handleInputChange} type="text" placeholder="URL" className={inputClasses} />
+                                <input {...register("videoUrl")} type="text" placeholder="URL" className={inputClasses} />
                             </InputGroup>
                             <div className="p-6 border-2 border-dashed border-primary/20 rounded-2xl flex flex-col items-center text-center bg-primary/5">
                                 <Upload size={20} className="text-primary mb-2" />
@@ -240,24 +254,51 @@ const AddProductPage = () => {
                         </div>
                     </SectionCard>
 
-                    {/* Status & SEO */}
+                    {/* Settings */}
                     <SectionCard title="Settings & SEO" icon={<BarChart size={16} />} color="secondary">
                         <div className="space-y-4">
                             <InputGroup label="Listing Status">
-                                <select name="status" value={formData.status} onChange={handleInputChange} className={`${inputClasses} py-2`}>
+                                <select {...register("status")} className={`${inputClasses} py-2`}>
                                     <option value="active">Active</option>
                                     <option value="inactive">Inactive</option>
                                     <option value="draft">Draft</option>
                                 </select>
                             </InputGroup>
                             <div className="grid grid-cols-2 gap-2">
-                                <ToggleSwitch label="Featured" checked={formData.isFeatured} onChange={() => setFormData(p => ({...p, isFeatured: !p.isFeatured}))} />
-                                <ToggleSwitch label="Flash Sale" checked={formData.isFlashSale} onChange={() => setFormData(p => ({...p, isFlashSale: !p.isFlashSale}))} />
-                                <ToggleSwitch label="New" checked={formData.isNewArrival} onChange={() => setFormData(p => ({...p, isNewArrival: !p.isNewArrival}))} />
-                                <ToggleSwitch label="Best" checked={formData.isBestSeller} onChange={() => setFormData(p => ({...p, isBestSeller: !p.isBestSeller}))} />
+                                <Controller
+                                    name="isFeatured"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <ToggleSwitch label="Featured" checked={field.value} onChange={() => field.onChange(!field.value)} />
+                                    )}
+                                />
+                                <Controller
+                                    name="isFlashSale"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <ToggleSwitch label="Flash Sale" checked={field.value} onChange={() => field.onChange(!field.value)} />
+                                    )}
+                                />
+                                <Controller
+                                    name="isNewArrival"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <ToggleSwitch label="New" checked={field.value} onChange={() => field.onChange(!field.value)} />
+                                    )}
+                                />
+                                <Controller
+                                    name="isBestSeller"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <ToggleSwitch label="Best" checked={field.value} onChange={() => field.onChange(!field.value)} />
+                                    )}
+                                />
                             </div>
                             <InputGroup label="Meta Title">
-                                <input name="metaTitle" value={formData.metaTitle} onChange={handleInputChange} type="text" className={inputClasses} />
+                                <input {...register("metaTitle")} type="text" className={inputClasses} />
+                            </InputGroup>
+                            <InputGroup label="Meta Description">
+                                <textarea {...register("metaDescription")} rows={2} className={`${inputClasses} resize-none`} />
                             </InputGroup>
                         </div>
                     </SectionCard>
@@ -287,26 +328,25 @@ const SectionCard = ({ title, icon, children, color = 'primary' }: { title: stri
     </motion.div>
 );
 
-const InputGroup = ({ label, required, children }: { label: string, required?: boolean, children: React.ReactNode }) => (
+const InputGroup = ({ label, required, error, children }: { label: string, required?: boolean, error?: string, children: React.ReactNode }) => (
     <div className="space-y-1.5 w-full">
-        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
-            {label} {required && <span className="text-primary">*</span>}
-        </label>
+        <div className="flex justify-between items-center px-1">
+            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                {label} {required && <span className="text-primary">*</span>}
+            </label>
+            {error && <span className="text-[9px] font-bold text-red-500 italic">{error}</span>}
+        </div>
         {children}
     </div>
 );
 
 const ToggleSwitch = ({ label, checked, onChange }: { label: string, checked: boolean, onChange: () => void }) => (
-    <div onClick={onChange} className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-all border ${checked ? 'bg-primary/5 border-primary/20' : 'bg-gray-50 border-transparent'}`}>
+    <div onClick={onChange} className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-all border ${checked ? 'bg-primary/5 border-primary/20' : 'bg-gray-50 dark:bg-gray-800 border-transparent'}`}>
         <span className={`text-[10px] font-bold ${checked ? 'text-primary' : 'text-gray-400'}`}>{label}</span>
-        <div className={`w-8 h-4 rounded-full transition-all relative ${checked ? 'bg-primary' : 'bg-gray-200'}`}>
+        <div className={`w-8 h-4 rounded-full transition-all relative ${checked ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'}`}>
             <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${checked ? 'left-4.5' : 'left-0.5'}`} />
         </div>
     </div>
-);
-
-const TrendingUp = ({ size, className }: { size?: number, className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size || 24} height={size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
 );
 
 export default AddProductPage;
