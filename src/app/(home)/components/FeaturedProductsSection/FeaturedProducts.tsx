@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import { publicAxios } from '@/lib/axios'
 import ProductCard, { Product } from '@/components/shared/ProductCard'
+import ProductSkeleton from '@/components/skeletons/ProductSkeleton'
 
 const FeaturedProducts = () => {
   const { data, isLoading } = useQuery({
@@ -39,9 +40,9 @@ const FeaturedProducts = () => {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="animate-pulse bg-gray-50 rounded-2xl h-64 sm:h-80"></div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
+            {[...Array(10)].map((_, i) => (
+              <ProductSkeleton key={i} />
             ))}
           </div>
         ) : (
