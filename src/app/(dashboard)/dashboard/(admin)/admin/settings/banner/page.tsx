@@ -47,8 +47,8 @@ export default function BannerSettingsPage() {
         ...data
       };
 
-      // ডেমো API কল, আপনার আসল রাউট বসিয়ে নেবেন
-      const res = await privateAxios.post('/admin/banner/update', payload);
+      // ডেমো API কল, যেহেতু আগে থেকেই ডেটাবেসে স্লাইড থাকবে, তাই এটি PUT রিকোয়েস্ট (আপডেট)
+      const res = await privateAxios.put('/admin/banner/update', payload);
       
       if (res.data) {
         toast.success(`Slide ${activeSlide} updated successfully!`);
