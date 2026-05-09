@@ -25,7 +25,7 @@ const DropdownMenu = ({isDropdownOpen, setIsDropdownOpen, dropdownItems} : AuthB
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-50 border border-gray-100"
+              className="absolute top-full right-0 mt-3 w-56 bg-white rounded-xl shadow-2xl py-2 z-50 border border-gray-100"
             >
               <div className="px-4 py-3 border-b border-gray-100">
                 <p className="text-sm font-semibold text-accent">{fullName}</p>
