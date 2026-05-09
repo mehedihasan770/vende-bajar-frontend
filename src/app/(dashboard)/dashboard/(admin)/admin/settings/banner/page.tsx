@@ -13,22 +13,15 @@ type BannerFormData = {
   titleLast: string;
   descHeader: string;
   descBody: string;
+  image: string;
 };
 
 export default function BannerSettingsPage() {
   const [activeSlide, setActiveSlide] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(false);
   
-  // State for images of each slide
-  const [slideImages, setSlideImages] = useState<{
-    [key: number]: { preview: string | null; file: File | null }
-  }>({
-    1: { preview: null, file: null },
-    2: { preview: null, file: null },
-    3: { preview: null, file: null }
-  });
-
-  const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm<BannerFormData>();
+  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<BannerFormData>();
+  const currentImage = watch('image');
 
   // যখন ট্যাব পরিবর্তন হবে, তখন ফর্মটি রিসেট করতে পারেন বা পূর্বের ডেটা লোড করতে পারেন
   // (এখানে আপনার দেওয়া ডেমো ডেটা সেট করা হলো, পরে API থেকে ডেটা এনে এখানে সেট করবেন)
@@ -39,59 +32,25 @@ export default function BannerSettingsPage() {
       titleHighlight: "FUTURE",
       titleLast: "OF VISION",
       descHeader: "Elevate Your Perspective.",
-      descBody: "Make your smart glasses an extension of your personal style. Choose from elegant frames paired with cutting-edge AR technology."
+      descBody: "Make your smart glasses an extension of your personal style. Choose from elegant frames paired with cutting-edge AR technology.",
+      image: "https://images.unsplash.com/photo-1508296695146-257a814070b4?q=80&w=2000"
     };
     reset(demoData); 
   }, [activeSlide, reset]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSlideImages(prev => ({
-          ...prev,
-          [activeSlide]: { preview: reader.result as string, file: file }
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const removeImage = () => {
-    setSlideImages(prev => ({
-      ...prev,
-      [activeSlide]: { preview: null, file: null }
-    }));
-  };
-
   const onSubmit = async (data: BannerFormData) => {
-    const currentSlideImage = slideImages[activeSlide].file;
-    
-    if (!currentSlideImage && !slideImages[activeSlide].preview) {
-      toast.error("Please select an image for Slide " + activeSlide);
-      return;
-    }
-
     setIsLoading(true);
     try {
-      const formData = new FormData();
-      formData.append('slideNumber', activeSlide.toString()); // API কে বোঝানোর জন্য যে এটি কোন স্লাইড
-      formData.append('badge', data.badge);
-      formData.append('titleFirst', data.titleFirst);
-      formData.append('titleHighlight', data.titleHighlight);
-      formData.append('titleLast', data.titleLast);
-      formData.append('descHeader', data.descHeader);
-      formData.append('descBody', data.descBody);
-      
-      if (currentSlideImage) {
-        formData.append('image', currentSlideImage);
-      }
+      // API payload. You can change this to match your backend's expected structure.
+      const payload = {
+        slideNumber: activeSlide,
+        ...data
+      };
 
-      // আপনার API এর আসল এন্ডপয়েন্টটি এখানে বসাতে হবে। 
-      // const response = await axios.post('https://your-api-domain.com/api/v1/banner/update', formData);
+      // Example of how to send the JSON data:
+      // const response = await axios.post('https://your-api-domain.com/api/v1/banner/update', payload);
       
-      // সিমুলেশন
+      // Simulation
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       toast.success(`Slide ${activeSlide} updated successfully!`);
@@ -102,8 +61,6 @@ export default function BannerSettingsPage() {
       setIsLoading(false);
     }
   };
-
-  const currentPreview = slideImages[activeSlide].preview;
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -221,36 +178,36 @@ export default function BannerSettingsPage() {
               {errors.descBody && <span className="text-red-500 text-xs mt-1 block">{errors.descBody.message}</span>}
             </div>
 
-            {/* Image Upload Field */}
+            {/* Image URL Field */}
             <div className="col-span-1">
-              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1.5 md:mb-2">Slide {activeSlide} Image <span className="text-red-500">*</span></label>
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1.5 md:mb-2">Image URL <span className="text-red-500">*</span></label>
               
-              {!currentPreview ? (
-                <label className="flex flex-col items-center justify-center w-full h-48 md:h-56 border-2 border-dashed border-gray-300 rounded-xl md:rounded-2xl cursor-pointer bg-gray-50/50 hover:bg-indigo-50/50 hover:border-indigo-400 transition-all group">
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6 px-4 text-center">
-                    <div className="p-3 md:p-4 bg-white rounded-full shadow-sm mb-2 md:mb-3 group-hover:scale-110 transition-transform">
-                      <Upload className="w-6 h-6 md:w-8 md:h-8 text-indigo-500" />
+              <div className="flex flex-col gap-4">
+                <input
+                  type="url"
+                  {...register("image", { required: "Image URL is required" })}
+                  className="w-full px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base rounded-lg md:rounded-xl border border-gray-200 focus:ring-indigo-500/20 focus:border-indigo-500 focus:outline-none focus:ring-4 transition-all"
+                  placeholder="e.g. https://images.unsplash.com/photo-..."
+                />
+                {errors.image && <span className="text-red-500 text-xs mt-1 block">{errors.image.message}</span>}
+
+                {/* Live Image Preview */}
+                {currentImage && (
+                  <div className="mt-2">
+                    <p className="text-xs font-medium text-gray-500 mb-2">Image Preview:</p>
+                    <div className="relative w-full h-48 sm:h-64 md:h-80 rounded-xl md:rounded-2xl overflow-hidden border border-gray-200 shadow-sm group bg-gray-50">
+                      <img 
+                        src={currentImage} 
+                        alt={`Preview Slide ${activeSlide}`} 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://placehold.co/1920x1080/e2e8f0/64748b?text=Invalid+Image+URL';
+                        }}
+                      />
                     </div>
-                    <p className="mb-1 md:mb-2 text-xs md:text-sm text-gray-600"><span className="font-semibold text-indigo-600">Click to upload</span> or drag and drop</p>
-                    <p className="text-[10px] md:text-xs text-gray-400">Recommended: 1920x1080px (PNG, JPG, WEBP)</p>
                   </div>
-                  <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
-                </label>
-              ) : (
-                <div className="relative w-full h-48 sm:h-64 md:h-80 rounded-xl md:rounded-2xl overflow-hidden border border-gray-200 group shadow-sm">
-                  <img src={currentPreview} alt={`Preview Slide ${activeSlide}`} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-                    <button
-                      type="button"
-                      onClick={removeImage}
-                      className="flex items-center gap-1.5 md:gap-2 bg-red-500 text-white px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl hover:bg-red-600 transition-colors shadow-lg transform hover:scale-105 text-sm md:text-base"
-                    >
-                      <X className="w-4 h-4 md:w-5 md:h-5" />
-                      <span>Remove Image</span>
-                    </button>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
 
