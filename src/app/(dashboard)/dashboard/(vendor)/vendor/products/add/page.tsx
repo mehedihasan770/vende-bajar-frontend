@@ -126,12 +126,12 @@ const AddProductPage = () => {
                 </div>
             </div>
 
-            <form className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+            <form className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                 
                 {/* Left Side */}
-                <div className="xl:col-span-3 space-y-6">
+                <div className="xl:col-span-2 space-y-6">
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 gap-6">
                         {/* Basic Info */}
                         <SectionCard title="Basic Details" icon={<Info size={16} />} color="primary">
                             <div className="space-y-4">
@@ -146,7 +146,7 @@ const AddProductPage = () => {
                                     </IconInput>
                                 </InputGroup>
 
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 2xl:grid-cols-2 gap-4">
                                     <InputGroup label="Slug" required error={errors.slug?.message}>
                                         <input {...register("slug", { required: "Slug is required" })} type="text" placeholder="slug-path" className={inputClasses} />
                                     </InputGroup>
@@ -155,7 +155,7 @@ const AddProductPage = () => {
                                     </InputGroup>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 2xl:grid-cols-2 gap-4">
                                     <InputGroup label="Category" required error={errors.category?.message}>
                                         <select {...register("category", { required: "Category is required" })} className={`${inputClasses} appearance-none`}>
                                             <option value="">Select</option>
@@ -174,7 +174,7 @@ const AddProductPage = () => {
                         {/* Inventory & Pricing */}
                         <SectionCard title="Commerce" icon={<DollarSign size={16} />} color="secondary">
                             <div className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 2xl:grid-cols-2 gap-4">
                                     <InputGroup label="Price (৳)" required error={errors.price?.message}>
                                         <input {...register("price", { required: "Price is required" })} type="number" placeholder="0.00" className={`${inputClasses} text-primary`} />
                                     </InputGroup>
@@ -182,7 +182,7 @@ const AddProductPage = () => {
                                         <input {...register("oldPrice", { required: "Old Price is required" })} type="number" placeholder="0.00" className={inputClasses} />
                                     </InputGroup>
                                 </div>
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 2xl:grid-cols-2 gap-4">
                                     <InputGroup label="Cost Price" required error={errors.costPrice?.message}>
                                         <input {...register("costPrice", { required: "Cost Price is required" })} type="number" placeholder="0.00" className={inputClasses} />
                                     </InputGroup>
@@ -199,39 +199,63 @@ const AddProductPage = () => {
 
                     {/* Narrative */}
                     <SectionCard title="Description" icon={<FileText size={16} />} color="accent">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 gap-6">
                             <InputGroup label="Short Description" required error={errors.shortDescription?.message}>
-                                <textarea {...register("shortDescription", { required: "Short Description is required" })} rows={4} placeholder="Brief summary..." className={`${inputClasses} resize-none`} />
+                                <textarea {...register("shortDescription", { required: "Short Description is required" })} rows={5} placeholder="Brief summary..." className={`${inputClasses} text-sm resize-none`} />
                             </InputGroup>
                             <InputGroup label="Full Description" required error={errors.description?.message}>
-                                <textarea {...register("description", { required: "Description is required" })} rows={4} placeholder="Full product details..." className={`${inputClasses} resize-none`} />
+                                <textarea {...register("description", { required: "Description is required" })} rows={8} placeholder="Full product details..." className={`${inputClasses} text-sm resize-none`} />
                             </InputGroup>
                         </div>
                     </SectionCard>
 
-                    {/* Specifications */}
+                    {/* Technical Specs */}
                     <SectionCard title="Technical Specs" icon={<Settings size={16} />} color="primary">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <div className="grid grid-cols-1 gap-3">
                             {fields.map((field, index) => (
-                                <div key={field.id} className="flex items-center gap-2">
-                                    <input 
-                                        {...register(`specifications.${index}.key` as const)}
-                                        placeholder="Key" 
-                                        className={`${inputClasses} py-2 px-3`} 
-                                    />
-                                    <input 
-                                        {...register(`specifications.${index}.value` as const)}
-                                        placeholder="Value" 
-                                        className={`${inputClasses} py-2 px-3`} 
-                                    />
-                                    <button type="button" onClick={() => remove(index)} className="p-2 text-red-400 hover:bg-red-50 rounded-lg">
-                                        <Trash2 size={14} />
+                                <div key={field.id} className="flex flex-col sm:flex-row sm:items-center gap-2 p-3 bg-gray-50/50 dark:bg-gray-800/30 rounded-xl border border-gray-100 dark:border-gray-800">
+                                    <div className="flex-1 flex flex-col sm:flex-row gap-2">
+                                        <input 
+                                            {...register(`specifications.${index}.key` as const)}
+                                            placeholder="Key (e.g. Material)" 
+                                            className={`${inputClasses} py-2 px-3`} 
+                                        />
+                                        <input 
+                                            {...register(`specifications.${index}.value` as const)}
+                                            placeholder="Value (e.g. Leather)" 
+                                            className={`${inputClasses} py-2 px-3`} 
+                                        />
+                                    </div>
+                                    <button type="button" onClick={() => remove(index)} className="self-end sm:self-auto p-2 text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors">
+                                        <Trash2 size={16} />
                                     </button>
                                 </div>
                             ))}
                             <button type="button" onClick={() => append({ key: '', value: '' })} className="py-2 border border-dashed border-gray-300 rounded-xl text-gray-400 text-xs font-bold hover:text-primary flex items-center justify-center gap-1">
                                 <Plus size={14} /> Add Spec
                             </button>
+                        </div>
+                    </SectionCard>
+
+                    {/* SEO Section - Moved to main column for full width */}
+                    <SectionCard title="Search Engine Optimization (SEO)" icon={<BarChart size={16} />} color="secondary">
+                        <div className="space-y-6">
+                            <InputGroup label="Meta Title" required error={errors.metaTitle?.message}>
+                                <input 
+                                    {...register("metaTitle", { required: "Meta Title is required" })} 
+                                    type="text" 
+                                    placeholder="Enter premium meta title..." 
+                                    className={`${inputClasses} text-sm py-3`} 
+                                />
+                            </InputGroup>
+                            <InputGroup label="Meta Description" required error={errors.metaDescription?.message}>
+                                <textarea 
+                                    {...register("metaDescription", { required: "Meta Description is required" })} 
+                                    rows={5} 
+                                    placeholder="Enter high-converting meta description..." 
+                                    className={`${inputClasses} text-sm resize-none`} 
+                                />
+                            </InputGroup>
                         </div>
                     </SectionCard>
                 </div>
@@ -264,7 +288,7 @@ const AddProductPage = () => {
                                     <option value="draft">Draft</option>
                                 </select>
                             </InputGroup>
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-1 gap-2">
                                 <Controller
                                     name="isFeatured"
                                     control={control}
@@ -294,12 +318,6 @@ const AddProductPage = () => {
                                     )}
                                 />
                             </div>
-                            <InputGroup label="Meta Title">
-                                <input {...register("metaTitle")} type="text" className={inputClasses} />
-                            </InputGroup>
-                            <InputGroup label="Meta Description">
-                                <textarea {...register("metaDescription")} rows={2} className={`${inputClasses} resize-none`} />
-                            </InputGroup>
                         </div>
                     </SectionCard>
                 </div>
@@ -317,7 +335,7 @@ const IconInput = ({ icon, children }: { icon: React.ReactNode, children: React.
 );
 
 const SectionCard = ({ title, icon, children, color = 'primary' }: { title: string, icon: React.ReactNode, children: React.ReactNode, color?: string }) => (
-    <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 shadow-sm">
+    <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-white dark:bg-gray-900 rounded-2xl p-4 sm:p-6 border border-gray-100 dark:border-gray-800 shadow-sm">
         <div className="flex items-center gap-3 mb-6">
             <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color === 'primary' ? 'bg-primary/10 text-primary' : color === 'secondary' ? 'bg-secondary/10 text-secondary' : 'bg-accent/10 text-accent'}`}>
                 {icon}
@@ -330,11 +348,22 @@ const SectionCard = ({ title, icon, children, color = 'primary' }: { title: stri
 
 const InputGroup = ({ label, required, error, children }: { label: string, required?: boolean, error?: string, children: React.ReactNode }) => (
     <div className="space-y-1.5 w-full">
-        <div className="flex justify-between items-center px-1">
-            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+        <div className="relative flex justify-between items-center px-1 h-4">
+            <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest truncate mr-2">
                 {label} {required && <span className="text-primary">*</span>}
             </label>
-            {error && <span className="text-[9px] font-bold text-red-500 italic">{error}</span>}
+            <AnimatePresence mode="wait">
+                {error && (
+                    <motion.span 
+                        initial={{ opacity: 0, x: 5 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 5 }}
+                        className="absolute right-1 text-[9px] font-bold text-red-500 italic whitespace-nowrap bg-white dark:bg-gray-900 pl-2"
+                    >
+                        {error}
+                    </motion.span>
+                )}
+            </AnimatePresence>
         </div>
         {children}
     </div>
