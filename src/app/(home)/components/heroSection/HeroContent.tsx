@@ -18,21 +18,21 @@ const HeroContent = ({ currentSlide, slides }: HeroContentProps) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col items-start gap-6"
+          className="flex flex-col items-start gap-4 sm:gap-6 min-h-[150px] sm:min-h-[220px] md:min-h-0"
         >
           {/* Live Collection Badge */}
-          <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-gray-200/60 bg-white/50 backdrop-blur-xl shadow-sm">
-            <span className="relative flex h-2.5 w-2.5">
+          <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-gray-200/60 bg-white/50 backdrop-blur-xl shadow-sm">
+            <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-primary"></span>
             </span>
-            <span className="text-xs md:text-sm font-bold text-gray-700 tracking-widest uppercase">
+            <span className="text-[10px] sm:text-xs md:text-sm font-bold text-gray-700 tracking-widest uppercase">
               {slides[currentSlide].badge}
             </span>
           </div>
 
           {/* Main Typography */}
-          <h1 className="text-5xl sm:text-7xl lg:text-[95px] xl:text-[105px] font-black text-gray-900 leading-[0.9] tracking-tighter">
+          <h1 className="text-[38px] leading-[1] sm:text-6xl lg:text-[95px] xl:text-[105px] font-black text-gray-900 sm:leading-[0.9] tracking-tighter">
             {slides[currentSlide].title.first} <br />
             <span className="text-primary italic font-black">
               {slides[currentSlide].title.highlight}
@@ -46,11 +46,11 @@ const HeroContent = ({ currentSlide, slides }: HeroContentProps) => {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.5 }}
-        className="mt-6 flex items-center gap-4 bg-primary text-white px-10 py-4 rounded-full font-bold text-[15px] shadow-[0_10px_30px_rgba(252,99,42,0.3)] hover:bg-secondary hover:shadow-[0_10px_30px_rgba(20,96,169,0.3)] hover:-translate-y-1 transition-all duration-300"
+        className="mt-4 sm:mt-6 flex items-center gap-3 sm:gap-4 bg-primary text-white px-7 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold text-[13px] sm:text-[15px] shadow-[0_10px_30px_rgba(252,99,42,0.3)] hover:bg-secondary hover:shadow-[0_10px_30px_rgba(20,96,169,0.3)] hover:-translate-y-1 transition-all duration-300"
       >
-        <HiShoppingBag className="text-xl" />
+        <HiShoppingBag className="text-lg sm:text-xl" />
         EXPLORE ORIGINALS
-        <HiArrowRight className="text-lg" />
+        <HiArrowRight className="text-base sm:text-lg" />
       </motion.button>
     </div>
   );
