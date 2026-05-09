@@ -78,7 +78,6 @@ const AddProductPage = () => {
         setIsLoading(true);
 
         try {
-            // Transform specifications array to Map-like object for API
             const specsObject = formData.specifications.reduce((acc, spec) => {
                 if (spec.key && spec.value) acc[spec.key] = spec.value;
                 return acc;
@@ -93,12 +92,10 @@ const AddProductPage = () => {
                 stock: Number(formData.stock),
             };
 
-            // Demo API Call
             const response = await publicAxios.post('/products', finalData);
             
             if (response.data.success) {
                 toast.success('Product added successfully!');
-                // Reset form or redirect
             }
         } catch (error: any) {
             console.error('Add Product Error:', error);
@@ -108,152 +105,164 @@ const AddProductPage = () => {
         }
     };
 
+    const inputClasses = "w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-[20px] px-5 py-4 text-sm font-bold text-accent dark:text-white outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/50 transition-all duration-300 shadow-sm placeholder:text-gray-300 placeholder:font-medium";
+
     return (
-        <div className="max-w-6xl mx-auto p-4 sm:p-8 lg:p-12 min-h-screen bg-[#FBFBFB] dark:bg-gray-950">
+        <div className="max-w-6xl mx-auto p-4 sm:p-8 lg:p-12 min-h-screen bg-gray-50/50 dark:bg-gray-950">
             {/* Header Section */}
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-                <div>
-                    <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mb-3">
-                        <Package size={14} />
-                        Inventory Management
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+                    <div className="flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-[0.2em] mb-3">
+                        <div className="w-8 h-px bg-primary/30" />
+                        Inventory System
                     </div>
-                    <h1 className="text-4xl sm:text-5xl font-black text-accent dark:text-white tracking-tight">
-                        Create <span className="text-primary">Pro</span> Product
+                    <h1 className="text-4xl sm:text-5xl font-black text-accent dark:text-white tracking-tight leading-none">
+                        New <span className="text-primary">Master</span> Listing
                     </h1>
-                    <p className="text-gray-500 mt-2 max-w-md">Design and launch your premium products with our state-of-the-art listing tool.</p>
-                </div>
+                    <p className="text-gray-500 mt-4 max-w-md font-medium">Create a high-converting product listing with our intelligent dashboard.</p>
+                </motion.div>
                 
                 <div className="flex gap-3">
-                    <button className="px-6 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl font-bold text-accent dark:text-white text-sm hover:bg-gray-50 transition-all shadow-sm">
-                        Save as Draft
+                    <button className="px-6 py-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl font-bold text-accent dark:text-white text-sm hover:border-primary/30 transition-all shadow-sm">
+                        Save Draft
                     </button>
                     <button 
                         onClick={handleSubmit}
                         disabled={isLoading}
-                        className="px-8 py-3 bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+                        className="px-8 py-4 bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/30 hover:bg-accent transition-all active:scale-95 disabled:opacity-50"
                     >
-                        {isLoading ? 'Publishing...' : 'Publish Now'}
+                        {isLoading ? 'Publishing...' : 'Publish Product'}
                     </button>
                 </div>
             </div>
 
-            <form className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <form className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20">
                 
-                {/* Left Column - Main Details */}
+                {/* Left Column */}
                 <div className="lg:col-span-2 space-y-8">
                     
                     {/* Basic Info Card */}
-                    <SectionCard title="Basic Information" icon={<Info size={18} />}>
+                    <SectionCard title="Product Essence" icon={<Info size={18} />} color="primary">
                         <div className="space-y-6">
-                            <InputGroup label="Product Name" required>
-                                <input 
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleInputChange}
-                                    type="text" 
-                                    placeholder="e.g. iPhone 15 Pro Max - Titanium" 
-                                    className="pro-input"
-                                />
+                            <InputGroup label="Official Product Title" required>
+                                <IconInput icon={<Package size={18} />}>
+                                    <input 
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleInputChange}
+                                        type="text" 
+                                        placeholder="e.g. MacBook Pro M3 Max" 
+                                        className={`${inputClasses} pl-12`}
+                                    />
+                                </IconInput>
                             </InputGroup>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <InputGroup label="Brand" required>
-                                    <input 
-                                        name="brand"
-                                        value={formData.brand}
-                                        onChange={handleInputChange}
-                                        type="text" 
-                                        placeholder="Apple" 
-                                        className="pro-input"
-                                    />
+                                <InputGroup label="Brand Name" required>
+                                    <IconInput icon={<Tag size={18} />}>
+                                        <input 
+                                            name="brand"
+                                            value={formData.brand}
+                                            onChange={handleInputChange}
+                                            type="text" 
+                                            placeholder="e.g. Apple" 
+                                            className={`${inputClasses} pl-12`}
+                                        />
+                                    </IconInput>
                                 </InputGroup>
-                                <InputGroup label="SKU (Stock Keeping Unit)">
-                                    <input 
-                                        name="sku"
-                                        value={formData.sku}
-                                        onChange={handleInputChange}
-                                        type="text" 
-                                        placeholder="IPH-15-PRO-TITAN" 
-                                        className="pro-input"
-                                    />
+                                <InputGroup label="Universal SKU">
+                                    <IconInput icon={<BarChart size={18} />}>
+                                        <input 
+                                            name="sku"
+                                            value={formData.sku}
+                                            onChange={handleInputChange}
+                                            type="text" 
+                                            placeholder="e.g. LAP-MBP-2024" 
+                                            className={`${inputClasses} pl-12`}
+                                        />
+                                    </IconInput>
                                 </InputGroup>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <InputGroup label="Category" required>
-                                    <select name="category" value={formData.category} onChange={handleInputChange} className="pro-input">
-                                        <option value="">Select Category</option>
-                                        <option value="Electronics">Electronics</option>
-                                        <option value="Computers">Computers</option>
-                                        <option value="Fashion">Fashion</option>
-                                    </select>
+                                <InputGroup label="Primary Category" required>
+                                    <IconInput icon={<ChevronDown size={18} />}>
+                                        <select name="category" value={formData.category} onChange={handleInputChange} className={`${inputClasses} pl-12 appearance-none`}>
+                                            <option value="">Select Category</option>
+                                            <option value="Electronics">Electronics</option>
+                                            <option value="Computers">Computers</option>
+                                            <option value="Accessories">Accessories</option>
+                                        </select>
+                                    </IconInput>
                                 </InputGroup>
                                 <InputGroup label="Sub-Category">
-                                    <input 
-                                        name="subCategory"
-                                        value={formData.subCategory}
-                                        onChange={handleInputChange}
-                                        type="text" 
-                                        placeholder="Smartphones" 
-                                        className="pro-input"
-                                    />
+                                    <IconInput icon={<ChevronDown size={18} />}>
+                                        <input 
+                                            name="subCategory"
+                                            value={formData.subCategory}
+                                            onChange={handleInputChange}
+                                            type="text" 
+                                            placeholder="e.g. Laptops" 
+                                            className={`${inputClasses} pl-12`}
+                                        />
+                                    </IconInput>
                                 </InputGroup>
                             </div>
                         </div>
                     </SectionCard>
 
                     {/* Description Card */}
-                    <SectionCard title="Description & Details" icon={<FileText size={18} />}>
+                    <SectionCard title="Product Narrative" icon={<FileText size={18} />} color="secondary">
                         <div className="space-y-6">
-                            <InputGroup label="Short Description">
+                            <InputGroup label="Highlight Summary">
                                 <textarea 
                                     name="shortDescription"
                                     value={formData.shortDescription}
                                     onChange={handleInputChange}
                                     rows={3} 
-                                    placeholder="A brief summary of the product..." 
-                                    className="pro-input resize-none"
+                                    placeholder="Quick overview for customers..." 
+                                    className={`${inputClasses} resize-none`}
                                 />
                             </InputGroup>
-                            <InputGroup label="Full Description" required>
+                            <InputGroup label="Full Product Story" required>
                                 <textarea 
                                     name="description"
                                     value={formData.description}
                                     onChange={handleInputChange}
                                     rows={8} 
-                                    placeholder="Detailed product information, features, and benefits..." 
-                                    className="pro-input resize-none"
+                                    placeholder="Tell the full story behind your product..." 
+                                    className={`${inputClasses} resize-none`}
                                 />
                             </InputGroup>
                         </div>
                     </SectionCard>
 
                     {/* Specifications Card */}
-                    <SectionCard title="Specifications" icon={<Settings size={18} />}>
+                    <SectionCard title="Technical DNA" icon={<Settings size={18} />} color="accent">
                         <div className="space-y-4">
                             {formData.specifications.map((spec, index) => (
                                 <motion.div 
                                     key={index}
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    className="flex items-center gap-4"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="flex items-center gap-3"
                                 >
                                     <input 
-                                        placeholder="Key (e.g. Battery)" 
+                                        placeholder="Attribute" 
                                         value={spec.key}
                                         onChange={(e) => handleSpecChange(index, 'key', e.target.value)}
-                                        className="pro-input flex-1"
+                                        className={inputClasses}
                                     />
                                     <input 
-                                        placeholder="Value (e.g. 5000mAh)" 
+                                        placeholder="Detail" 
                                         value={spec.value}
                                         onChange={(e) => handleSpecChange(index, 'value', e.target.value)}
-                                        className="pro-input flex-1"
+                                        className={inputClasses}
                                     />
                                     <button 
                                         type="button"
                                         onClick={() => removeSpecification(index)}
-                                        className="p-3 text-red-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-all"
+                                        className="p-4 text-red-500 hover:bg-red-500 hover:text-white rounded-[20px] transition-all border border-red-100"
                                     >
                                         <Trash2 size={18} />
                                     </button>
@@ -262,211 +271,198 @@ const AddProductPage = () => {
                             <button 
                                 type="button"
                                 onClick={addSpecification}
-                                className="w-full py-3 border-2 border-dashed border-gray-100 dark:border-gray-800 rounded-2xl text-gray-400 font-bold text-sm hover:border-primary/30 hover:text-primary transition-all flex items-center justify-center gap-2"
+                                className="w-full py-4 bg-gray-50 dark:bg-gray-900 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-[24px] text-gray-500 font-bold text-sm hover:border-primary/50 hover:text-primary transition-all flex items-center justify-center gap-2"
                             >
-                                <Plus size={16} />
-                                Add Specification
+                                <Plus size={18} />
+                                Add Technical Spec
                             </button>
-                        </div>
-                    </SectionCard>
-
-                    {/* SEO Card */}
-                    <SectionCard title="SEO Meta Data" icon={<TrendingUp size={18} />}>
-                         <div className="space-y-6">
-                            <InputGroup label="Meta Title">
-                                <input 
-                                    name="metaTitle"
-                                    value={formData.metaTitle}
-                                    onChange={handleInputChange}
-                                    type="text" 
-                                    placeholder="SEO Optimized Title" 
-                                    className="pro-input"
-                                />
-                            </InputGroup>
-                            <InputGroup label="Meta Description">
-                                <textarea 
-                                    name="metaDescription"
-                                    value={formData.metaDescription}
-                                    onChange={handleInputChange}
-                                    rows={3} 
-                                    placeholder="Search engine description..." 
-                                    className="pro-input resize-none"
-                                />
-                            </InputGroup>
                         </div>
                     </SectionCard>
                 </div>
 
-                {/* Right Column - Media & Settings */}
+                {/* Right Column */}
                 <div className="space-y-8">
                     
                     {/* Media Card */}
-                    <SectionCard title="Media & Visuals" icon={<ImageIcon size={18} />}>
+                    <SectionCard title="Visual Identity" icon={<ImageIcon size={18} />} color="primary">
                         <div className="space-y-6">
-                            <InputGroup label="Thumbnail URL" required>
-                                <input 
-                                    name="thumbnail"
-                                    value={formData.thumbnail}
-                                    onChange={handleInputChange}
-                                    type="text" 
-                                    placeholder="https://example.com/image.jpg" 
-                                    className="pro-input"
-                                />
+                            <InputGroup label="Main Thumbnail Link" required>
+                                <IconInput icon={<ImageIcon size={18} />}>
+                                    <input 
+                                        name="thumbnail"
+                                        value={formData.thumbnail}
+                                        onChange={handleInputChange}
+                                        type="text" 
+                                        placeholder="Image URL" 
+                                        className={`${inputClasses} pl-12`}
+                                    />
+                                </IconInput>
                             </InputGroup>
                             
-                            <div className="p-8 rounded-3xl border-2 border-dashed border-gray-100 dark:border-gray-800 flex flex-col items-center text-center group hover:border-primary/30 transition-all cursor-pointer">
-                                <div className="w-12 h-12 bg-gray-50 dark:bg-gray-900 rounded-2xl flex items-center justify-center text-gray-400 group-hover:text-primary transition-all mb-4">
+                            <div className="p-10 rounded-[32px] bg-linear-to-br from-primary/5 to-secondary/5 border-2 border-dashed border-primary/30 flex flex-col items-center text-center group hover:border-primary transition-all cursor-pointer">
+                                <div className="w-14 h-14 bg-white dark:bg-gray-900 rounded-[20px] shadow-lg flex items-center justify-center text-primary group-hover:scale-110 transition-all mb-4">
                                     <Upload size={24} />
                                 </div>
-                                <p className="text-sm font-bold text-accent dark:text-white mb-1">Click to upload images</p>
-                                <p className="text-xs text-gray-400">PNG, JPG or WebP (Max 2MB)</p>
+                                <p className="text-sm font-black text-accent dark:text-white mb-1">Gallery Upload</p>
+                                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Supports PNG, JPG</p>
                             </div>
 
-                            <InputGroup label="Video URL (Optional)">
-                                <input 
-                                    name="videoUrl"
-                                    value={formData.videoUrl}
-                                    onChange={handleInputChange}
-                                    type="text" 
-                                    placeholder="YouTube or Vimeo link" 
-                                    className="pro-input"
-                                />
+                            <InputGroup label="Product Video URL">
+                                <IconInput icon={<Video size={18} />}>
+                                    <input 
+                                        name="videoUrl"
+                                        value={formData.videoUrl}
+                                        onChange={handleInputChange}
+                                        type="text" 
+                                        placeholder="Youtube Link" 
+                                        className={`${inputClasses} pl-12`}
+                                    />
+                                </IconInput>
                             </InputGroup>
                         </div>
                     </SectionCard>
 
-                    {/* Pricing & Stock Card */}
-                    <SectionCard title="Pricing & Stock" icon={<DollarSign size={18} />}>
+                    {/* Pricing & Stock */}
+                    <SectionCard title="Commerce" icon={<DollarSign size={18} />} color="secondary">
                         <div className="space-y-6">
-                            <InputGroup label="Sales Price (৳)" required>
-                                <input 
-                                    name="price"
-                                    value={formData.price}
-                                    onChange={handleInputChange}
-                                    type="number" 
-                                    placeholder="0.00" 
-                                    className="pro-input font-black text-lg"
-                                />
+                            <InputGroup label="Listing Price" required>
+                                <IconInput icon={<span className="font-black text-lg">৳</span>}>
+                                    <input 
+                                        name="price"
+                                        value={formData.price}
+                                        onChange={handleInputChange}
+                                        type="number" 
+                                        placeholder="0.00" 
+                                        className={`${inputClasses} pl-12 font-black text-xl text-primary`}
+                                    />
+                                </IconInput>
                             </InputGroup>
-                            <div className="grid grid-cols-2 gap-4">
-                                <InputGroup label="Old Price">
+                            <div className="grid grid-cols-1 gap-4">
+                                <InputGroup label="Regular Price (Compare)">
                                     <input 
                                         name="oldPrice"
                                         value={formData.oldPrice}
                                         onChange={handleInputChange}
                                         type="number" 
-                                        placeholder="0.00" 
-                                        className="pro-input text-gray-400"
+                                        placeholder="৳ 0.00" 
+                                        className={inputClasses}
                                     />
                                 </InputGroup>
-                                <InputGroup label="Stock" required>
-                                    <input 
-                                        name="stock"
-                                        value={formData.stock}
-                                        onChange={handleInputChange}
-                                        type="number" 
-                                        placeholder="0" 
-                                        className="pro-input"
-                                    />
+                                <InputGroup label="Available Stock" required>
+                                    <IconInput icon={<Package size={18} />}>
+                                        <input 
+                                            name="stock"
+                                            value={formData.stock}
+                                            onChange={handleInputChange}
+                                            type="number" 
+                                            placeholder="Quantity" 
+                                            className={`${inputClasses} pl-12`}
+                                        />
+                                    </IconInput>
                                 </InputGroup>
                             </div>
-                            <InputGroup label="Cost Price (Internal Only)">
-                                <input 
-                                    name="costPrice"
-                                    value={formData.costPrice}
-                                    onChange={handleInputChange}
-                                    type="number" 
-                                    placeholder="Your buying price" 
-                                    className="pro-input text-xs"
-                                />
-                            </InputGroup>
                         </div>
                     </SectionCard>
 
-                    {/* Flags & Status */}
-                    <SectionCard title="Status & Tags" icon={<BarChart size={18} />}>
+                    {/* Marketing Flags */}
+                    <SectionCard title="Growth & Visibility" icon={<BarChart size={18} />} color="primary">
                         <div className="space-y-4">
-                             <InputGroup label="Product Status">
-                                <select name="status" value={formData.status} onChange={handleInputChange} className="pro-input font-bold">
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
-                                    <option value="draft">Draft</option>
+                             <InputGroup label="Listing Status">
+                                <select name="status" value={formData.status} onChange={handleInputChange} className={`${inputClasses} font-bold bg-gray-50`}>
+                                    <option value="active">🟢 Active Now</option>
+                                    <option value="inactive">🔴 Inactive</option>
+                                    <option value="draft">🟡 Draft</option>
                                 </select>
                             </InputGroup>
 
-                            <div className="pt-4 grid grid-cols-1 gap-3">
+                            <div className="pt-4 space-y-3">
                                 <ToggleSwitch 
                                     label="Featured Product" 
                                     checked={formData.isFeatured} 
                                     onChange={() => setFormData(p => ({...p, isFeatured: !p.isFeatured}))} 
+                                    color="orange"
                                 />
                                 <ToggleSwitch 
                                     label="Flash Sale" 
                                     checked={formData.isFlashSale} 
                                     onChange={() => setFormData(p => ({...p, isFlashSale: !p.isFlashSale}))} 
+                                    color="red"
                                 />
                                 <ToggleSwitch 
-                                    label="New Arrival" 
-                                    checked={formData.isNewArrival} 
-                                    onChange={() => setFormData(p => ({...p, isNewArrival: !p.isNewArrival}))} 
-                                />
-                                <ToggleSwitch 
-                                    label="Best Seller" 
+                                    label="Best Seller Tag" 
                                     checked={formData.isBestSeller} 
                                     onChange={() => setFormData(p => ({...p, isBestSeller: !p.isBestSeller}))} 
+                                    color="blue"
                                 />
                             </div>
                         </div>
                     </SectionCard>
                 </div>
             </form>
-
-            <style jsx global>{`
-                .pro-input {
-                    @apply w-full bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl px-5 py-3.5 text-sm font-semibold text-accent dark:text-white focus:outline-none focus:ring-4 focus:ring-primary/5 focus:border-primary/30 transition-all duration-300;
-                }
-            `}</style>
         </div>
     );
 };
 
 // --- Helper Components ---
 
-const SectionCard = ({ title, icon, children }: { title: string, icon: React.ReactNode, children: React.ReactNode }) => (
-    <div className="bg-white dark:bg-gray-900 rounded-[32px] p-6 sm:p-8 border border-gray-100/50 dark:border-gray-800 shadow-[0_20px_50px_rgba(0,0,0,0.02)] transition-all">
-        <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 bg-primary/5 rounded-xl flex items-center justify-center text-primary">
-                {icon}
-            </div>
-            <h2 className="text-xl font-black text-accent dark:text-white tracking-tight">{title}</h2>
+const IconInput = ({ icon, children }: { icon: React.ReactNode, children: React.ReactNode }) => (
+    <div className="relative flex items-center group w-full">
+        <div className="absolute left-5 text-gray-400 group-focus-within:text-primary transition-colors duration-300 z-10">
+            {icon}
         </div>
         {children}
     </div>
 );
 
+const SectionCard = ({ title, icon, children, color = 'primary' }: { title: string, icon: React.ReactNode, children: React.ReactNode, color?: string }) => {
+    const colorClass = color === 'primary' ? 'bg-primary/10 text-primary' : color === 'secondary' ? 'bg-secondary/10 text-secondary' : 'bg-accent/10 text-accent';
+    const borderClass = color === 'primary' ? 'border-primary/10' : color === 'secondary' ? 'border-secondary/10' : 'border-accent/10';
+
+    return (
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className={`bg-white dark:bg-gray-900 rounded-[40px] p-8 sm:p-10 border ${borderClass} shadow-[0_30px_70px_rgba(0,0,0,0.04)] hover:shadow-[0_30px_70px_rgba(0,0,0,0.08)] transition-all duration-500`}
+        >
+            <div className="flex items-center gap-4 mb-10">
+                <div className={`w-12 h-12 ${colorClass} rounded-2xl flex items-center justify-center`}>
+                    {icon}
+                </div>
+                <h2 className="text-2xl font-black text-accent dark:text-white tracking-tight">{title}</h2>
+            </div>
+            {children}
+        </motion.div>
+    );
+};
+
 const InputGroup = ({ label, required, children }: { label: string, required?: boolean, children: React.ReactNode }) => (
-    <div className="space-y-2.5">
-        <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">
-            {label} {required && <span className="text-primary">*</span>}
+    <div className="space-y-3 w-full">
+        <label className="text-[11px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.15em] ml-1 flex items-center gap-2">
+            {label} {required && <div className="w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_10px_rgba(252,99,42,0.5)]" />}
         </label>
         {children}
     </div>
 );
 
-const ToggleSwitch = ({ label, checked, onChange }: { label: string, checked: boolean, onChange: () => void }) => (
-    <div 
-        onClick={onChange}
-        className="flex items-center justify-between p-4 rounded-2xl bg-gray-50/50 dark:bg-gray-800/30 cursor-pointer hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100"
-    >
-        <span className="text-sm font-bold text-accent dark:text-gray-300">{label}</span>
-        <div className={`w-12 h-6 rounded-full transition-all relative ${checked ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'}`}>
-            <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${checked ? 'left-7' : 'left-1'}`} />
+const ToggleSwitch = ({ label, checked, onChange, color = 'orange' }: { label: string, checked: boolean, onChange: () => void, color?: string }) => {
+    const activeColor = color === 'orange' ? 'bg-[#FC632A]' : color === 'red' ? 'bg-red-500' : 'bg-[#1460A9]';
+    
+    return (
+        <div 
+            onClick={onChange}
+            className={`flex items-center justify-between p-5 rounded-[24px] cursor-pointer transition-all border ${checked ? 'bg-white dark:bg-gray-800 shadow-lg border-gray-100 dark:border-gray-700' : 'bg-gray-100/50 dark:bg-gray-900/50 border-transparent hover:bg-gray-100 dark:hover:bg-gray-900'}`}
+        >
+            <span className={`text-sm font-black ${checked ? 'text-accent dark:text-white' : 'text-gray-400'}`}>{label}</span>
+            <div className={`w-14 h-7 rounded-full transition-all relative ${checked ? activeColor : 'bg-gray-300 dark:bg-gray-700'}`}>
+                <div className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-sm transition-all ${checked ? 'left-8' : 'left-1'}`} />
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 const TrendingUp = ({ size, className }: { size?: number, className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size || 24} height={size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width={size || 24} height={size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
 );
 
 export default AddProductPage;
