@@ -2,21 +2,10 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import Link from 'next/link'
-import { Star, ChevronRight, ShoppingCart, Eye, Heart } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { publicAxios } from '@/lib/axios'
-
-interface Product {
-  _id: string;
-  name: string;
-  category: string;
-  price: number;
-  oldPrice: number;
-  thumbnail: string;
-  rating: number;
-  numReviews: number;
-}
+import ProductCard, { Product } from '@/components/shared/ProductCard'
 
 const FeaturedProducts = () => {
   const { data, isLoading } = useQuery({
@@ -56,31 +45,9 @@ const FeaturedProducts = () => {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-5">
-            {products.map((item) => (
-              <motion.div key={item._id} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="group bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col relative">
-                <div className="relative aspect-square w-full overflow-hidden bg-[#fbfbfb]">
-                  <Image src={item.thumbnail} alt={item.name} fill className="object-cover p-3 sm:p-5 transition-transform duration-500 group-hover:scale-105" />
-                  <div className="absolute top-2 left-2 bg-primary/90 text-white text-[8px] font-bold px-2 py-0.5 rounded shadow-sm uppercase">{item.category}</div>
-                  <button className="absolute top-2 right-2 p-1.5 bg-white/90 text-gray-400 hover:text-red-500 rounded-lg shadow-sm border border-gray-50 active:scale-90 transition-all"><Heart size={14} /></button>
-                </div>
-
-                <div className="p-3 sm:p-4 flex flex-col grow">
-                  <div className="flex items-center gap-1 mb-1.5">
-                    <Star size={10} className="fill-primary text-primary" />
-                    <span className="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">({item.numReviews || 0})</span>
-                  </div>
-                  <h3 className="font-bold text-gray-800 mb-1.5 text-xs sm:text-sm line-clamp-2 leading-tight min-h-[2.4rem] sm:min-h-10">{item.name}</h3>
-                  <div className="flex items-center gap-1.5 mb-3 mt-auto">
-                    <span className="text-sm sm:text-lg font-black text-gray-900 tracking-tight">৳{item.price}</span>
-                    {item.oldPrice > item.price && <span className="text-[10px] text-gray-400 line-through">৳{item.oldPrice}</span>}
-                  </div>
-                  <div className="flex gap-1.5 mt-auto">
-                    <Link href={`/products/${item._id}`} className="flex-1 py-1.5 sm:py-2 bg-secondary/10 text-secondary border border-secondary/10 rounded-lg font-bold text-[9px] sm:text-[11px] uppercase tracking-tighter hover:bg-secondary hover:text-white transition-all flex items-center justify-center gap-1 active:scale-95"><Eye size={12} className="hidden sm:block" />View</Link>
-                    <button className="p-1.5 sm:p-2 bg-primary text-white rounded-lg font-bold hover:bg-gray-900 transition-all active:scale-95 shadow-sm"><ShoppingCart size={14} /></button>
-                  </div>
-                </div>
-              </motion.div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
+            {products.map((item, index) => (
+              <ProductCard key={item._id} item={item} index={index} />
             ))}
           </div>
         )}
