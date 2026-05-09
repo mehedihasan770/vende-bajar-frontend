@@ -103,7 +103,7 @@ const Navbar = () => {
               </div>
 
               {/* Actions Group - Floating Box Style */}
-              <div className="flex items-center bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-2 lg:px-3 py-1 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)]">
+              <div className="flex items-center gap-2 lg:gap-3 bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-2 lg:px-3 py-1 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)]">
                 {/* Cart Icon */}
                 <CurtButton/>
 
