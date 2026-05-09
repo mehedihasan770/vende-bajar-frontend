@@ -30,6 +30,7 @@ const MENU_ITEMS = {
   ],
   VENDOR: [
     { name: 'Overview', href: '/dashboard/vendor', icon: LayoutDashboard },
+    { name: 'Add New Product', href: '/dashboard/vendor/products/add', icon: Package },
     { name: 'My Products', href: '/dashboard/vendor/products', icon: Package },
     { name: 'Orders Management', href: '/dashboard/vendor/orders', icon: ShoppingBag },
     { name: 'Earnings', href: '/dashboard/vendor/earnings', icon: DollarSign },
