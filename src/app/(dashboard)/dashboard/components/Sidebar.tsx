@@ -2,52 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
-import Link from 'next/link'
-import { 
-  LayoutDashboard, Users, ShoppingBag, Settings, Package, 
-  DollarSign, ChevronRight, HelpCircle, Heart, MapPin, 
-  CreditCard, Star, Store, Ticket, TrendingUp, Headset, Menu
-} from 'lucide-react' 
-import Logo from '@/components/shared/Logo/Logo'
+import { motion } from 'framer-motion'
+
 import { getBrowserUser } from '@/utils/getBrowserUser'
 import SidebarSkeleton from '@/components/skeletons/dashboardSkeletons/SidebarSkeleton'
+import { MENU_ITEMS } from '../../config/menuItems'
 
-export const MENU_ITEMS = {
-  ADMIN: [
-    { name: 'Overview', href: '/dashboard/admin', icon: LayoutDashboard },
-    { name: 'Role Management', href: '/dashboard/admin/users', icon: Users },
-    { name: 'Verify Vendors', href: '/dashboard/admin/vendors', icon: Store },
-    { name: 'Master Products', href: '/dashboard/admin/products', icon: Package },
-    { name: 'Master Orders', href: '/dashboard/admin/orders', icon: ShoppingBag },
-    { name: 'Transactions', href: '/dashboard/admin/transactions', icon: CreditCard },
-    { name: 'Categories', href: '/dashboard/admin/categories', icon: Package },
-    { name: 'Coupons', href: '/dashboard/admin/coupons', icon: Ticket },
-    { name: 'Analytics', href: '/dashboard/admin/analytics', icon: TrendingUp },
-    { name: 'Review Support', href: '/dashboard/admin/support', icon: Headset },
-    { name: 'Reviews', href: '/dashboard/admin/reviews', icon: Star },
-    { name: 'Settings', href: '/dashboard/admin/settings', icon: Settings },
-  ],
-  VENDOR: [
-    { name: 'Overview', href: '/dashboard/vendor', icon: LayoutDashboard },
-    { name: 'Add New Product', href: '/dashboard/vendor/products/add', icon: Package },
-    { name: 'My Products', href: '/dashboard/vendor/products', icon: Package },
-    { name: 'Orders Management', href: '/dashboard/vendor/orders', icon: ShoppingBag },
-    { name: 'Earnings', href: '/dashboard/vendor/earnings', icon: DollarSign },
-    { name: 'Payouts', href: '/dashboard/vendor/payouts', icon: CreditCard },
-    { name: 'Coupons', href: '/dashboard/vendor/coupons', icon: Ticket },
-    { name: 'Shop Settings', href: '/dashboard/vendor/settings', icon: Settings },
-  ],
-  USER: [
-    { name: 'Overview', href: '/dashboard/user', icon: LayoutDashboard },
-    { name: 'My Profile', href: '/dashboard/user/profile', icon: Users },
-    { name: 'My Orders', href: '/dashboard/user/orders', icon: ShoppingBag },
-    { name: 'Wishlist', href: '/dashboard/user/wishlist', icon: Heart },
-    { name: 'Addresses', href: '/dashboard/user/addresses', icon: MapPin },
-    { name: 'Reviews', href: '/dashboard/user/reviews', icon: Star },
-    { name: 'Payments', href: '/dashboard/user/payments', icon: CreditCard },
-  ]
-}
+import SidebarHeader from './components/SidebarHeader'
+import SidebarMenu from './components/SidebarMenu'
+import SupportCard from './components/SupportCard'
 
 const Sidebar = () => {
   const pathname = usePathname()
@@ -86,139 +49,24 @@ const Sidebar = () => {
         animate={{ width: isCollapsed ? 84 : 240 }}
         className="hidden shadow-sm lg:flex border-gray-200 border rounded-2xl h-full flex-col z-40 overflow-hidden bg-white"
       >
+        <SidebarHeader 
+          isCollapsed={isCollapsed} 
+          setIsCollapsed={setIsCollapsed} 
+        />
         
-        {/* লোগো ও হ্যামবার্গার মেনু সেকশন */}
-        <div className={`h-[84px] px-5 flex items-center ${isCollapsed ? 'justify-center' : 'justify-start gap-4'}`}>
-          <button 
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className={`flex items-center justify-center p-2.5 rounded-xl transition-all duration-300 active:scale-95 shrink-0 ${isCollapsed ? 'bg-primary/5 text-primary hover:bg-primary/10' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'}`}
-          >
-            <Menu size={22} strokeWidth={2.5} />
-          </button>
-
-          <AnimatePresence>
-            {!isCollapsed && (
-              <motion.div
-                initial={{ opacity: 0, width: 0 }}
-                animate={{ opacity: 1, width: 'auto' }}
-                exit={{ opacity: 0, width: 0 }}
-                className="overflow-hidden whitespace-nowrap"
-              >
-                <Logo />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        <SidebarMenu 
+          currentMenu={currentMenu} 
+          pathname={pathname} 
+          isCollapsed={isCollapsed} 
+        />
         
-        {/* Premium Separator */}
-        <div className="px-5 mb-4">
-          <div className="h-[1px] w-full bg-linear-to-r from-gray-50 via-gray-200 to-gray-50"></div>
-        </div>
-        
-        {/* নেভিগেশন মেনু */}
-        <nav className="flex-1 px-4 pb-6 space-y-1 overflow-y-auto custom-scrollbar">
-
-          {currentMenu.map((item, index) => {
-            // Find if there's a more specific match in the menu
-            const hasMoreSpecificMatch = currentMenu.some(
-              (other) => other.href !== item.href && 
-                         other.href.startsWith(item.href) && 
-                         pathname.startsWith(other.href)
-            );
-
-            const isActive = item.name === 'Overview' 
-              ? pathname === item.href 
-              : (pathname === item.href || (pathname.startsWith(item.href + '/') && !hasMoreSpecificMatch));
-              
-            const isLastTwo = index === currentMenu.length - 2
-
-            return (
-              <div key={item.name}>
-                {isLastTwo && (
-                  <div className="my-4">
-                    <hr className="border-gray-200" />
-                  </div>
-                )}
-                
-                <Link href={item.href} className="block">
-                  <motion.div 
-                    className={`relative flex items-center ${isCollapsed ? 'justify-center px-0 py-3' : 'justify-between px-4 py-3'} rounded-2xl cursor-pointer transition-all duration-300 group ${
-                      isActive ? 'text-white shadow-lg shadow-orange-200/50' : 'text-gray-500 hover:bg-orange-50 hover:text-primary'
-                    }`}
-                  >
-                    {isActive && (
-                      <motion.div 
-                        layoutId="sidebar-active-pill"
-                        className="absolute inset-0 bg-primary rounded-2xl"
-                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                      />
-                    )}
-
-                    <div className={`relative z-10 flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
-                      <item.icon size={19} strokeWidth={isActive ? 2.5 : 2} className="shrink-0" />
-                      <AnimatePresence>
-                        {!isCollapsed && (
-                          <motion.div 
-                            initial={{ opacity: 0, width: 0 }}
-                            animate={{ opacity: 1, width: 'auto' }}
-                            exit={{ opacity: 0, width: 0 }}
-                            className={`text-[13px] font-bold whitespace-nowrap overflow-hidden ${isActive ? 'text-white' : 'text-gray-600'}`}
-                          >
-                            {item.name}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-
-                    <AnimatePresence>
-                      {!isCollapsed && (
-                        <motion.div
-                          initial={{ opacity: 0, width: 0 }}
-                          animate={{ opacity: 1, width: 'auto' }}
-                          exit={{ opacity: 0, width: 0 }}
-                          className="relative z-10 overflow-hidden"
-                        >
-                          <ChevronRight 
-                            size={14} 
-                            className={`transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'}`} 
-                          />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                </Link>
-              </div>
-            )
-          })}
-
-          <div className='mt-4'>
-            <hr className="border-gray-200" />
-          </div>
-        </nav>
-
-        {/* সাপোর্ট কার্ড সেকশন */}
-        <div className="p-4 border-t border-gray-50 bg-gray-50/30">
-          <Link href={`/dashboard/${role?.toLowerCase()}/support`}>
-            {isCollapsed ? (
-              <div className="bg-white rounded-2xl p-2 border border-gray-100 shadow-sm hover:border-secondary/20 transition-all flex justify-center items-center h-[52px]">
-                <HelpCircle size={18} className="text-secondary" />
-              </div>
-            ) : (
-              <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm relative overflow-hidden group cursor-pointer transition-all hover:border-secondary/20">
-                <div className="relative z-10 flex flex-col items-center text-center">
-                   <div className="h-8 w-8 bg-secondary/10 rounded-lg flex items-center justify-center text-secondary mb-2">
-                      <HelpCircle size={18} />
-                   </div>
-                   <p className="text-[11px] font-bold text-gray-800">Support Center</p>
-                   <p className="text-[9px] text-gray-400 mt-0.5">24/7 technical help</p>
-                </div>
-              </div>
-            )}
-          </Link>
-        </div>
+        <SupportCard 
+          isCollapsed={isCollapsed} 
+          role={role} 
+        />
       </motion.aside>
     </div>
   )
 }
 
-export default Sidebar
+export default Sidebar;
