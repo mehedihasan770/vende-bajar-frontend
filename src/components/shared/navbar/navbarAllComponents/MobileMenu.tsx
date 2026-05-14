@@ -45,9 +45,10 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed left-0 right-0 top-15 z-50 md:hidden overflow-y-auto max-h-[calc(100vh-60px)] bg-white/20 dark:bg-black/20 backdrop-blur-sm scrollbar-hide"
+            className="fixed inset-x-0 top-16 z-50 md:hidden overflow-y-auto max-h-[calc(100vh-80px)] scrollbar-hide flex justify-center"
           >
-            <div className="px-4 py-2 pb-8">
+            <div className="w-[91.666667%] max-w-11/12 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-[24px] shadow-2xl mb-4">
+              <div className="px-4 py-4 pb-6">
               {/* Mobile Links */}
               <div className="space-y-1">
                 {navLinks.map((link, index) => (
@@ -185,6 +186,7 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
                 </div>
               </motion.div>
               )}
+              </div>
             </div>
           </motion.div>
         </>
