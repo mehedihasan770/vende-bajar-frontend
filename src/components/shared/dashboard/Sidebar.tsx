@@ -150,23 +150,23 @@ const Sidebar = () => {
                     {isActive && (
                       <motion.div 
                         layoutId="sidebar-active-pill"
-                        className="absolute inset-0 bg-primary rounded-2xl -z-10"
+                        className="absolute inset-0 bg-primary rounded-2xl"
                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                       />
                     )}
 
-                    <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
+                    <div className={`relative z-10 flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
                       <item.icon size={19} strokeWidth={isActive ? 2.5 : 2} className="shrink-0" />
                       <AnimatePresence>
                         {!isCollapsed && (
-                          <motion.span 
+                          <motion.div 
                             initial={{ opacity: 0, width: 0 }}
                             animate={{ opacity: 1, width: 'auto' }}
                             exit={{ opacity: 0, width: 0 }}
                             className={`text-[13px] font-bold whitespace-nowrap overflow-hidden ${isActive ? 'text-white' : 'text-gray-600'}`}
                           >
                             {item.name}
-                          </motion.span>
+                          </motion.div>
                         )}
                       </AnimatePresence>
                     </div>
@@ -177,7 +177,7 @@ const Sidebar = () => {
                           initial={{ opacity: 0, width: 0 }}
                           animate={{ opacity: 1, width: 'auto' }}
                           exit={{ opacity: 0, width: 0 }}
-                          className="overflow-hidden"
+                          className="relative z-10 overflow-hidden"
                         >
                           <ChevronRight 
                             size={14} 
