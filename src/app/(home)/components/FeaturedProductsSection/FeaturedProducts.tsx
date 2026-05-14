@@ -21,7 +21,7 @@ const FeaturedProducts = () => {
   const products: Product[] = data?.data || []
 
   return (
-    <section className="py-10 sm:py-16 bg-white px-3 sm:px-6">
+    <section className="py-10 sm:py-16 bg-white">
       <div>
         
         {/* 🎯 Fixed Header: Left Title | Right Button */}

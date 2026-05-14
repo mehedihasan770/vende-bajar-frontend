@@ -20,7 +20,7 @@ const ProductsPage = () => {
   const products: Product[] = data?.data || [];
 
   return (
-    <section className="px-4 py-8 max-w-7xl mx-auto min-h-screen">
+    <section className="py-8 min-h-screen">
       {/* Promotional banner */}
       <div className="bg-primary text-white p-4 rounded-2xl mb-8 text-center shadow-lg shadow-primary/20 font-bold">
         🎉 Free shipping on orders over $100! 🎉

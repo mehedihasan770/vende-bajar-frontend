@@ -34,7 +34,7 @@ const FlashSale = () => {
   ]
 
   return (
-    <section className="py-10 sm:py-16 bg-white px-3 sm:px-6">
+    <section className="py-10 sm:py-16 bg-white">
       <div>
         
         {/* 🎯 Header Section: Always Left Title | Right Button */}
