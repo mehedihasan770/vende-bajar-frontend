@@ -68,7 +68,7 @@ const Navbar = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="fixed inset-0 bg-black/20 backdrop-blur-sm z-120 lg:hidden"
+                className="fixed top-0 left-0 w-full h-[100dvh] bg-black/20 backdrop-blur-sm z-[120] lg:hidden"
                 onClick={() => setIsMobileMenuOpen(false)}
               />
 
@@ -78,7 +78,7 @@ const Navbar = () => {
                 animate={{ x: 0 }}
                 exit={{ x: '-100%' }}
                 transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
-                className="fixed inset-y-0 left-0 w-[260px] bg-white shadow-2xl z-130 flex flex-col lg:hidden border-r border-gray-100"
+                className="fixed top-0 left-0 h-[100dvh] w-[260px] bg-white shadow-2xl z-[130] flex flex-col lg:hidden border-r border-gray-100"
               >
                 <div className="h-[84px] px-5 flex items-center justify-between border-b border-gray-100">
                   <Logo />
