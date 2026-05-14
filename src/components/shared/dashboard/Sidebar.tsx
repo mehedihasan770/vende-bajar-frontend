@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { 
   LayoutDashboard, Users, ShoppingBag, Settings, Package, 
   DollarSign, ChevronRight, HelpCircle, Heart, MapPin, 
-  CreditCard, Star, Store, Ticket, TrendingUp, Headset
+  CreditCard, Star, Store, Ticket, TrendingUp, Headset,
+  Menu
 } from 'lucide-react'
 import Logo from '../Logo/Logo'
 import { getBrowserUser } from '@/utils/getBrowserUser'
@@ -53,6 +54,7 @@ const Sidebar = () => {
   const pathname = usePathname()
   const [role, setRole] = useState<'ADMIN' | 'VENDOR' | 'USER' | null>(null)
   const [isMounted, setIsMounted] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
   useEffect(() => {
     setTimeout(() => {
@@ -80,16 +82,40 @@ const Sidebar = () => {
 
   return (
     <div className='py-4 h-screen sticky top-0'>
-      <aside className="hidden shadow-sm lg:flex w-60 border-gray-200 border rounded-2xl h-full flex-col z-40 overflow-hidden">
+      <motion.aside 
+        initial={false}
+        animate={{ width: isCollapsed ? 84 : 240 }}
+        className="hidden shadow-sm lg:flex border-gray-200 border rounded-2xl h-full flex-col z-40 overflow-hidden bg-white"
+      >
         
-        {/* লোগো সেকশন - Right Aligned */}
-        <div className="px-4 pt-4 flex justify-start">
-          <Logo />
-          
+        {/* লোগো ও হ্যামবার্গার মেনু সেকশন */}
+        <div className={`h-[84px] px-5 flex items-center ${isCollapsed ? 'justify-center' : 'justify-start gap-4'}`}>
+          <button 
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className={`flex items-center justify-center p-2.5 rounded-xl transition-all duration-300 active:scale-95 shrink-0 ${isCollapsed ? 'bg-primary/5 text-primary hover:bg-primary/10' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'}`}
+          >
+            <Menu size={22} strokeWidth={2.5} />
+          </button>
+
+          <AnimatePresence>
+            {!isCollapsed && (
+              <motion.div
+                initial={{ opacity: 0, width: 0 }}
+                animate={{ opacity: 1, width: 'auto' }}
+                exit={{ opacity: 0, width: 0 }}
+                className="overflow-hidden whitespace-nowrap"
+              >
+                <Logo />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-          <div className="py-4 px-4">
-            <hr className="border-gray-200" />
-          </div>
+        
+        {/* Premium Separator */}
+        <div className="px-5 mb-4">
+          <div className="h-[1px] w-full bg-linear-to-r from-gray-50 via-gray-200 to-gray-50"></div>
+        </div>
+        
         {/* নেভিগেশন মেনু */}
         <nav className="flex-1 px-4 pb-6 space-y-1 overflow-y-auto custom-scrollbar">
 
@@ -104,21 +130,20 @@ const Sidebar = () => {
             const isActive = item.name === 'Overview' 
               ? pathname === item.href 
               : (pathname === item.href || (pathname.startsWith(item.href + '/') && !hasMoreSpecificMatch));
-            // লাস্ট ২ টা আইটেমের আগে লাইন দেওয়ার লজিক
+              
             const isLastTwo = index === currentMenu.length - 2
 
             return (
               <div key={item.name}>
                 {isLastTwo && (
-                  <div className="my-4 px-4">
+                  <div className="my-4">
                     <hr className="border-gray-200" />
                   </div>
                 )}
                 
                 <Link href={item.href} className="block">
                   <motion.div 
-                    
-                    className={`relative flex items-center justify-between px-4 py-3 rounded-2xl cursor-pointer transition-all duration-300 group ${
+                    className={`relative flex items-center ${isCollapsed ? 'justify-center px-0 py-3' : 'justify-between px-4 py-3'} rounded-2xl cursor-pointer transition-all duration-300 group ${
                       isActive ? 'text-white shadow-lg shadow-orange-200/50' : 'text-gray-500 hover:bg-orange-50 hover:text-primary'
                     }`}
                   >
@@ -130,44 +155,69 @@ const Sidebar = () => {
                       />
                     )}
 
-                    <div className="flex items-center gap-3">
-                      <item.icon size={19} strokeWidth={isActive ? 2.5 : 2} />
-                      <span className={`text-[13px] font-bold ${isActive ? 'text-white' : 'text-gray-600'}`}>
-                        {item.name}
-                      </span>
+                    <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
+                      <item.icon size={19} strokeWidth={isActive ? 2.5 : 2} className="shrink-0" />
+                      <AnimatePresence>
+                        {!isCollapsed && (
+                          <motion.span 
+                            initial={{ opacity: 0, width: 0 }}
+                            animate={{ opacity: 1, width: 'auto' }}
+                            exit={{ opacity: 0, width: 0 }}
+                            className={`text-[13px] font-bold whitespace-nowrap overflow-hidden ${isActive ? 'text-white' : 'text-gray-600'}`}
+                          >
+                            {item.name}
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
                     </div>
 
-                    <ChevronRight 
-                      size={14} 
-                      className={`transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'}`} 
-                    />
+                    <AnimatePresence>
+                      {!isCollapsed && (
+                        <motion.div
+                          initial={{ opacity: 0, width: 0 }}
+                          animate={{ opacity: 1, width: 'auto' }}
+                          exit={{ opacity: 0, width: 0 }}
+                          className="overflow-hidden"
+                        >
+                          <ChevronRight 
+                            size={14} 
+                            className={`transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'}`} 
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 </Link>
               </div>
             )
           })}
 
-          {/* মেনুর শেষে আর একটা লাইন এবং ছোট ব্যানার */}
-          <div className='px-4'>
-            <hr className="border-gray-200 mt-4" />
+          <div className='mt-4'>
+            <hr className="border-gray-200" />
           </div>
         </nav>
 
         {/* সাপোর্ট কার্ড সেকশন */}
         <div className="p-4 border-t border-gray-50 bg-gray-50/30">
-          <Link href={`/dashboard/${role.toLowerCase()}/support`}>
-            <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm relative overflow-hidden group cursor-pointer transition-all hover:border-secondary/20">
-              <div className="relative z-10 flex flex-col items-center text-center">
-                 <div className="h-8 w-8 bg-secondary/10 rounded-lg flex items-center justify-center text-secondary mb-2">
-                    <HelpCircle size={18} />
-                 </div>
-                 <p className="text-[11px] font-bold text-gray-800">Support Center</p>
-                 <p className="text-[9px] text-gray-400 mt-0.5">24/7 technical help</p>
+          <Link href={`/dashboard/${role?.toLowerCase()}/support`}>
+            {isCollapsed ? (
+              <div className="bg-white rounded-2xl p-2 border border-gray-100 shadow-sm hover:border-secondary/20 transition-all flex justify-center items-center h-[52px]">
+                <HelpCircle size={18} className="text-secondary" />
               </div>
-            </div>
+            ) : (
+              <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm relative overflow-hidden group cursor-pointer transition-all hover:border-secondary/20">
+                <div className="relative z-10 flex flex-col items-center text-center">
+                   <div className="h-8 w-8 bg-secondary/10 rounded-lg flex items-center justify-center text-secondary mb-2">
+                      <HelpCircle size={18} />
+                   </div>
+                   <p className="text-[11px] font-bold text-gray-800">Support Center</p>
+                   <p className="text-[9px] text-gray-400 mt-0.5">24/7 technical help</p>
+                </div>
+              </div>
+            )}
           </Link>
         </div>
-      </aside>
+      </motion.aside>
     </div>
   )
 }
