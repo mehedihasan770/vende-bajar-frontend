@@ -53,8 +53,8 @@ const ProductCard = ({ item, index = 0 }: ProductCardProps) => {
             
             {/* Top Left: Category (Acting as Brand) */}
             <div className="absolute top-3 left-3 z-20">
-              <div className="bg-white/90 backdrop-blur-sm rounded-full px-2 py-0.5 shadow-sm border border-gray-50">
-                <span className="text-[8px] sm:text-[9px] font-bold tracking-wider text-accent uppercase">{item.category}</span>
+              <div className="bg-white/90 backdrop-blur-sm rounded-full px-2.5 h-5 flex items-center justify-center shadow-sm border border-gray-50">
+                <span className="text-[8px] sm:text-[9px] font-bold tracking-wider text-accent uppercase leading-none mt-[1px]">{item.category}</span>
               </div>
             </div>
 
