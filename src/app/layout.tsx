@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/shared/navbar/Navbar";
 import QueryProvider from "@/providers/QueryProvider";
 import { AuthProvider } from "@/context/AuthContext";
+import ScrollbarProvider from "@/providers/ScrollbarProvider";
 import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
@@ -58,7 +59,8 @@ export default function RootLayout({
       >
         <QueryProvider>
           <AuthProvider>
-            {/* navar component */}
+            <ScrollbarProvider>
+              {/* navar component */}
             <Toaster position="top-center" reverseOrder={false} />
             <header>
               <Navbar />
@@ -73,6 +75,7 @@ export default function RootLayout({
             <footer>
 
             </footer>
+            </ScrollbarProvider>
           </AuthProvider>
         </QueryProvider>
       </body>

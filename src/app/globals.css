@@ -5,3 +5,30 @@
   --color-secondary: #1460A9;
   --color-accent: #2D4059;
 }
+
+@layer base {
+  /* Global auto-hiding scrollbar config for ALL scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Completely hidden when not scrolling */
+    border-radius: 10px;
+  }
+
+  /* When body has .is-scrolling class (managed by JS), show ALL scrollbars */
+  body.is-scrolling ::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5); /* gray-400 */
+  }
+
+  /* Fallback: if you hover exactly over a scrollbar, it stays visible */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(107, 114, 128, 0.8) !important; /* gray-500 */
+  }
+}
