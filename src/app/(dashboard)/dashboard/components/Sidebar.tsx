@@ -6,11 +6,11 @@ import { motion } from 'framer-motion'
 
 import { getBrowserUser } from '@/utils/getBrowserUser'
 import SidebarSkeleton from '@/components/skeletons/dashboardSkeletons/SidebarSkeleton'
-import { MENU_ITEMS } from '../../config/menuItems'
+import { MENU_ITEMS } from '../config/menuItems'
 
-import SidebarHeader from './components/SidebarHeader'
-import SidebarMenu from './components/SidebarMenu'
-import SupportCard from './components/SupportCard'
+import SidebarHeader from './Sidebar/components/SidebarHeader'
+import SidebarMenu from './Sidebar/components/SidebarMenu'
+import SupportCard from './Sidebar/components/SupportCard'
 
 const Sidebar = () => {
   const pathname = usePathname()

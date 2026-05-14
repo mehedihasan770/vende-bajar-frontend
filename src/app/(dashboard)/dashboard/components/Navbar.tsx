@@ -5,12 +5,12 @@ import { usePathname } from 'next/navigation'
 import { Menu, Search } from 'lucide-react'
 import { getBrowserUser } from '@/utils/getBrowserUser'
 
-import { MENU_ITEMS } from '../../config/menuItems'
-import MobileSidebarDrawer from './components/MobileSidebarDrawer'
-import DesktopSearch from './components/DesktopSearch'
-import MobileSearchOverlay from './components/MobileSearchOverlay'
-import ActionIcons from './components/ActionIcons'
-import ProfileDropdown from './components/ProfileDropdown'
+import { MENU_ITEMS } from '../config/menuItems'
+import MobileSidebarDrawer from './Navbar/components/MobileSidebarDrawer'
+import DesktopSearch from './Navbar/components/DesktopSearch'
+import MobileSearchOverlay from './Navbar/components/MobileSearchOverlay'
+import ActionIcons from './Navbar/components/ActionIcons'
+import ProfileDropdown from './Navbar/components/ProfileDropdown'
 
 const Navbar = () => {
   const [showMobileSearch, setShowMobileSearch] = useState(false)
