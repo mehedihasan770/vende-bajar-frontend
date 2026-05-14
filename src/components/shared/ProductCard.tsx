@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Heart, Star, ShoppingCart } from 'lucide-react';
 
 export interface Product {
@@ -76,10 +77,11 @@ const ProductCard = ({ item, index = 0 }: ProductCardProps) => {
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-2/3 h-6 bg-black/15 blur-xl rounded-[100%] z-10"></div>
             
             {/* Image bounded strictly with absolute positioning so sizes never break the card */}
-            <img 
+            <Image 
               src={item.thumbnail} 
-              alt={item.name} 
-              className="absolute inset-0 w-full h-full p-5 sm:p-8 object-contain mix-blend-multiply transition-transform duration-700 group-hover:-translate-y-2 group-hover:scale-110 group-hover:rotate-[-4deg] z-10" 
+              alt={item.name}
+              fill
+              className="object-cover mix-blend-multiply transition-transform duration-700 group-hover:-translate-y-2 group-hover:scale-110 group-hover:rotate-[-4deg] z-10" 
             />
           </div>
         </div>
