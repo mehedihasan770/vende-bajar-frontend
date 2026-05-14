@@ -45,7 +45,65 @@ const Navbar = () => {
   const currentMenu = MENU_ITEMS[role || 'USER']
 
   return (
-    <nav className="z-100 w-full py-4"> {/* z-index বাড়িয়ে দেওয়া হয়েছে */}
+    <nav className="relative z-[100] w-full py-4">
+      {/* মোবাইল মেনু ড্রয়ার - Moved OUTSIDE the blurred container */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed top-0 left-0 w-full h-[100dvh] bg-black/20 backdrop-blur-sm z-[120] lg:hidden"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+
+            {/* Sidebar Menu Drawer */}
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
+              className="fixed top-0 left-0 h-[100dvh] w-[260px] bg-white/90 backdrop-blur-2xl shadow-2xl z-[130] flex flex-col lg:hidden border-r border-white/50"
+            >
+              <div className="h-[84px] px-5 flex items-center justify-between border-b border-gray-100">
+                <Logo />
+                <button 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 text-gray-400 hover:bg-gray-100 rounded-xl transition-all"
+                >
+                  <ArrowLeft size={20} />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-4 py-4 space-y-1 custom-scrollbar">
+                {currentMenu.map((item) => {
+                   const hasMoreSpecificMatch = currentMenu.some(
+                     (other) => other.href !== item.href && 
+                                other.href.startsWith(item.href) && 
+                                pathname.startsWith(other.href)
+                   );
+                   const isActive = item.name === 'Overview' 
+                     ? pathname === item.href 
+                     : (pathname === item.href || (pathname.startsWith(item.href + '/') && !hasMoreSpecificMatch));
+                     
+                   return (
+                      <Link key={item.name} href={item.href} onClick={() => setIsMobileMenuOpen(false)}>
+                         <div className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all mb-1 ${isActive ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-gray-600 hover:bg-primary/5 hover:text-primary'}`}>
+                           <item.icon size={19} strokeWidth={isActive ? 2.5 : 2} />
+                           <span className="text-[13px] font-bold">{item.name}</span>
+                         </div>
+                      </Link>
+                   )
+                })}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
       <div className="bg-white/80 backdrop-blur-xl border border-gray-200 rounded-2xl shadow-sm px-4 h-16 flex items-center justify-between gap-2 sm:gap-4 relative">
         
         {/* বাম পাশ - মোবাইল মেনু টগল (শুধুমাত্র মোবাইলে) */}
@@ -57,64 +115,6 @@ const Navbar = () => {
             <Menu size={22} strokeWidth={2.5} />
           </button>
         </div>
-
-        {/* মোবাইল মেনু ড্রয়ার */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="fixed top-0 left-0 w-full h-[100dvh] bg-black/20 backdrop-blur-sm z-[120] lg:hidden"
-                onClick={() => setIsMobileMenuOpen(false)}
-              />
-
-              {/* Sidebar Menu Drawer */}
-              <motion.div
-                initial={{ x: '-100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '-100%' }}
-                transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
-                className="fixed top-0 left-0 h-[100dvh] w-[260px] bg-white shadow-2xl z-[130] flex flex-col lg:hidden border-r border-gray-100"
-              >
-                <div className="h-[84px] px-5 flex items-center justify-between border-b border-gray-100">
-                  <Logo />
-                  <button 
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="p-2 text-gray-400 hover:bg-gray-100 rounded-xl transition-all"
-                  >
-                    <ArrowLeft size={20} />
-                  </button>
-                </div>
-
-                <div className="flex-1 overflow-y-auto px-4 py-4 space-y-1 custom-scrollbar">
-                  {currentMenu.map((item) => {
-                     const hasMoreSpecificMatch = currentMenu.some(
-                       (other) => other.href !== item.href && 
-                                  other.href.startsWith(item.href) && 
-                                  pathname.startsWith(other.href)
-                     );
-                     const isActive = item.name === 'Overview' 
-                       ? pathname === item.href 
-                       : (pathname === item.href || (pathname.startsWith(item.href + '/') && !hasMoreSpecificMatch));
-                       
-                     return (
-                        <Link key={item.name} href={item.href} onClick={() => setIsMobileMenuOpen(false)}>
-                           <div className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all mb-1 ${isActive ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-gray-600 hover:bg-primary/5 hover:text-primary'}`}>
-                             <item.icon size={19} strokeWidth={isActive ? 2.5 : 2} />
-                             <span className="text-[13px] font-bold">{item.name}</span>
-                           </div>
-                        </Link>
-                     )
-                  })}
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
 
         {/* --- মোবাইল সার্চ ওভারলে --- */}
         <AnimatePresence>
