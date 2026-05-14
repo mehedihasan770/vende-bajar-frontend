@@ -1,5 +1,3 @@
-import { HelpCircle } from 'lucide-react'
-
 const SidebarSkeleton = () => {
   return (
     <div className='py-4 h-screen sticky top-0'>
