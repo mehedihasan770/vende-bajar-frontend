@@ -33,7 +33,7 @@ const DropdownMenu = ({isDropdownOpen, setIsDropdownOpen, dropdownItems} : AuthB
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 15, scale: 0.95 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="absolute top-full right-0 mt-4 w-64 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] py-2 z-50 border border-white/20 dark:border-gray-800/50 overflow-hidden"
+                className="absolute top-full right-0 mt-4 w-64 bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] py-2 z-50 border border-white/20 dark:border-gray-800/50 overflow-hidden"
               >
                 {/* User Info Section */}
                 <div className="px-5 py-4 border-b border-gray-100/50 dark:border-gray-800/50 bg-linear-to-br from-primary/5 to-secondary/5">
