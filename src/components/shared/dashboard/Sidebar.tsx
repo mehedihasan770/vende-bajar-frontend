@@ -7,14 +7,13 @@ import Link from 'next/link'
 import { 
   LayoutDashboard, Users, ShoppingBag, Settings, Package, 
   DollarSign, ChevronRight, HelpCircle, Heart, MapPin, 
-  CreditCard, Star, Store, Ticket, TrendingUp, Headset,
-  Menu
-} from 'lucide-react'
+  CreditCard, Star, Store, Ticket, TrendingUp, Headset, Menu
+} from 'lucide-react' 
 import Logo from '../Logo/Logo'
 import { getBrowserUser } from '@/utils/getBrowserUser'
 import SidebarSkeleton from '@/components/skeletons/dashboardSkeletons/SidebarSkeleton'
 
-const MENU_ITEMS = {
+export const MENU_ITEMS = {
   ADMIN: [
     { name: 'Overview', href: '/dashboard/admin', icon: LayoutDashboard },
     { name: 'Role Management', href: '/dashboard/admin/users', icon: Users },
