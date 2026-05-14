@@ -1,5 +1,5 @@
-import Navbar from "@/components/shared/dashboard/Navbar";
-import Sidebar from "@/components/shared/dashboard/Sidebar";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
 
 const DashboardRootLayout = ({ children }: { children: React.ReactNode }) => {
   return (

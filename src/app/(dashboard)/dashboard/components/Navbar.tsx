@@ -9,7 +9,7 @@ import {
 } from 'lucide-react'
 import { MENU_ITEMS } from './Sidebar'
 import { getBrowserUser } from '@/utils/getBrowserUser'
-import Logo from '../Logo/Logo'
+import Logo from '@/components/shared/Logo/Logo'
 
 const Navbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false)

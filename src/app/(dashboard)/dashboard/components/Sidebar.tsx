@@ -9,7 +9,7 @@ import {
   DollarSign, ChevronRight, HelpCircle, Heart, MapPin, 
   CreditCard, Star, Store, Ticket, TrendingUp, Headset, Menu
 } from 'lucide-react' 
-import Logo from '../Logo/Logo'
+import Logo from '@/components/shared/Logo/Logo'
 import { getBrowserUser } from '@/utils/getBrowserUser'
 import SidebarSkeleton from '@/components/skeletons/dashboardSkeletons/SidebarSkeleton'
 
