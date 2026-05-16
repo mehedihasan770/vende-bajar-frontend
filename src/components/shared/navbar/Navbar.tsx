@@ -89,39 +89,39 @@ const Navbar = () => {
         transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
         className="fixed top-0 py-3 w-full z-50 bg-transparent"
       >
-        <div className="max-w-11/12 md:max-w-10/12 mx-auto">
+        <div className="max-w-[92%] md:max-w-10/12 2xl:max-w-[1500px] mx-auto">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Logo />
 
             {/* Desktop Right Section (Links + Actions) */}
             <div className="hidden md:flex items-center gap-4 lg:gap-6">
-              
+
               {/* Navigation Group - Floating Box Style */}
               <div className="flex items-center bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-1.5 py-1 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)]">
-                <NavLinks navLinks={navLinks}/>
+                <NavLinks navLinks={navLinks} />
               </div>
 
               {/* Actions Group - Floating Box Style */}
               <div className="relative flex items-center">
                 <div className="flex items-center gap-2 lg:gap-3 bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-2 lg:px-3 py-1 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)]">
                   {/* Wishlist Icon */}
-                  <WishlistButton/>
+                  <WishlistButton />
 
                   {/* Cart Icon */}
-                  <CurtButton/>
+                  <CurtButton />
 
                   {/* Login/Register or Avatar */}
-                  <AuthButtons/>
+                  <AuthButtons />
 
                   {/* Avatar with Dropdown */}
                   <div className="relative flex items-center">
-                    <UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} isDropdownOpen={isDropdownOpen}/>
+                    <UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} isDropdownOpen={isDropdownOpen} />
                   </div>
                 </div>
 
                 {/* Dropdown Menu (Moved outside blurred parent so backdrop-blur works) */}
-                <DropdownMenu isDropdownOpen={isDropdownOpen} setIsDropdownOpen={setIsDropdownOpen} dropdownItems={dropdownItems}/>
+                <DropdownMenu isDropdownOpen={isDropdownOpen} setIsDropdownOpen={setIsDropdownOpen} dropdownItems={dropdownItems} />
               </div>
             </div>
 

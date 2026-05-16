@@ -42,7 +42,7 @@ const HeroSection = () => {
   }, [apiSlides.length]);
 
   return (
-    <section className="relative -mt-16 sm:-mt-20 left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen h-[100svh] md:h-screen overflow-hidden bg-[#FBFBFD]">
+    <section className="relative -mt-16 sm:-mt-20 left-1/2 right-1/2 -ml-[min(50vw,1000px)] -mr-[min(50vw,1000px)] w-[100vw] max-w-[2000px] h-[100svh] md:h-screen overflow-hidden bg-[#FBFBFD]">
       {/* Background image & overlays */}
       <SlideBackground currentSlide={currentSlide} slides={apiSlides} />
 
