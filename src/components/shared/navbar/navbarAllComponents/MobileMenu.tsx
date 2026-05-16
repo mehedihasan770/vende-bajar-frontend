@@ -35,7 +35,7 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-x-0 top-15 bottom-0 z-40 md:hidden"
+            className="fixed inset-x-0 top-15 bottom-0 z-40 lg:hidden"
             onClick={onClose}
           />
           
@@ -45,9 +45,10 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 z-50 md:hidden overflow-y-auto max-h-[calc(100vh-80px)] scrollbar-hide flex justify-center"
+            className="fixed inset-x-0 top-16 z-50 lg:hidden overflow-y-auto max-h-[calc(100vh-80px)] scrollbar-hide"
           >
-            <div className="w-[91.666667%] max-w-11/12 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-[24px] shadow-2xl mb-4">
+            <div className="max-w-[92%] md:max-w-10/12 2xl:max-w-[1500px] mx-auto flex justify-end">
+              <div className="w-full max-w-[450px] bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-[24px] shadow-2xl mb-4">
               <div className="px-4 py-4 pb-6">
               {/* Mobile Links */}
               <div className="space-y-1">
@@ -85,7 +86,7 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ delay: 0.3 }}
-                className="my-4 border-t border-gray-200"
+                className="my-4 border-t border-gray-200 md:hidden"
               />
 
               {/* Mobile Login/Register */}
@@ -95,7 +96,8 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                <Link href={"/login"}>
+                <div className="md:hidden">
+                  <Link href={"/login"}>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -117,6 +119,7 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
                   <span>Register</span>
                 </motion.button>
                 </Link>
+                </div>
               </motion.div>
               )}
 
@@ -126,7 +129,7 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                className="mt-4"
+                className="mt-4 md:hidden"
               >
                 <div className="flex items-center space-x-3 px-4 py-3 bg-linear-to-r from-primary/5 to-secondary/5 rounded-xl">
                   <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary">
@@ -186,7 +189,8 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
                 </div>
               </motion.div>
               )}
-              </div>
+                </div>
+            </div>
             </div>
           </motion.div>
         </>
