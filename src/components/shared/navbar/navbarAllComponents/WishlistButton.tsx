@@ -7,8 +7,6 @@ import Link from 'next/link';
 const WishlistButton = () => {
     const [wishlistCount, setWishlistCount] = useState(0)
     const { user, loading } = useAuth();
-    
-    if (loading || !user?.isLoggedIn) return null;
 
     return (
         <Link href="/wishlist">

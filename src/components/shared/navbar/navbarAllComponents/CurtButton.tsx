@@ -7,7 +7,6 @@ import Link from 'next/link';
 const CurtButton = () => {
     const [cartCount, setCartCount] = useState(0)
     const { user, loading } = useAuth();
-    if (loading || !user?.isLoggedIn) return null;
 
     return (
         <Link href="/cart">
