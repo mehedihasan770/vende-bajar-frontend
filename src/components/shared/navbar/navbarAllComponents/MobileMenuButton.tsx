@@ -24,7 +24,7 @@ const MobileMenuButton = ({setIsOpen, isOpen} : MibileMenu) => {
                 exit={{ rotate: 90 }}
                 transition={{ duration: 0.2 }}
               >
-                <HiOutlineX className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                <HiOutlineX className="w-5 h-5 text-white" />
               </motion.div>
             ) : (
               <motion.div
@@ -34,7 +34,7 @@ const MobileMenuButton = ({setIsOpen, isOpen} : MibileMenu) => {
                 exit={{ rotate: -90 }}
                 transition={{ duration: 0.2 }}
               >
-                <HiOutlineMenu className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                <HiOutlineMenu className="w-5 h-5 text-white" />
               </motion.div>
             )}
           </AnimatePresence>

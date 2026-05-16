@@ -24,9 +24,9 @@ const UserAvatarDropdown = ({setIsDropdownOpen, isDropdownOpen} : AuthButtonsPro
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="flex cursor-pointer items-center space-x-1 lg:space-x-2 focus:outline-none group"
+          className="flex cursor-pointer items-center space-x-2 focus:outline-none group"
         >
-          <div className="relative w-8 h-8 lg:w-10 lg:h-10 rounded-full overflow-hidden border-2 border-primary group-hover:border-secondary transition-colors duration-300">
+          <div className="relative w-9 h-9 rounded-full overflow-hidden border-2 border-primary group-hover:border-secondary transition-colors duration-300">
             {profileImage ? (
               <Image
                 src={profileImage}
@@ -37,12 +37,12 @@ const UserAvatarDropdown = ({setIsDropdownOpen, isDropdownOpen} : AuthButtonsPro
             ) : (
               // ফ্যালব্যাক আভাতার - যখন কোন ইমেজ নেই
               <div className="w-full h-full bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                <HiOutlineUser className="w-4 h-4 lg:w-5 lg:h-5 text-primary" />
+                <HiOutlineUser className="w-5 h-5 text-primary" />
               </div>
             )}
           </div>
           <HiOutlineChevronDown 
-            className={`w-3 h-3 lg:w-4 lg:h-4 text-accent transition-all duration-300 ${
+            className={`w-4 h-4 text-accent transition-all duration-300 ${
               isDropdownOpen ? 'rotate-180' : ''
             }`}
           />

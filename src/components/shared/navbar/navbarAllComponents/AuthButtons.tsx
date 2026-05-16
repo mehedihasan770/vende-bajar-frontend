@@ -14,20 +14,20 @@ const AuthButtons = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-3 xl:px-4 py-1.5 lg:py-2 cursor-pointer rounded-lg font-medium transition-all duration-300 flex items-center space-x-1 lg:space-x-2 border border-primary text-primary hover:bg-primary hover:text-white text-sm lg:text-base group"
+              className="px-4 py-2 cursor-pointer rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 border border-primary text-primary hover:bg-primary hover:text-white text-sm group"
             >
               <HiOutlineLogin className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
-              <span className="hidden xl:inline">Login</span>
+              <span>Login</span>
             </motion.button>
           </Link>
           <Link href={"/register"}>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 xl:px-4 py-1.5 lg:py-2 cursor-pointer rounded-lg font-medium text-white transition-all duration-300 flex items-center space-x-1 lg:space-x-2 border border-transparent bg-secondary hover:bg-secondary/90 text-sm lg:text-base shadow-sm hover:shadow"
+              className="px-4 py-2 cursor-pointer rounded-lg font-medium text-white transition-all duration-300 flex items-center space-x-2 border border-transparent bg-secondary hover:bg-secondary/90 text-sm shadow-sm hover:shadow"
             >
               <HiOutlineUser className="w-4 h-4" />
-              <span className="hidden xl:inline">Register</span>
+              <span>Register</span>
             </motion.button>
           </Link>
         </div>
