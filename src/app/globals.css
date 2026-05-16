@@ -7,24 +7,29 @@
 }
 
 @layer base {
+
   /* Global modern scrollbar config for ALL scrollbars */
   ::-webkit-scrollbar {
-    width: 8px; /* Slightly wider for the main monitor scrollbar */
+    width: 8px;
+    /* Slightly wider for the main monitor scrollbar */
     height: 8px;
   }
-  
+
   ::-webkit-scrollbar-track {
     background: transparent;
-    margin-block: 8px; /* Prevents scrollbar from extending into rounded corners */
+    margin-block: 8px;
+    /* Prevents scrollbar from extending into rounded corners */
   }
-  
+
   ::-webkit-scrollbar-thumb {
-    background-color: rgba(156, 163, 175, 0.5); /* Always visible */
+    background-color: rgba(156, 163, 175, 0.5);
+    /* Always visible */
     border-radius: 10px;
   }
 
   /* Darker when hovering exactly on the scrollbar thumb */
   ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(107, 114, 128, 0.8); /* gray-500 */
+    background-color: rgba(107, 114, 128, 0.8);
+    /* gray-500 */
   }
 }
