@@ -14,7 +14,7 @@ const GlassCard = ({ currentSlide, slides }: GlassCardProps) => {
       initial={{ opacity: 0, x: 30 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, delay: 0.3 }}
-      className="w-full md:w-102.5 p-8 rounded-4xl bg-white/60 backdrop-blur-3xl border border-white shadow-[0_20px_50px_rgb(0,0,0,0.05)] flex flex-col gap-6"
+      className="w-full lg:w-[410px] shrink-0 p-8 rounded-4xl bg-white/60 backdrop-blur-3xl border border-white shadow-[0_20px_50px_rgb(0,0,0,0.05)] flex flex-col gap-6"
     >
       {/* Context Text */}
       <AnimatePresence mode="wait">
@@ -24,7 +24,7 @@ const GlassCard = ({ currentSlide, slides }: GlassCardProps) => {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -10 }}
           transition={{ duration: 0.4 }}
-          className="min-h-[80px] sm:min-h-0"
+          className="min-h-[110px] sm:min-h-[130px] flex flex-col justify-center"
         >
           <p className="text-lg sm:text-xl font-bold text-gray-900 leading-relaxed mb-1 sm:mb-2">
             {slides[currentSlide].descHeader}

@@ -18,7 +18,7 @@ const HeroContent = ({ currentSlide, slides }: HeroContentProps) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col items-start gap-3 sm:gap-4 md:gap-5 min-h-[120px] sm:min-h-[180px] lg:min-h-0"
+          className="flex flex-col items-start gap-3 sm:gap-4 md:gap-5 min-h-[150px] sm:min-h-[180px] md:min-h-[220px] lg:min-h-[260px] xl:min-h-[300px]"
         >
           {/* Live Collection Badge */}
           <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-gray-200/60 bg-white/50 backdrop-blur-xl shadow-sm">
