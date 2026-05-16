@@ -59,7 +59,7 @@ const Navbar = () => {
   // Close mobile menu on window resize
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1024 && isOpen) {
+      if (window.innerWidth >= 1200 && isOpen) {
         setIsOpen(false)
       }
     }
@@ -97,8 +97,8 @@ const Navbar = () => {
             {/* Desktop Right Section (Links + Actions) */}
             <div className="hidden md:flex items-center gap-4 lg:gap-6">
 
-              {/* Navigation Group - Floating Box Style (Hidden on iPad, visible on lg+) */}
-              <div className="hidden lg:flex items-center bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-2 py-1 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)]">
+              {/* Navigation Group - Floating Box Style (Hidden below 1200px) */}
+              <div className="hidden min-[1200px]:flex items-center bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-2 py-1 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)]">
                 <NavLinks navLinks={navLinks} />
               </div>
 
@@ -117,8 +117,8 @@ const Navbar = () => {
                   {/* Cart Icon */}
                   <CurtButton />
 
-                  {/* Hamburger Menu specifically for iPad (md size) */}
-                  <div className="flex lg:hidden items-center ml-1 pl-2 border-l border-gray-200/50">
+                  {/* Hamburger Menu specifically for < 1200px screens */}
+                  <div className="flex min-[1200px]:hidden items-center ml-1 pl-2 border-l border-gray-200/50">
                     <MobileMenuButton setIsOpen={setIsOpen} isOpen={isOpen} />
                   </div>
                 </div>

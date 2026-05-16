@@ -35,7 +35,7 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-x-0 top-15 bottom-0 z-40 lg:hidden"
+            className="fixed inset-x-0 top-15 bottom-0 z-40 min-[1200px]:hidden"
             onClick={onClose}
           />
           
@@ -45,7 +45,7 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 z-50 lg:hidden overflow-y-auto max-h-[calc(100vh-80px)] scrollbar-hide"
+            className="fixed inset-x-0 top-16 z-50 min-[1200px]:hidden overflow-y-auto max-h-[calc(100vh-80px)] scrollbar-hide"
           >
             <div className="max-w-[92%] md:max-w-10/12 2xl:max-w-[1500px] mx-auto flex justify-end">
               <div className="w-full max-w-[450px] bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50 rounded-[24px] shadow-2xl mb-4">
