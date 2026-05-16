@@ -9,7 +9,7 @@ const HeroWatermark = () => {
         initial={{ y: 150, opacity: 0 }}
         animate={{ y: 0, opacity: 0.12 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        className="w-full flex justify-between text-[16vw] font-black text-gray-900 leading-[0.8] tracking-tighter select-none"
+        className="w-full flex justify-between text-[min(16vw,320px)] font-black text-gray-900 leading-[0.8] tracking-tighter select-none"
       >
         <span>BOLD</span>
         <span>GAZE</span>

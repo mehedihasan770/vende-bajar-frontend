@@ -49,7 +49,7 @@ const ProductCard = ({ item, index = 0 }: ProductCardProps) => {
         
         {/* Top Section: Image Container Wrapper with 1px padding */}
         <div className="relative w-full aspect-[4/3] bg-gray-100 rounded-[20px] p-[1px]">
-          <div className="relative w-full h-full bg-[#F4F5F7] rounded-[19px] overflow-hidden">
+          <div className="relative w-full h-full bg-[#F4F5F7] rounded-[19px] overflow-hidden isolate transform-gpu">
             
             {/* Top Left: Category (Acting as Brand) */}
             <div className="absolute top-3 left-3 z-20">
