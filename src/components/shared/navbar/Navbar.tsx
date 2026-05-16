@@ -105,17 +105,17 @@ const Navbar = () => {
               {/* Actions Group - Floating Box Style */}
               <div className="relative flex items-center">
                 <div className="flex items-center gap-2 bg-white/50 dark:bg-gray-900/50 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-xl px-2 py-1 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)]">
-                  {/* Wishlist Icon */}
-                  <WishlistButton />
-
-                  {/* Cart Icon */}
-                  <CurtButton />
-
                   {/* Login/Register or Avatar */}
                   <AuthButtons />
 
                   {/* Avatar with Dropdown */}
                   <UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} isDropdownOpen={isDropdownOpen} />
+
+                  {/* Wishlist Icon */}
+                  <WishlistButton />
+
+                  {/* Cart Icon */}
+                  <CurtButton />
 
                   {/* Hamburger Menu specifically for iPad (md size) */}
                   <div className="flex lg:hidden items-center ml-1 pl-2 border-l border-gray-200/50">
