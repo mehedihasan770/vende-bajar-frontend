@@ -96,7 +96,7 @@ const MobileMenu = ({ isOpen, onClose, navLinks, dropdownItems }: MobileMenuProp
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                <div className="md:hidden">
+                <div className="w-full">
                   <Link href={"/login"}>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
