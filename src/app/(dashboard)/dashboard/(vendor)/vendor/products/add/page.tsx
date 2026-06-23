@@ -104,24 +104,28 @@ const AddProductPage = () => {
     };
 
     return (
-        <div className="w-full p-4 sm:p-6 min-h-screen bg-gray-50/30 dark:bg-gray-950">
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Header Section */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-5 border-b border-gray-100">
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-                    <h1 className="text-2xl sm:text-3xl font-black text-accent dark:text-white tracking-tight">
-                        Add New <span className="text-primary">Product</span>
-                    </h1>
-                    <p className="text-gray-500 text-xs mt-1 font-medium italic">Configure your premium listing with Modular Components.</p>
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary/60">Vendor Module</span>
+                    </div>
+                    <h2 className="text-xl md:text-3xl font-black text-gray-900 tracking-tight">Add Product</h2>
+                    <p className="text-[12px] md:text-[13px] text-gray-500 mt-2 font-medium flex items-center gap-2">
+                        <span className="w-1 h-1 rounded-full bg-gray-300"></span>
+                        Path: <code className="bg-gray-50 text-primary border border-gray-100 px-1.5 py-0.5 rounded font-mono text-[11px]">vendor/products/add</code>
+                    </p>
                 </motion.div>
                 
                 <div className="flex gap-2">
-                    <button type="button" className="px-5 py-2.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl font-bold text-accent dark:text-white text-xs hover:border-primary/30 transition-all shadow-sm">
+                    <button type="button" className="px-5 py-2.5 bg-white border border-gray-200 rounded-xl font-bold text-gray-900 text-xs hover:border-primary/30 transition-all shadow-sm">
                         Draft
                     </button>
                     <button 
                         onClick={handleSubmit(onSubmit)}
                         disabled={isLoading}
-                        className="px-6 py-2.5 bg-primary text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-primary/20 hover:bg-accent transition-all active:scale-95 disabled:opacity-50"
+                        className="px-6 py-2.5 bg-primary text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-primary/20 hover:bg-gray-900 transition-all active:scale-95 disabled:opacity-50"
                     >
                         {isLoading ? 'Wait...' : 'Publish'}
                     </button>

@@ -3,12 +3,17 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Settings, Image as ImageIcon, User, Shield } from 'lucide-react';
+import { Settings, Image as ImageIcon, CreditCard, Bell, Search, Mail, Percent, Construction, Shield } from 'lucide-react';
 
 const sidebarLinks = [
-  { name: 'General', href: '/dashboard/admin/settings', icon: Settings },
+  { name: 'General', href: '/dashboard/admin/settings/general', icon: Settings },
   { name: 'Banner', href: '/dashboard/admin/settings/banner', icon: ImageIcon },
-  { name: 'Profile', href: '/dashboard/admin/settings/profile', icon: User },
+  { name: 'Payment', href: '/dashboard/admin/settings/payment', icon: CreditCard },
+  { name: 'Notifications', href: '/dashboard/admin/settings/notifications', icon: Bell },
+  { name: 'SEO', href: '/dashboard/admin/settings/seo', icon: Search },
+  { name: 'Tax', href: '/dashboard/admin/settings/tax', icon: Percent },
+  { name: 'Templates', href: '/dashboard/admin/settings/templates', icon: Mail },
+  { name: 'Maintenance', href: '/dashboard/admin/settings/maintenance', icon: Construction },
   { name: 'Security', href: '/dashboard/admin/settings/security', icon: Shield },
 ];
 
@@ -16,16 +21,16 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
   const pathname = usePathname();
 
   return (
-    <div className="p-4 md:p-6 xl:p-8">
-      <div className="mb-6 xl:mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Settings</h1>
-        <p className="text-sm md:text-base text-gray-500 mt-1.5">Manage your website configurations, banners, and preferences.</p>
+    <div className="p-4 md:p-5 xl:p-6">
+      <div className="mb-5 xl:mb-6">
+        <h1 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">Settings</h1>
+        <p className="text-[13px] md:text-sm text-gray-500 mt-1 font-medium">Manage your website configurations and security preferences.</p>
       </div>
 
-      <div className="flex flex-col xl:flex-row gap-6 xl:gap-8">
-        {/* Sidebar */}
-        <aside className="w-full xl:w-52 flex-shrink-0 xl:sticky xl:top-8 self-start">
-          <nav className="flex flex-row xl:flex-col gap-2 overflow-x-auto pb-2 xl:pb-0 custom-scrollbar">
+      <div className="flex flex-col xl:flex-row gap-5 xl:gap-6">
+        {/* Sub-Sidebar (Width Adjusted) */}
+        <aside className="w-full xl:w-48 flex-shrink-0 xl:sticky xl:top-6 self-start">
+          <nav className="flex flex-row xl:flex-col gap-1 overflow-x-auto pb-2 xl:pb-0 custom-scrollbar">
             {sidebarLinks.map((link) => {
               const isActive = pathname === link.href;
               const Icon = link.icon;
@@ -33,20 +38,20 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`relative flex flex-shrink-0 whitespace-nowrap items-center gap-2.5 px-4 py-3 rounded-2xl transition-all duration-300 font-bold text-sm md:text-base group z-10 ${
+                  className={`relative flex flex-shrink-0 whitespace-nowrap items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all duration-300 font-bold text-[13px] group z-10 ${
                     isActive 
-                      ? 'text-white shadow-lg shadow-orange-200/50' 
-                      : 'text-gray-500 hover:bg-orange-50 hover:text-primary'
+                      ? 'text-white shadow-md shadow-primary/10'
+                      : 'text-gray-500 hover:bg-gray-50 hover:text-primary'
                   }`}
                 >
                   {isActive && (
                     <motion.div 
                       layoutId="settings-active-pill"
-                      className="absolute inset-0 bg-primary rounded-2xl -z-10"
+                      className="absolute inset-0 bg-primary rounded-xl -z-10"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
-                  <Icon className={`w-4 h-4 md:w-[18px] md:h-[18px] ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-primary'}`} strokeWidth={isActive ? 2.5 : 2} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-primary'}`} strokeWidth={isActive ? 2.5 : 2} />
                   {link.name}
                 </Link>
               );
@@ -54,8 +59,8 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
           </nav>
         </aside>
 
-        {/* Content Area */}
-        <main className="flex-1 bg-white border border-gray-100 rounded-2xl md:rounded-3xl p-4 md:p-6 xl:p-8 shadow-sm overflow-hidden min-w-0">
+        {/* Content Area (Padding Adjusted) */}
+        <main className="flex-1 bg-white border border-gray-100 rounded-2xl md:rounded-[2rem] p-4 md:p-5 xl:p-6 shadow-xs overflow-hidden min-w-0">
           {children}
         </main>
       </div>

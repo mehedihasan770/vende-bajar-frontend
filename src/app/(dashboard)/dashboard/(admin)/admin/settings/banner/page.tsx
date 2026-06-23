@@ -10,14 +10,14 @@ import BannerForm from './components/BannerForm';
 export default function BannerSettingsPage() {
   const [activeSlide, setActiveSlide] = useState<number>(1);
 
-  // React Query দিয়ে ডেটা ফেচ করা
+  // React Query Ã Â¦Â¦Ã Â¦Â¿Ã Â§Å¸Ã Â§â€¡ Ã Â¦Â¡Ã Â§â€¡Ã Â¦Å¸Ã Â¦Â¾ Ã Â¦Â«Ã Â§â€¡Ã Â¦Å¡ Ã Â¦â€¢Ã Â¦Â°Ã Â¦Â¾
   const { data: queryData, isLoading: isFetching } = useQuery({
     queryKey: ['adminSliders'],
     queryFn: async () => {
       const res = await privateAxios.get('/sliders');
       return res.data;
     },
-    staleTime: 1000 * 60 * 5, // ৫ মিনিট ক্যাশ থাকবে
+    staleTime: 1000 * 60 * 5, // Ã Â§Â« Ã Â¦Â®Ã Â¦Â¿Ã Â¦Â¨Ã Â¦Â¿Ã Â¦Å¸ Ã Â¦â€¢Ã Â§ÂÃ Â¦Â¯Ã Â¦Â¾Ã Â¦Â¶ Ã Â¦Â¥Ã Â¦Â¾Ã Â¦â€¢Ã Â¦Â¬Ã Â§â€¡
   });
 
   const slidersData = queryData?.data || [];
@@ -36,9 +36,10 @@ export default function BannerSettingsPage() {
           </span>
         </div>
 
-        {/* ফর্ম অংশ */}
+        {/* Ã Â¦Â«Ã Â¦Â°Ã Â§ÂÃ Â¦Â® Ã Â¦â€¦Ã Â¦â€šÃ Â¦Â¶ */}
         <BannerForm activeSlide={activeSlide} slidersData={slidersData} />
       </div>
     </div>
   );
 }
+

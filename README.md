@@ -94,3 +94,112 @@ Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
 ---
 
 > **Design Philosophy:** *"A website shouldn't just show products; it should make the user feel the luxury of the product before they even buy it."*
+
+
+
+## 🔴 ADMIN ROUTES (Final)
+
+```
+app/(dashboard)/dashboard/admin/
+│
+├── page.tsx                                    → /dashboard/admin
+│
+├── users/
+│   ├── page.tsx                                → /dashboard/admin/users
+│   ├── create/page.tsx                         → /dashboard/admin/users/create
+│   └── [id]/
+│       ├── edit/page.tsx                       → /dashboard/admin/users/[id]/edit
+│       └── permissions/page.tsx                → /dashboard/admin/users/[id]/permissions
+│
+├── vendors/
+│   ├── page.tsx                                → /dashboard/admin/vendors
+│   ├── create/page.tsx                         → /dashboard/admin/vendors/create
+│   └── [id]/
+│       ├── edit/page.tsx                       → /dashboard/admin/vendors/[id]/edit
+│       └── performance/page.tsx                → /dashboard/admin/vendors/[id]/performance
+│
+├── products/
+│   ├── page.tsx                                → /dashboard/admin/products
+│   └── [id]/page.tsx                           → /dashboard/admin/products/[id]
+│
+├── inventory-log/
+│   └── page.tsx                                → /dashboard/admin/inventory-log
+│
+├── orders/
+│   ├── page.tsx                                → /dashboard/admin/orders
+│   └── [id]/
+│       ├── page.tsx                            → /dashboard/admin/orders/[id]
+│       ├── invoice/page.tsx                    → /dashboard/admin/orders/[id]/invoice
+│       └── assign-delivery/page.tsx            → /dashboard/admin/orders/[id]/assign-delivery
+│
+├── returns/
+│   ├── page.tsx                                → /dashboard/admin/returns
+│   └── [id]/page.tsx                           → /dashboard/admin/returns/[id]
+│
+├── transactions/
+│   ├── page.tsx                                → /dashboard/admin/transactions
+│   ├── refunds/page.tsx                        → /dashboard/admin/transactions/refunds
+│   └── [id]/page.tsx                           → /dashboard/admin/transactions/[id]
+│
+├── categories/
+│   ├── page.tsx                                → /dashboard/admin/categories
+│   ├── create/page.tsx                         → /dashboard/admin/categories/create
+│   └── [id]/edit/page.tsx                      → /dashboard/admin/categories/[id]/edit
+│
+├── coupons/
+│   ├── page.tsx                                → /dashboard/admin/coupons
+│   ├── create/page.tsx                         → /dashboard/admin/coupons/create
+│   └── [id]/edit/page.tsx                      → /dashboard/admin/coupons/[id]/edit
+│
+├── analytics/
+│   ├── page.tsx                                → /dashboard/admin/analytics
+│   ├── sales-report/page.tsx                   → /dashboard/admin/analytics/sales-report
+│   └── best-selling/page.tsx                   → /dashboard/admin/analytics/best-selling
+│
+├── support/
+│   ├── page.tsx                                → /dashboard/admin/support
+│   └── [id]/page.tsx                           → /dashboard/admin/support/[id]
+│
+├── reviews/
+│   ├── page.tsx                                → /dashboard/admin/reviews
+│   └── [id]/page.tsx                           → /dashboard/admin/reviews/[id]
+│
+├── customers/
+│   ├── page.tsx                                → /dashboard/admin/customers
+│   └── [id]/page.tsx                           → /dashboard/admin/customers/[id]
+│
+├── shipping/
+│   └── page.tsx                                → /dashboard/admin/shipping
+│
+├── pages/
+│   ├── page.tsx                                → /dashboard/admin/pages
+│   └── [slug]/edit/page.tsx                    → /dashboard/admin/pages/[slug]/edit
+│
+├── notifications/
+│   └── page.tsx                                → /dashboard/admin/notifications
+│
+├── activity-log/
+│   └── page.tsx                                → /dashboard/admin/activity-log
+│
+├── monitoring/
+│   ├── page.tsx                                → /dashboard/admin/monitoring
+│   ├── api-logs/page.tsx                       → /dashboard/admin/monitoring/api-logs
+│   ├── server-health/page.tsx                  → /dashboard/admin/monitoring/server-health
+│   └── error-logs/page.tsx                     → /dashboard/admin/monitoring/error-logs
+│
+└── settings/
+    ├── general/page.tsx                        → /dashboard/admin/settings/general
+    ├── payment/page.tsx                        → /dashboard/admin/settings/payment
+    ├── banner/
+    │   ├── page.tsx                            → /dashboard/admin/settings/banner
+    │   ├── create/page.tsx                     → /dashboard/admin/settings/banner/create
+    │   └── [id]/edit/page.tsx                  → /dashboard/admin/settings/banner/[id]/edit
+    ├── templates/page.tsx                      → /dashboard/admin/settings/templates
+    ├── tax/page.tsx                            → /dashboard/admin/settings/tax
+    ├── notifications/page.tsx                  → /dashboard/admin/settings/notifications
+    ├── seo/page.tsx                            → /dashboard/admin/settings/seo
+    ├── maintenance/page.tsx                    → /dashboard/admin/settings/maintenance
+    └── security/page.tsx                       → /dashboard/admin/settings/security
+
+
+
