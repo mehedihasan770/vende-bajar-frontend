@@ -11,7 +11,7 @@ const SupportCard = ({ isCollapsed, role }: SupportCardProps) => {
     <div className="p-4 border-t border-gray-50 bg-gray-50/30">
       <Link href={`/dashboard/${role?.toLowerCase()}/support`}>
         {isCollapsed ? (
-          <div className="bg-white rounded-2xl p-2 border border-gray-100 shadow-sm hover:border-secondary/20 transition-all flex justify-center items-center h-[52px]">
+          <div className="bg-white rounded-2xl p-2 border border-gray-100 shadow-sm hover:border-secondary/20 transition-all flex justify-center items-center h-13">
             <HelpCircle size={18} className="text-secondary" />
           </div>
         ) : (

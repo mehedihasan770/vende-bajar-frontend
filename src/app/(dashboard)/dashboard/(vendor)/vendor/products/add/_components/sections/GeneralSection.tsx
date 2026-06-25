@@ -15,11 +15,11 @@ export default function GeneralSection({
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Name */}
-        <div className="col-span-2">
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="col-span-2 min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Product Name <span className="text-red-500">*</span>
           </label>
-          <p className="text-[11px] text-gray-400 mb-3">
+          <p className="text-[11px] text-gray-400 mb-3 truncate">
             Give your product an attractive and descriptive name
           </p>
           <input
@@ -36,11 +36,11 @@ export default function GeneralSection({
         </div>
 
         {/* Category & SubCategory */}
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Category <span className="text-red-500">*</span>
           </label>
-          <p className="text-[11px] text-gray-400 mb-2">
+          <p className="text-[11px] text-gray-400 mb-2 truncate">
             Select the primary category for this product
           </p>
           <input
@@ -55,11 +55,11 @@ export default function GeneralSection({
             </p>
           )}
         </div>
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Sub-Category (Optional)
           </label>
-          <p className="text-[11px] text-gray-400 mb-2">
+          <p className="text-[11px] text-gray-400 mb-2 truncate">
             Specify a sub-category if applicable
           </p>
           <input
@@ -71,11 +71,11 @@ export default function GeneralSection({
         </div>
 
         {/* Brand & Tags */}
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Brand <span className="text-red-500">*</span>
           </label>
-          <p className="text-[11px] text-gray-400 mb-2">
+          <p className="text-[11px] text-gray-400 mb-2 truncate">
             The manufacturer or brand name
           </p>
           <input
@@ -90,11 +90,11 @@ export default function GeneralSection({
             </p>
           )}
         </div>
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Tags (Optional)
           </label>
-          <p className="text-[11px] text-gray-400 mb-2">
+          <p className="text-[11px] text-gray-400 mb-2 truncate">
             Enter keywords separated by commas for better search
           </p>
           <input
@@ -107,11 +107,11 @@ export default function GeneralSection({
       </div>
 
       {/* Short Description */}
-      <div>
-        <label className="block text-sm font-bold text-gray-700 mb-1">
+      <div className="min-w-0">
+        <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
           Short Description (Optional)
         </label>
-        <p className="text-[11px] text-gray-400 mb-2">
+        <p className="text-[11px] text-gray-400 mb-2 truncate">
           A brief 1-2 line summary of the product
         </p>
         <textarea
@@ -123,11 +123,11 @@ export default function GeneralSection({
       </div>
 
       {/* Full Description */}
-      <div>
-        <label className="block text-sm font-bold text-gray-700 mb-1">
+      <div className="min-w-0">
+        <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
           Full Description <span className="text-red-500">*</span>
         </label>
-        <p className="text-[11px] text-gray-400 mb-2">
+        <p className="text-[11px] text-gray-400 mb-2 truncate">
           Provide detailed information about the product
         </p>
         <textarea

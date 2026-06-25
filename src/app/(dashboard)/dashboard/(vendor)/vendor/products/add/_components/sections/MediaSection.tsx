@@ -27,11 +27,11 @@ export default function MediaSection({
       {/* Thumbnail and Video Inputs */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
         <div className="space-y-8">
-          <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">
+          <div className="min-w-0">
+            <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
               Main Thumbnail URL <span className="text-red-500">*</span>
             </label>
-            <p className="text-[11px] text-gray-400 mb-3">
+            <p className="text-[11px] text-gray-400 mb-3 truncate">
               This will be shown as the primary image on listings.
             </p>
             <div className="relative">
@@ -52,11 +52,11 @@ export default function MediaSection({
             )}
           </div>
 
-          <div className="pt-4 border-t border-gray-50">
-            <label className="block text-sm font-bold text-gray-700 mb-1">
+          <div className="pt-4 border-t border-gray-50 min-w-0">
+            <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
               Video URL (Optional)
             </label>
-            <p className="text-[11px] text-gray-400 mb-3">
+            <p className="text-[11px] text-gray-400 mb-3 truncate">
               Provide a link from YouTube or a direct video URL.
             </p>
             <div className="relative">
@@ -96,11 +96,11 @@ export default function MediaSection({
       </div>
 
       {/* Gallery Placeholder (Simplified for single input array) */}
-      <div className="border-t border-gray-100 pt-6">
-        <label className="block text-sm font-bold text-gray-700 mb-1">
+      <div className="border-t border-gray-100 pt-6 min-w-0">
+        <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
           Gallery Image URL (Optional)
         </label>
-        <p className="text-[11px] text-gray-400 mb-3">
+        <p className="text-[11px] text-gray-400 mb-3 truncate">
           Add links for additional product images. Separate multiple links with
           commas (,).
         </p>

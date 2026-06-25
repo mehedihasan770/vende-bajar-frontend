@@ -15,11 +15,11 @@ export default function InventorySection({
     <div className="space-y-8">
       {/* Pricing Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Base Price ($) <span className="text-red-500">*</span>
           </label>
-          <p className="text-[11px] text-gray-400 mb-2">
+          <p className="text-[11px] text-gray-400 mb-2 truncate">
             Standard retail price
           </p>
           <input
@@ -39,11 +39,11 @@ export default function InventorySection({
           )}
         </div>
 
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Sale Price (Optional)
           </label>
-          <p className="text-[11px] text-gray-400 mb-2">
+          <p className="text-[11px] text-gray-400 mb-2 truncate">
             Discounted price if applicable
           </p>
           <input
@@ -55,11 +55,11 @@ export default function InventorySection({
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Cost Price (Optional)
           </label>
-          <p className="text-[11px] text-gray-400 mb-2">
+          <p className="text-[11px] text-gray-400 mb-2 truncate">
             Internal cost for profit calculation
           </p>
           <input
@@ -74,8 +74,8 @@ export default function InventorySection({
 
       {/* Sale Dates */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 bg-gray-50 rounded-2xl border border-gray-200">
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Sale Start Date
           </label>
           <input
@@ -84,8 +84,8 @@ export default function InventorySection({
             className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-primary/10 focus:border-primary focus:outline-none focus:ring-4 transition-all"
           />
         </div>
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Sale End Date
           </label>
           <input
@@ -98,11 +98,11 @@ export default function InventorySection({
 
       {/* Stock & SKU */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-gray-100 pt-6">
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Initial Stock <span className="text-red-500">*</span>
           </label>
-          <p className="text-[11px] text-gray-400 mb-2">
+          <p className="text-[11px] text-gray-400 mb-2 truncate">
             Number of units currently available
           </p>
           <input
@@ -121,11 +121,11 @@ export default function InventorySection({
           )}
         </div>
 
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             SKU (Stock Keeping Unit)
           </label>
-          <p className="text-[11px] text-gray-400 mb-2">
+          <p className="text-[11px] text-gray-400 mb-2 truncate">
             Unique identifier code (e.g. SNY-HDP-01)
           </p>
           <input
@@ -136,11 +136,11 @@ export default function InventorySection({
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">
+        <div className="min-w-0">
+          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Low Stock Alert
           </label>
-          <p className="text-[11px] text-gray-400 mb-2">
+          <p className="text-[11px] text-gray-400 mb-2 truncate">
             Notify when stock falls below this level
           </p>
           <input

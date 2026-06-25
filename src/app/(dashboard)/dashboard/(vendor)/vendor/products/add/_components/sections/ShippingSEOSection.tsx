@@ -24,11 +24,11 @@ export default function ShippingSEOSection({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">
+          <div className="min-w-0">
+            <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
               Weight (KG)
             </label>
-            <p className="text-[11px] text-gray-400 mb-2">
+            <p className="text-[11px] text-gray-400 mb-2 truncate">
               Product weight for shipping cost calculation
             </p>
             <input
@@ -41,11 +41,11 @@ export default function ShippingSEOSection({
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="col-span-1 sm:col-span-3">
-              <label className="block text-sm font-bold text-gray-700 mb-1">
+            <div className="col-span-1 sm:col-span-3 min-w-0">
+              <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
                 Dimensions (CM)
               </label>
-              <p className="text-[11px] text-gray-400 mb-2">
+              <p className="text-[11px] text-gray-400 mb-2 truncate">
                 Length x Width x Height
               </p>
             </div>
@@ -81,11 +81,11 @@ export default function ShippingSEOSection({
         </div>
 
         <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">
+          <div className="min-w-0">
+            <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
               Meta Title (Optional)
             </label>
-            <p className="text-[11px] text-gray-400 mb-2">
+            <p className="text-[11px] text-gray-400 mb-2 truncate">
               The title shown in search engine results
             </p>
             <input
@@ -95,11 +95,11 @@ export default function ShippingSEOSection({
               placeholder="SEO friendly title"
             />
           </div>
-          <div>
-            <label className="block text-sm font-bold text-gray-700 mb-1">
+          <div className="min-w-0">
+            <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
               Meta Description (Optional)
             </label>
-            <p className="text-[11px] text-gray-400 mb-2">
+            <p className="text-[11px] text-gray-400 mb-2 truncate">
               Brief SEO-friendly description of the product
             </p>
             <textarea
