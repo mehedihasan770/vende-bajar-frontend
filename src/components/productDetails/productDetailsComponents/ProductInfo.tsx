@@ -15,18 +15,7 @@ import {
 import ProductRating from './ProductRating';
 
 interface ProductInfoProps {
-  product: {
-    _id: string;
-    name: string;
-    brand: string;
-    shortDescription: string;
-    rating: number;
-    numReviews: number;
-    isBestSeller: boolean;
-    price: number;
-    oldPrice: number;
-    stock: number;
-  };
+  product: any; // Using any for now to handle the complex professional schema
   quantity: number;
   setQuantity: (qty: number) => void;
   selectedSize: string;
@@ -39,20 +28,33 @@ export const ProductInfo = ({
   setQuantity,
 }: ProductInfoProps) => {
 
-  const discountAmount = product.oldPrice - product.price;
+  const displayPrice = product.salePrice && product.salePrice > 0 ? product.salePrice : product.basePrice;
+  const hasDiscount = product.salePrice && product.salePrice < product.basePrice;
+  const discountAmount = product.basePrice - (product.salePrice || 0);
 
   return (
     <div className="space-y-4 sm:space-y-5">
 
       <div>
-        {product.brand && (
-          <Link 
-            href={`/products}`}
-            className="text-secondary hover:text-primary font-medium text-xs sm:text-sm uppercase tracking-wide transition-colors inline-block"
-          >
-            {product.brand}
-          </Link>
-        )}
+        <div className="flex items-center justify-between">
+          {product.brand && (
+            <Link
+              href={`/products`}
+              className="text-secondary hover:text-primary font-medium text-xs sm:text-sm uppercase tracking-wide transition-colors inline-block"
+            >
+              {product.brand}
+            </Link>
+          )}
+
+          {/* Vendor Info Badge */}
+          {product.vendor && (
+            <div className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-lg border border-gray-100">
+              <span className="text-[10px] text-gray-500 font-medium">Sold by:</span>
+              <span className="text-[10px] text-primary font-bold">{product.vendor.fullName}</span>
+            </div>
+          )}
+        </div>
+
         <h1 className="text-lg sm:text-xl xl:text-2xl font-bold text-accent mt-1 leading-tight">
           {product.name}
         </h1>
@@ -64,19 +66,19 @@ export const ProductInfo = ({
 
         {product.isBestSeller && (
           <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-accent/10 text-accent text-[10px] sm:text-xs rounded-full font-medium">
-            estseller
+            Bestseller
           </span>
         )}
       </div>
 
       <div className="flex items-baseline gap-2 sm:gap-3 flex-wrap">
         <span className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">
-          ৳{product.price.toLocaleString()}
+          ৳{displayPrice.toLocaleString()}
         </span>
-        {product.oldPrice > product.price && (
+        {hasDiscount && (
           <>
             <span className="text-sm sm:text-base text-gray-400 line-through">
-              ৳{product.oldPrice.toLocaleString()}
+              ৳{product.basePrice.toLocaleString()}
             </span>
             <span className="text-xs sm:text-sm text-green-600 font-medium">
               Save ৳{discountAmount.toLocaleString()}

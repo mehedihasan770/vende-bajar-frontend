@@ -1,11 +1,11 @@
 import React from 'react';
+import AddProductForm from './_components/AddProductForm';
 
-const AddProductPage = () => {
+export default function AddProductPage() {
   return (
-    <div>
-      Add Product Page
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-5xl mx-auto py-8">
+      {/* Main Form Body */}
+      <AddProductForm />
     </div>
   );
-};
-
-export default AddProductPage;
+}

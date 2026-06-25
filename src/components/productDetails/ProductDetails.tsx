@@ -157,7 +157,7 @@ export default function ProductDetailsPage({id} : ID) {
 
   if (productLoading) {
     return (
-      <div className="flex justify-center items-center min-h-100">
+      <div className="flex justify-center items-center min-h-[400px]">
         <div className="relative">
           <div className="w-12 h-12 rounded-full border-4 border-gray-200"></div>
           <div className="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin absolute top-0"></div>
@@ -166,48 +166,44 @@ export default function ProductDetailsPage({id} : ID) {
     );
   }
 
-  if (productError) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-100 text-center">
-        <div className="text-red-500 text-6xl mb-4">⚠️</div>
-        <h3 className="text-lg font-semibold text-accent mb-2">Failed to load products</h3>
-        <p className="text-gray-500">Please try again</p>
-      </div>
-    );
-  }
+  const productData = product?.data; // Extracting the 'data' from API response
 
-  if (!product) {
+  if (!productData) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-100 text-center">
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
         <div className="text-gray-400 text-6xl mb-4">📦</div>
         <h3 className="text-lg font-semibold text-accent mb-2">Products Not Found</h3>
       </div>
     );
   }
 
+  const allImages = productData.images?.length > 0
+    ? [productData.thumbnail, ...productData.images]
+    : [productData.thumbnail];
+
   return (
     <div className="min-h-screen py-6 sm:py-8 lg:py-10">
       <div>
 
         <Breadcrumb
-          category={product.category} 
-          productName={product.name} 
+          category={productData.category}
+          productName={productData.name}
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 lg:gap-10">
           
           <ImageGallery
-            images={[product.thumbnail, ...product.images]}
-            productName={product.name}
-            oldPrice={product.oldPrice}
-            price={product.price}
-            isNewArrival={product.isNewArrival}
+            images={allImages}
+            productName={productData.name}
+            oldPrice={productData.basePrice}
+            price={productData.salePrice || productData.basePrice}
+            isNewArrival={productData.isNewArrival}
             selectedImage={selectedImage}
             setSelectedImage={setSelectedImage}
           />
 
           <ProductInfo
-            product={product}
+            product={productData}
             quantity={quantity}
             setQuantity={setQuantity}
             selectedSize={selectedSize}
@@ -216,7 +212,7 @@ export default function ProductDetailsPage({id} : ID) {
         </div>
 
         <ProductTabs
-          product={product}
+          product={productData}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />

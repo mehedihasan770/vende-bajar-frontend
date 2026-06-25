@@ -1,28 +1,44 @@
 "use client";
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { TrendingUp, FileText, BarChart3 } from 'lucide-react';
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
+import { TrendingUp, FileText, BarChart3 } from "lucide-react";
 
 const sidebarLinks = [
-  { name: 'Overview', href: '/dashboard/admin/analytics', icon: TrendingUp },
-  { name: 'Sales Report', href: '/dashboard/admin/analytics/sales-report', icon: FileText },
-  { name: 'Best Selling', href: '/dashboard/admin/analytics/best-selling', icon: BarChart3 },
+  { name: "Overview", href: "/dashboard/admin/analytics", icon: TrendingUp },
+  {
+    name: "Sales Report",
+    href: "/dashboard/admin/analytics/sales-report",
+    icon: FileText,
+  },
+  {
+    name: "Best Selling",
+    href: "/dashboard/admin/analytics/best-selling",
+    icon: BarChart3,
+  },
 ];
 
-export default function AnalyticsLayout({ children }: { children: React.ReactNode }) {
+export default function AnalyticsLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
 
   return (
     <div className="p-4 md:p-5 xl:p-6">
       <div className="mb-5 xl:mb-6">
-        <h1 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">Analytics</h1>
-        <p className="text-[13px] md:text-sm text-gray-500 mt-1 font-medium">Track your business growth and sales performance.</p>
+        <h1 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">
+          Analytics
+        </h1>
+        <p className="text-[13px] md:text-sm text-gray-500 mt-1 font-medium">
+          Track your business growth and sales performance.
+        </p>
       </div>
 
       <div className="flex flex-col xl:flex-row gap-5 xl:gap-6">
-        <aside className="w-full xl:w-48 flex-shrink-0 xl:sticky xl:top-6 self-start">
+        <aside className="w-full xl:w-[138px] flex-shrink-0 xl:sticky xl:top-6 self-start">
           <nav className="flex flex-row xl:flex-col gap-1 overflow-x-auto pb-2 xl:pb-0 custom-scrollbar">
             {sidebarLinks.map((link) => {
               const isActive = pathname === link.href;
@@ -32,17 +48,26 @@ export default function AnalyticsLayout({ children }: { children: React.ReactNod
                   key={link.name}
                   href={link.href}
                   className={`relative flex flex-shrink-0 whitespace-nowrap items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all duration-300 font-bold text-[13px] group z-10 ${
-                    isActive ? 'text-white shadow-md shadow-primary/10' : 'text-gray-500 hover:bg-gray-50 hover:text-primary'
+                    isActive
+                      ? "text-white shadow-md shadow-primary/10"
+                      : "text-gray-500 hover:bg-gray-50 hover:text-primary"
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="analytics-active-pill"
                       className="absolute inset-0 bg-primary rounded-2xl -z-10"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      transition={{
+                        type: "spring",
+                        bounce: 0.2,
+                        duration: 0.6,
+                      }}
                     />
                   )}
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-primary'}`} strokeWidth={isActive ? 2.5 : 2} />
+                  <Icon
+                    className={`w-4 h-4 ${isActive ? "text-white" : "text-gray-400 group-hover:text-primary"}`}
+                    strokeWidth={isActive ? 2.5 : 2}
+                  />
                   {link.name}
                 </Link>
               );

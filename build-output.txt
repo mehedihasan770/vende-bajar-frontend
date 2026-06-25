@@ -1,0 +1,134 @@
+
+> vende-bajar@0.1.0 build
+> next build
+
+▲ Next.js 16.1.7 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 74s
+  Running TypeScript ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/80) ...
+  Generating static pages using 3 workers (20/80) 
+  Generating static pages using 3 workers (40/80) 
+  Generating static pages using 3 workers (60/80) 
+✓ Generating static pages using 3 workers (80/80) in 6.7s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /cart
+├ ○ /dashboard
+├ ○ /dashboard/admin
+├ ○ /dashboard/admin/activity-log
+├ ○ /dashboard/admin/analytics
+├ ○ /dashboard/admin/analytics/best-selling
+├ ○ /dashboard/admin/analytics/sales-report
+├ ○ /dashboard/admin/categories
+├ ƒ /dashboard/admin/categories/[id]/edit
+├ ○ /dashboard/admin/categories/create
+├ ○ /dashboard/admin/coupons
+├ ƒ /dashboard/admin/coupons/[id]/edit
+├ ○ /dashboard/admin/coupons/create
+├ ○ /dashboard/admin/customers
+├ ƒ /dashboard/admin/customers/[id]
+├ ○ /dashboard/admin/inventory-log
+├ ○ /dashboard/admin/monitoring
+├ ○ /dashboard/admin/monitoring/api-logs
+├ ○ /dashboard/admin/monitoring/error-logs
+├ ○ /dashboard/admin/monitoring/server-health
+├ ○ /dashboard/admin/notifications
+├ ○ /dashboard/admin/orders
+├ ƒ /dashboard/admin/orders/[id]
+├ ƒ /dashboard/admin/orders/[id]/assign-delivery
+├ ƒ /dashboard/admin/orders/[id]/invoice
+├ ○ /dashboard/admin/pages
+├ ƒ /dashboard/admin/pages/[slug]/edit
+├ ○ /dashboard/admin/products
+├ ƒ /dashboard/admin/products/[id]
+├ ○ /dashboard/admin/returns
+├ ƒ /dashboard/admin/returns/[id]
+├ ○ /dashboard/admin/reviews
+├ ƒ /dashboard/admin/reviews/[id]
+├ ○ /dashboard/admin/settings
+├ ○ /dashboard/admin/settings/banner
+├ ƒ /dashboard/admin/settings/banner/[id]/edit
+├ ○ /dashboard/admin/settings/banner/create
+├ ○ /dashboard/admin/settings/general
+├ ○ /dashboard/admin/settings/maintenance
+├ ○ /dashboard/admin/settings/notifications
+├ ○ /dashboard/admin/settings/payment
+├ ○ /dashboard/admin/settings/security
+├ ○ /dashboard/admin/settings/seo
+├ ○ /dashboard/admin/settings/tax
+├ ○ /dashboard/admin/settings/templates
+├ ○ /dashboard/admin/shipping
+├ ○ /dashboard/admin/support
+├ ƒ /dashboard/admin/support/[id]
+├ ○ /dashboard/admin/transactions
+├ ƒ /dashboard/admin/transactions/[id]
+├ ○ /dashboard/admin/transactions/refunds
+├ ○ /dashboard/admin/users
+├ ƒ /dashboard/admin/users/[id]
+├ ƒ /dashboard/admin/users/[id]/edit
+├ ƒ /dashboard/admin/users/[id]/permissions
+├ ○ /dashboard/admin/users/create
+├ ○ /dashboard/admin/vendors
+├ ƒ /dashboard/admin/vendors/[id]
+├ ƒ /dashboard/admin/vendors/[id]/edit
+├ ƒ /dashboard/admin/vendors/[id]/performance
+├ ○ /dashboard/admin/vendors/create
+├ ○ /dashboard/user
+├ ○ /dashboard/user/addresses
+├ ƒ /dashboard/user/addresses/[id]/edit
+├ ○ /dashboard/user/addresses/add
+├ ○ /dashboard/user/coupons
+├ ○ /dashboard/user/notifications
+├ ○ /dashboard/user/notifications/preferences
+├ ○ /dashboard/user/orders
+├ ƒ /dashboard/user/orders/[id]
+├ ƒ /dashboard/user/orders/[id]/invoice
+├ ○ /dashboard/user/payments
+├ ƒ /dashboard/user/payments/[id]
+├ ○ /dashboard/user/profile
+├ ○ /dashboard/user/profile/deactivate
+├ ○ /dashboard/user/profile/security
+├ ○ /dashboard/user/returns
+├ ƒ /dashboard/user/returns/[id]
+├ ○ /dashboard/user/returns/create
+├ ○ /dashboard/user/reviews
+├ ƒ /dashboard/user/reviews/[id]/edit
+├ ○ /dashboard/user/support
+├ ƒ /dashboard/user/support/[id]
+├ ○ /dashboard/user/support/create
+├ ○ /dashboard/user/wishlist
+├ ○ /dashboard/vendor
+├ ○ /dashboard/vendor/activity-history
+├ ○ /dashboard/vendor/analytics
+├ ○ /dashboard/vendor/notifications
+├ ○ /dashboard/vendor/orders
+├ ƒ /dashboard/vendor/orders/[id]
+├ ○ /dashboard/vendor/products
+├ ƒ /dashboard/vendor/products/[id]/edit
+├ ○ /dashboard/vendor/products/add
+├ ○ /dashboard/vendor/products/bulk-upload
+├ ○ /dashboard/vendor/profile
+├ ○ /dashboard/vendor/reviews
+├ ○ /dashboard/vendor/sales-overview
+├ ○ /dashboard/vendor/support
+├ ƒ /dashboard/vendor/support/[id]
+├ ○ /login
+├ ○ /products
+├ ƒ /products/[id]
+├ ○ /profile
+├ ○ /register
+└ ○ /wishlist
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
