@@ -109,7 +109,7 @@ export default function AddProductForm() {
             ) : (
               <Save size={18} />
             )}
-            <span className="text-sm">Publish Product Listing</span>
+            <span className="text-sm">post</span>
           </button>
         </div>
       </div>
