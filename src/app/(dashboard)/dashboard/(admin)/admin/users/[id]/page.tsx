@@ -1,5 +1,5 @@
-import React from 'react';
-import DashboardPageTitle from '@/app/(dashboard)/dashboard/components/DashboardPageTitle';
+import React from "react";
+import DashboardPageTitle from "@/app/(dashboard)/dashboard/components/DashboardPageTitle";
 
 const UserDetailPage = () => {
   return (

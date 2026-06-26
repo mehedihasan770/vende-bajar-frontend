@@ -38,7 +38,10 @@ export default function DashboardPageTitle({
             {description ?? (
               <>
                 <span className="w-1 h-1 rounded-full bg-gray-300 inline-block" />
-                Path: <code className="bg-gray-50 text-primary border border-gray-100 px-1.5 py-0.5 rounded font-mono text-[11px]">{pathLabel}</code>
+                Path:{" "}
+                <code className="bg-gray-50 text-primary border border-gray-100 px-1.5 py-0.5 rounded font-mono text-[11px]">
+                  {pathLabel}
+                </code>
               </>
             )}
           </p>
@@ -46,7 +49,9 @@ export default function DashboardPageTitle({
       </div>
 
       {badgeLabel ? (
-        <div className={`px-3 py-1.5 rounded-xl border text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-xs ${badgeClassMap[badgeTone]}`}>
+        <div
+          className={`px-3 py-1.5 rounded-xl border text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-xs ${badgeClassMap[badgeTone]}`}
+        >
           {badgeLabel}
         </div>
       ) : null}

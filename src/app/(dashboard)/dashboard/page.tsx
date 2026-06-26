@@ -1,5 +1,5 @@
-﻿import React from 'react';
-import DashboardPageTitle from '@/app/(dashboard)/dashboard/components/DashboardPageTitle';
+﻿import React from "react";
+import DashboardPageTitle from "@/app/(dashboard)/dashboard/components/DashboardPageTitle";
 
 const DashboardEntryPage = () => {
   return (
@@ -11,7 +11,8 @@ const DashboardEntryPage = () => {
       />
       <div className="bg-white border border-gray-200 rounded-[2rem] p-8 shadow-sm text-gray-600">
         <p className="text-sm leading-7">
-          Welcome to your dashboard. Use the navigation panel to open admin, vendor, or user sections and continue managing the store.
+          Welcome to your dashboard. Use the navigation panel to open admin,
+          vendor, or user sections and continue managing the store.
         </p>
       </div>
     </div>

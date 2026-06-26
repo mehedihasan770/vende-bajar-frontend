@@ -74,7 +74,7 @@ export default function ProductsLayout({
             })}
           </nav>
         </aside>
-        <main className="flex-1 bg-white border border-gray-100 rounded-2xl md:rounded-[2rem] p-4 md:p-5 xl:p-6 shadow-xs overflow-hidden min-w-0">
+        <main className="flex-1 bg-white border-none sm:border sm:border-gray-100 rounded-2xl md:rounded-[2rem] px-0 py-0 sm:px-4 sm:py-4 lg:p-4 shadow-none sm:shadow-sm lg:shadow-md overflow-hidden min-w-0">
           {children}
         </main>
       </div>

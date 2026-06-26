@@ -15,7 +15,8 @@ export interface ProductFormData {
   sku: string;
   thumbnail: string;
   videoUrl?: string;
-  images: string;
+  images: string[];
+  specifications?: Record<string, string>;
   inventory: {
     lowStockThreshold: number;
     allowBackorder: boolean;
@@ -33,3 +34,11 @@ export interface ProductFormData {
   metaTitle?: string;
   metaDescription?: string;
 }
+
+export type ProductFormValues = Omit<
+  ProductFormData,
+  "images" | "specifications"
+> & {
+  images: { url: string }[];
+  specifications: { key: string; value: string }[];
+};
