@@ -1,9 +1,9 @@
 // components/product/ImageGallery.tsx
-'use client';
+"use client";
 
-import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
-import { HiOutlineArrowLeft, HiOutlineArrowRight } from 'react-icons/hi';
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import { HiOutlineArrowLeft, HiOutlineArrowRight } from "react-icons/hi";
 
 // এই কম্পোনেন্টের নিজস্ব টাইপ
 interface ImageGalleryProps {
@@ -11,36 +11,33 @@ interface ImageGalleryProps {
   productName: string;
   oldPrice: number;
   price: number;
-  isNewArrival: boolean;
   selectedImage: number;
   setSelectedImage: (index: number | ((prev: number) => number)) => void;
 }
 
-export const ImageGallery = ({ 
-  images, 
-  productName, 
-  oldPrice, 
+export const ImageGallery = ({
+  images,
+  productName,
+  oldPrice,
   price,
-  isNewArrival,
   selectedImage,
-  setSelectedImage
+  setSelectedImage,
 }: ImageGalleryProps) => {
-  
-  const discountPercent = oldPrice > price 
-    ? Math.round(((oldPrice - price) / oldPrice) * 100) 
-    : 0;
+  const discountPercent =
+    oldPrice > price ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
 
   const nextImage = () => {
     setSelectedImage((prev: number) => (prev + 1) % images.length);
   };
 
   const prevImage = () => {
-    setSelectedImage((prev: number) => (prev - 1 + images.length) % images.length);
+    setSelectedImage(
+      (prev: number) => (prev - 1 + images.length) % images.length,
+    );
   };
 
   return (
     <div className="space-y-3 sm:space-y-4">
-
       <div className="relative aspect-square bg-white rounded-2xl sm:rounded-2xl overflow-hidden shadow-md border border-gray-100 group">
         <AnimatePresence mode="wait">
           <motion.div
@@ -60,7 +57,7 @@ export const ImageGallery = ({
             />
           </motion.div>
         </AnimatePresence>
-        
+
         {images.length > 1 && (
           <>
             <button
@@ -77,16 +74,10 @@ export const ImageGallery = ({
             </button>
           </>
         )}
-        
+
         {oldPrice > price && (
           <div className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-primary text-white px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs font-bold shadow-lg z-10">
             -{discountPercent}%
-          </div>
-        )}
-        
-        {isNewArrival && (
-          <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-secondary text-white px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs font-bold shadow-lg z-10">
-            New
           </div>
         )}
       </div>
@@ -98,9 +89,9 @@ export const ImageGallery = ({
               key={idx}
               onClick={() => setSelectedImage(idx)}
               className={`relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 rounded-lg sm:rounded-xl overflow-hidden border-2 transition-all ${
-                selectedImage === idx 
-                  ? 'border-primary shadow-md' 
-                  : 'border-gray-200 hover:border-gray-300'
+                selectedImage === idx
+                  ? "border-primary shadow-md"
+                  : "border-gray-200 hover:border-gray-300"
               }`}
             >
               <Image

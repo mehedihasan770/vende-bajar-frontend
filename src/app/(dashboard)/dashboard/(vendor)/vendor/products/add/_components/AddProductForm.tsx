@@ -29,6 +29,7 @@ export default function AddProductForm() {
     defaultValues: {
       inventory: { lowStockThreshold: 5, allowBackorder: false },
       shipping: { weight: 0, dimensions: { length: 0, width: 0, height: 0 } },
+      category: "",
       isFeatured: false,
       isFlashSale: false,
       tags: "",
@@ -201,6 +202,7 @@ export default function AddProductForm() {
               register={register}
               errors={errors}
               setValue={setValue}
+              disabledFlash={flashDisabled}
             />
           </div>
         </div>
@@ -240,10 +242,7 @@ export default function AddProductForm() {
             04. Shipping & SEO
           </h4>
           <div className="space-y-8 px-0 sm:px-4 lg:px-0">
-            <ShippingSEOSection
-              register={register}
-              disabledFlash={flashDisabled}
-            />
+            <ShippingSEOSection register={register} />
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { UseFormRegister, FieldErrors, UseFormSetValue } from "react-hook-form";
 import { ProductFormValues } from "@/types/product";
 import DatePicker from "@/components/ui/DatePicker";
@@ -16,6 +16,8 @@ export default function InventorySection({
   setValue,
   isFlashSale = false,
 }: InventorySectionProps) {
+  const dateContainerRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className="space-y-8">
       {/* Pricing Row */}
@@ -94,7 +96,10 @@ export default function InventorySection({
       </div>
 
       {/* Sale Dates */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 bg-gray-50 rounded-2xl border border-gray-200">
+      <div
+        ref={dateContainerRef}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 bg-gray-50 rounded-2xl border border-gray-200"
+      >
         {isFlashSale && (
           <div className="absolute left-6 -top-4 bg-red-50 text-red-600 px-3 py-1 rounded-xl text-xs font-bold">
             Flash Sale Dates
@@ -106,6 +111,7 @@ export default function InventorySection({
           </label>
           <div className="relative">
             <DatePicker
+              containerRef={dateContainerRef}
               value={undefined}
               placeholder="Select start date"
               onChange={(iso) => setValue("saleStartDate", iso || "")}
@@ -132,12 +138,14 @@ export default function InventorySection({
             </p>
           )}
         </div>
+
         <div className="min-w-0">
           <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
             Flash Sale End Date
           </label>
           <div className="relative">
             <DatePicker
+              containerRef={dateContainerRef}
               value={undefined}
               placeholder="Select end date"
               onChange={(iso) => setValue("saleEndDate", iso || "")}
@@ -241,9 +249,9 @@ export default function InventorySection({
         />
         <label
           htmlFor="backorder"
-          className="text-sm font-bold text-gray-700 leading-snug"
+          className="text-sm font-bold text-gray-700 leading-snug overflow-hidden text-ellipsis whitespace-nowrap"
         >
-          Allow Backorders (Allow customers to order when out of stock)
+          Allow Backorders (Customers can order when out of stock)
         </label>
       </div>
     </div>

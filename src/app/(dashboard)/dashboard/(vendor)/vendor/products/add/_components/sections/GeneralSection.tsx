@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { UseFormRegister, FieldErrors, UseFormSetValue } from "react-hook-form";
+import { Check, Tag, Truck } from "lucide-react";
 import { ProductFormValues } from "@/types/product";
 
 interface GeneralSectionProps {
   register: UseFormRegister<ProductFormValues>;
   errors: FieldErrors<ProductFormValues>;
   setValue: UseFormSetValue<ProductFormValues>;
+  disabledFlash?: boolean;
 }
 
 export default function GeneralSection({
   register,
   errors,
   setValue,
+  disabledFlash = false,
 }: GeneralSectionProps) {
-  const [selectedCategory, setSelectedCategory] =
-    useState<string>("Technology");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
 
@@ -31,7 +33,7 @@ export default function GeneralSection({
   ];
 
   const [allCategories, setAllCategories] = useState<string[]>(categories);
-  const [categoryInput, setCategoryInput] = useState<string>(selectedCategory);
+  const [categoryInput, setCategoryInput] = useState<string>("");
   const [isCatOpen, setIsCatOpen] = useState(false);
 
   const suggestedTags = [
@@ -48,8 +50,11 @@ export default function GeneralSection({
   }, [tags, setValue]);
 
   useEffect(() => {
-    // initialize category field in form state from the selected category
-    setValue("category", selectedCategory);
+    if (!selectedCategory) {
+      setValue("category", "" as any);
+      return;
+    }
+    setValue("category", selectedCategory as any);
   }, [selectedCategory, setValue]);
 
   function validateTag(raw: string) {
@@ -326,6 +331,67 @@ export default function GeneralSection({
           </div>
         </div>
       </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <label className="flex items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="rounded-xl bg-orange-50 p-2 text-orange-500">
+              <Tag size={16} />
+            </div>
+            <div className="min-w-0 overflow-hidden">
+              <p className="text-sm font-semibold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis">
+                Featured
+              </p>
+              <p className="text-[11px] text-gray-500 whitespace-nowrap overflow-hidden text-ellipsis">
+                Show in featured lists
+              </p>
+            </div>
+          </div>
+          <div className="relative inline-flex h-6 w-11 items-center">
+            <input
+              {...register("isFeatured")}
+              type="checkbox"
+              className="peer sr-only"
+            />
+            <span className="absolute inset-0 rounded-full bg-gray-200 transition-colors peer-checked:bg-orange-500" />
+            <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
+          </div>
+        </label>
+
+        <label className="flex items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="rounded-xl bg-red-50 p-2 text-red-500">
+              <Truck size={16} />
+            </div>
+            <div className="min-w-0 overflow-hidden">
+              <p className="text-sm font-semibold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis">
+                Flash Sale
+              </p>
+              <p className="text-[11px] text-gray-500 whitespace-nowrap overflow-hidden text-ellipsis">
+                Run a limited-time offer
+              </p>
+            </div>
+          </div>
+          <div className="relative inline-flex h-6 w-11 items-center">
+            <input
+              {...register("isFlashSale")}
+              type="checkbox"
+              className="peer sr-only"
+              disabled={disabledFlash}
+              aria-disabled={disabledFlash}
+            />
+            <span className="absolute inset-0 rounded-full bg-gray-200 transition-colors peer-checked:bg-red-500 peer-disabled:bg-gray-200" />
+            <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
+          </div>
+        </label>
+      </div>
+
+      {disabledFlash && (
+        <p className="text-xs text-red-500">
+          Flash sale is disabled because the discount exceeds 35% or the pricing
+          is invalid.
+        </p>
+      )}
 
       {/* Short Description */}
       <div className="min-w-0">

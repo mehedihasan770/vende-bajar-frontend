@@ -1,10 +1,18 @@
 // components/product/ReviewsSection.tsx
-import Link from 'next/link';
-import { HiOutlineUser, HiOutlineThumbUp, HiOutlineFlag, HiOutlineChevronRight, HiOutlineStar } from 'react-icons/hi';
-import AddReviewForm from './AddReviewForm';
+import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { publicAxios } from "@/lib/axios";
+import {
+  HiOutlineUser,
+  HiOutlineThumbUp,
+  HiOutlineFlag,
+  HiOutlineChevronRight,
+  HiOutlineStar,
+} from "react-icons/hi";
+import AddReviewForm from "./AddReviewForm";
 
 interface Review {
-  id: number;
+  id: string;
   user: string;
   rating: number;
   date: string;
@@ -14,27 +22,38 @@ interface Review {
 
 interface ReviewsSectionProps {
   productId: string;
-  reviews: Review[];
 }
 
-export const ReviewsSection = ({ productId, reviews }: ReviewsSectionProps) => {
+export const ReviewsSection = ({ productId }: ReviewsSectionProps) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["product-reviews", productId],
+    queryFn: async () => {
+      const res = await publicAxios.get(`/review/product/${productId}`);
+      return res.data;
+    },
+    enabled: !!productId,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const reviews: Review[] = data?.data || [];
+
   const renderStars = (rating: number) => {
     return [...Array(5)].map((_, i) => (
       <HiOutlineStar
         key={i}
-        className={`w-3 h-3 sm:w-4 sm:h-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+        className={`w-3 h-3 sm:w-4 sm:h-4 ${i < Math.floor(rating) ? "text-yellow-400 fill-current" : "text-gray-300"}`}
       />
     ));
   };
 
   return (
     <div className="mt-8 sm:mt-10 lg:mt-12">
-      <AddReviewForm productId={productId}/>
+      <AddReviewForm productId={productId} />
       <div className="flex items-center justify-between flex-wrap gap-3 mb-4 sm:mb-5">
         <h2 className="text-lg sm:text-xl font-bold text-accent">
-          গ্রাহকদের রিভিউ 10
+          গ্রাহকদের রিভিউ {isLoading ? "..." : reviews.length}
         </h2>
-        <Link 
+        <Link
           href={`/products/${productId}/reviews`}
           className="text-primary hover:text-primary/80 font-medium flex items-center gap-1 text-xs sm:text-sm"
         >
@@ -44,7 +63,7 @@ export const ReviewsSection = ({ productId, reviews }: ReviewsSectionProps) => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-        {reviews.map((review) => (
+        {reviews.slice(0, 3).map((review) => (
           <div
             key={review.id}
             className="bg-white rounded-xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
@@ -55,8 +74,12 @@ export const ReviewsSection = ({ productId, reviews }: ReviewsSectionProps) => {
                   <HiOutlineUser className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-accent text-sm sm:text-base">{review.user}</h4>
-                  <p className="text-[10px] sm:text-xs text-gray-400">{review.date}</p>
+                  <h4 className="font-semibold text-accent text-sm sm:text-base">
+                    {review.user}
+                  </h4>
+                  <p className="text-[10px] sm:text-xs text-gray-400">
+                    {review.date}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-0.5">

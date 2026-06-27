@@ -1,40 +1,103 @@
 // components/product/ProductInfo.tsx
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { 
-  HiOutlineShoppingBag, 
-  HiOutlineHeart, 
+import Link from "next/link";
+import {
+  HiOutlineShoppingBag,
+  HiOutlineHeart,
   HiOutlineTruck,
   HiOutlineShieldCheck,
   HiOutlineRefresh,
   HiOutlineClock,
   HiOutlineMinus,
-  HiOutlinePlus
-} from 'react-icons/hi';
-import ProductRating from './ProductRating';
+  HiOutlinePlus,
+} from "react-icons/hi";
+import ProductRating from "./ProductRating";
+
+interface VendorInfo {
+  _id: string;
+  fullName: string;
+  email: string;
+  profileImage?: string;
+}
+
+interface ProductInfoData {
+  _id: string;
+  vendor?: VendorInfo;
+  vendorEmail?: string;
+  createdBy?: string;
+  name: string;
+  slug?: string;
+  description?: string;
+  shortDescription?: string;
+  category?: string;
+  subCategory?: string;
+  brand?: string;
+  tags?: string[];
+  basePrice: number;
+  salePrice?: number;
+  saleStartDate?: string;
+  saleEndDate?: string;
+  costPrice?: number;
+  stock: number;
+  sku?: string;
+  thumbnail?: string;
+  images?: string[];
+  videoUrl?: string;
+  specifications?: Record<string, string | string[] | number | undefined>;
+  isFeatured?: boolean;
+  isFlashSale?: boolean;
+  isBestSeller?: boolean;
+  status?: string;
+  rating: number;
+  numReviews: number;
+  totalSales?: number;
+  viewCount?: number;
+  metaTitle?: string;
+  metaDescription?: string;
+  inventory?: {
+    lowStockThreshold?: number;
+    allowBackorder?: boolean;
+    isOutOfStock?: boolean;
+  };
+  shipping?: {
+    weight?: number;
+    dimensions?: {
+      length?: number;
+      width?: number;
+      height?: number;
+    };
+  };
+  relatedProducts?: string[];
+  hasVariants?: boolean;
+  variants?: unknown[];
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 interface ProductInfoProps {
-  product: any; // Using any for now to handle the complex professional schema
+  product: ProductInfoData;
   quantity: number;
   setQuantity: (qty: number) => void;
   selectedSize: string;
   setSelectedSize: (size: string) => void;
 }
 
-export const ProductInfo = ({ 
-  product, 
-  quantity, 
+export const ProductInfo = ({
+  product,
+  quantity,
   setQuantity,
 }: ProductInfoProps) => {
-
-  const displayPrice = product.salePrice && product.salePrice > 0 ? product.salePrice : product.basePrice;
-  const hasDiscount = product.salePrice && product.salePrice < product.basePrice;
+  const displayPrice =
+    product.salePrice && product.salePrice > 0
+      ? product.salePrice
+      : product.basePrice;
+  const hasDiscount =
+    product.salePrice && product.salePrice < product.basePrice;
   const discountAmount = product.basePrice - (product.salePrice || 0);
 
   return (
     <div className="space-y-4 sm:space-y-5">
-
       <div>
         <div className="flex items-center justify-between">
           {product.brand && (
@@ -49,8 +112,12 @@ export const ProductInfo = ({
           {/* Vendor Info Badge */}
           {product.vendor && (
             <div className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-lg border border-gray-100">
-              <span className="text-[10px] text-gray-500 font-medium">Sold by:</span>
-              <span className="text-[10px] text-primary font-bold">{product.vendor.fullName}</span>
+              <span className="text-[10px] text-gray-500 font-medium">
+                Sold by:
+              </span>
+              <span className="text-[10px] text-primary font-bold">
+                {product.vendor.fullName}
+              </span>
             </div>
           )}
         </div>
@@ -62,7 +129,10 @@ export const ProductInfo = ({
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-        <ProductRating rating={product.rating} totalReviews={product.numReviews} />
+        <ProductRating
+          rating={product.rating}
+          totalReviews={product.numReviews}
+        />
 
         {product.isBestSeller && (
           <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 bg-accent/10 text-accent text-[10px] sm:text-xs rounded-full font-medium">
@@ -88,14 +158,22 @@ export const ProductInfo = ({
       </div>
 
       <div className="flex items-center gap-2">
-        <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${product.stock > 0 ? 'bg-green-500' : 'bg-red-500'}`} />
-        <span className={`text-xs sm:text-sm font-medium ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`}>
-          {product.stock > 0 ? `In Stock (${product.stock} items left)` : 'Out of Stock'}
+        <div
+          className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${product.stock > 0 ? "bg-green-500" : "bg-red-500"}`}
+        />
+        <span
+          className={`text-xs sm:text-sm font-medium ${product.stock > 0 ? "text-green-600" : "text-red-600"}`}
+        >
+          {product.stock > 0
+            ? `In Stock (${product.stock} items left)`
+            : "Out of Stock"}
         </span>
       </div>
 
       <div>
-        <h3 className="text-xs sm:text-sm font-medium text-accent mb-1.5 sm:mb-2">Quantity</h3>
+        <h3 className="text-xs sm:text-sm font-medium text-accent mb-1.5 sm:mb-2">
+          Quantity
+        </h3>
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -103,7 +181,9 @@ export const ProductInfo = ({
           >
             <HiOutlineMinus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
           </button>
-          <span className="w-8 sm:w-10 text-center font-medium text-accent text-sm sm:text-base">{quantity}</span>
+          <span className="w-8 sm:w-10 text-center font-medium text-accent text-sm sm:text-base">
+            {quantity}
+          </span>
           <button
             onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
             className="p-1.5 sm:p-2 rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition-colors"
@@ -122,10 +202,8 @@ export const ProductInfo = ({
           <HiOutlineShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
           Add to Cart
         </button>
-        
-        <button
-          className="py-2.5 lg:py-3 px-2 border-2 border-primary text-primary rounded-2xl font-semibold text-sm sm:text-base hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2"
-        >
+
+        <button className="py-2.5 lg:py-3 px-2 border-2 border-primary text-primary rounded-2xl font-semibold text-sm sm:text-base hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
           <HiOutlineHeart className="w-4 h-4 sm:w-5 sm:h-5" />
           Wishlist
         </button>

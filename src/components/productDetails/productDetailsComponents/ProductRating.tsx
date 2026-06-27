@@ -7,16 +7,8 @@ interface PlayStoreRatingProps {
 }
 
 const ProductRating = ({ rating, totalReviews }: PlayStoreRatingProps) => {
-  
-  const calculateAverage = () => {
-    if (!totalReviews || totalReviews === 0) return 0;
-    
-    const avg = rating / totalReviews;
-    
-    return Math.min(Math.max(avg, 0), 5);
-  };
-
-  const averageRating = calculateAverage();
+  const averageRating =
+    totalReviews === 0 ? 0 : Math.min(Math.max(rating, 0), 5);
 
   const renderStars = (avg: number) => {
     return [...Array(5)].map((_, i) => {
@@ -45,9 +37,11 @@ const ProductRating = ({ rating, totalReviews }: PlayStoreRatingProps) => {
         {totalReviews === 0 ? "0.0" : averageRating.toFixed(1)}
       </span>
 
-      <div className="flex items-center gap-0.5">
-        {renderStars(averageRating)}
-      </div>
+      {totalReviews > 0 ? (
+        <div className="flex items-center gap-0.5">
+          {renderStars(averageRating)}
+        </div>
+      ) : null}
 
       {totalReviews > 0 && (
         <span className="text-[11px] font-medium text-gray-500 ml-0.5">
