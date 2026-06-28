@@ -179,7 +179,11 @@ export default function ProductDetailsPage({ id }: ID) {
             images={allImages}
             productName={productData.name}
             oldPrice={productData.basePrice}
-            price={productData.salePrice || productData.basePrice}
+            price={
+              productData.finalPrice ??
+              productData.salePrice ??
+              productData.basePrice
+            }
             selectedImage={selectedImage}
             setSelectedImage={setSelectedImage}
           />

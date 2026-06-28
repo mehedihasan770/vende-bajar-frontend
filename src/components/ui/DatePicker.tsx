@@ -10,6 +10,7 @@ interface Props {
   onChange: (isoDate: string | null) => void;
   placeholder?: string;
   containerRef?: React.RefObject<HTMLElement | null>;
+  disabled?: boolean;
 }
 
 export default function DatePicker({
@@ -17,6 +18,7 @@ export default function DatePicker({
   onChange,
   placeholder,
   containerRef,
+  disabled = false,
 }: Props) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Date | undefined>(
@@ -106,11 +108,14 @@ export default function DatePicker({
         <button
           ref={buttonRef}
           type="button"
-          onClick={() => setOpen((s) => !s)}
-          className="w-full text-left px-4 py-3 rounded-2xl border border-gray-200 bg-white/60 backdrop-blur-sm focus:outline-none flex items-center justify-between"
+          onClick={() => !disabled && setOpen((s) => !s)}
+          disabled={disabled}
+          className={`w-full text-left px-4 py-3 rounded-2xl border border-gray-200 bg-white/60 backdrop-blur-sm focus:outline-none flex items-center justify-between ${disabled ? "cursor-not-allowed opacity-60" : ""}`}
         >
           <span className="text-sm text-gray-700">
-            {selected ? toLocalDateString(selected) : placeholder || "Select date"}
+            {selected
+              ? toLocalDateString(selected)
+              : placeholder || "Select date"}
           </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +159,8 @@ export default function DatePicker({
                   month: "w-full",
                   table: "w-full border-collapse",
                   head_row: "flex w-full",
-                  head_cell: "flex-1 text-center text-xs font-medium text-gray-500 py-1",
+                  head_cell:
+                    "flex-1 text-center text-xs font-medium text-gray-500 py-1",
                   row: "flex w-full mt-1",
                   cell: "flex-1 text-center p-0",
                   day: "w-full h-8 text-sm rounded-lg hover:bg-primary/10 transition-colors mx-auto flex items-center justify-center",
@@ -163,7 +169,8 @@ export default function DatePicker({
                   day_outside: "text-gray-300",
                   day_disabled: "text-gray-300 cursor-not-allowed",
                   nav: "flex items-center justify-between mb-2",
-                  nav_button: "p-1 rounded-lg hover:bg-gray-100 transition-colors",
+                  nav_button:
+                    "p-1 rounded-lg hover:bg-gray-100 transition-colors",
                   caption: "flex items-center justify-between px-1 mb-2",
                   caption_label: "text-sm font-bold text-gray-700",
                 }}

@@ -1,6 +1,7 @@
 // components/product/ProductInfo.tsx
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   HiOutlineShoppingBag,
@@ -36,10 +37,14 @@ interface ProductInfoData {
   tags?: string[];
   basePrice: number;
   salePrice?: number;
+  finalPrice?: number;
+  saleType?: string;
+  regularPrice?: number;
+  isSaleActive?: boolean;
   saleStartDate?: string;
   saleEndDate?: string;
   costPrice?: number;
-  stock: number;
+  stock?: number;
   sku?: string;
   thumbnail?: string;
   images?: string[];
@@ -88,13 +93,59 @@ export const ProductInfo = ({
   quantity,
   setQuantity,
 }: ProductInfoProps) => {
+  const stockAmount = product.inventory?.stock ?? product.stock ?? 0;
+  const isOutOfStock = product.inventory?.isOutOfStock ?? stockAmount <= 0;
   const displayPrice =
-    product.salePrice && product.salePrice > 0
-      ? product.salePrice
-      : product.basePrice;
+    product.finalPrice ?? product.salePrice ?? product.basePrice;
   const hasDiscount =
-    product.salePrice && product.salePrice < product.basePrice;
-  const discountAmount = product.basePrice - (product.salePrice || 0);
+    (product.discountPercentage ?? 0) > 0 || displayPrice < product.basePrice;
+  const discountAmount = product.basePrice - displayPrice;
+
+  const isFlashSaleActive =
+    product.saleType === "flash" &&
+    product.isSaleActive === true &&
+    product.saleStartDate &&
+    product.saleEndDate;
+
+  const [flashCountdown, setFlashCountdown] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isFlashSaleActive) {
+      setFlashCountdown(null);
+      return;
+    }
+
+    const start = new Date(product.saleStartDate as string);
+    const end = new Date(product.saleEndDate as string);
+    const update = () => {
+      const now = new Date();
+      if (
+        isNaN(start.getTime()) ||
+        isNaN(end.getTime()) ||
+        now < start ||
+        now >= end
+      ) {
+        setFlashCountdown(null);
+        return;
+      }
+
+      const diff = end.getTime() - now.getTime();
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+      );
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      const dayLabel = days > 0 ? `${days}d ` : "";
+      setFlashCountdown(
+        `${dayLabel}${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`,
+      );
+    };
+
+    update();
+    const timer = setInterval(update, 1000);
+    return () => clearInterval(timer);
+  }, [isFlashSaleActive, product.saleEndDate, product.saleStartDate]);
 
   return (
     <div className="space-y-4 sm:space-y-5">
@@ -159,16 +210,22 @@ export const ProductInfo = ({
 
       <div className="flex items-center gap-2">
         <div
-          className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${product.stock > 0 ? "bg-green-500" : "bg-red-500"}`}
+          className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${!isOutOfStock ? "bg-green-500" : "bg-red-500"}`}
         />
         <span
-          className={`text-xs sm:text-sm font-medium ${product.stock > 0 ? "text-green-600" : "text-red-600"}`}
+          className={`text-xs sm:text-sm font-medium ${!isOutOfStock ? "text-green-600" : "text-red-600"}`}
         >
-          {product.stock > 0
-            ? `In Stock (${product.stock} items left)`
+          {!isOutOfStock
+            ? `In Stock (${stockAmount} items left)`
             : "Out of Stock"}
         </span>
       </div>
+
+      {flashCountdown && (
+        <div className="rounded-3xl bg-secondary/10 border border-secondary/20 px-4 py-3 text-sm text-secondary font-semibold mt-4 w-fit">
+          Flash sale ends in {flashCountdown}
+        </div>
+      )}
 
       <div>
         <h3 className="text-xs sm:text-sm font-medium text-accent mb-1.5 sm:mb-2">
@@ -185,18 +242,18 @@ export const ProductInfo = ({
             {quantity}
           </span>
           <button
-            onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+            onClick={() => setQuantity(Math.min(stockAmount, quantity + 1))}
             className="p-1.5 sm:p-2 rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition-colors"
           >
             <HiOutlinePlus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
           </button>
-          <span className="text-xs text-gray-500">Stocks: {product.stock}</span>
+          <span className="text-xs text-gray-500">Stocks: {stockAmount}</span>
         </div>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 pt-1">
         <button
-          disabled={product.stock === 0}
+          disabled={stockAmount === 0}
           className="flex-1 bg-primary text-white py-2.5 lg:py-3 border border-primary rounded-2xl font-semibold text-sm sm:text-base hover:bg-primary/90 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <HiOutlineShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />

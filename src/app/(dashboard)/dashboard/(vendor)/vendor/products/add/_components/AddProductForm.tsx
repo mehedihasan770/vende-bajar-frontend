@@ -24,14 +24,18 @@ export default function AddProductForm() {
     watch,
     setValue,
     setError,
+    clearErrors,
     formState: { errors },
   } = useForm<ProductFormValues>({
+    mode: "onChange",
     defaultValues: {
       inventory: { lowStockThreshold: 5, allowBackorder: false },
       shipping: { weight: 0, dimensions: { length: 0, width: 0, height: 0 } },
       category: "",
       isFeatured: false,
       isFlashSale: false,
+      saleType: "regular",
+      regularPrice: undefined,
       tags: "",
       images: [{ url: "" }],
       specifications: [{ key: "", value: "" }],
@@ -55,22 +59,35 @@ export default function AddProductForm() {
       }
     }
 
-    // 2) flash sale discount limit
-    if (data.isFlashSale) {
+    const effectiveSaleType =
+      data.saleType || (data.isFlashSale ? "flash" : undefined);
+
+    if (effectiveSaleType === "flash") {
       const base = Number(data.basePrice || 0);
       const sale = Number(data.salePrice || 0);
-      if (!sale || base <= 0) {
-        setError("isFlashSale", {
-          type: "manual",
-          message: "Flash sale requires a valid sale price and base price.",
-        });
+      if (!sale || base <= 0 || !data.saleStartDate || !data.saleEndDate) {
+        toast.error(
+          "Flash sale requires a valid sale price, start date, and end date.",
+        );
         return;
       }
       const discount = ((base - sale) / base) * 100;
-      if (discount > 35) {
-        setError("isFlashSale", {
+      if (discount < 15 || discount > 75) {
+        toast.error(
+          "Flash sale discount must be between 15% and 75%.",
+        );
+        return;
+      }
+    }
+
+    if (effectiveSaleType === "regular") {
+      const base = Number(data.basePrice || 0);
+      const regular = Number(data.regularPrice || 0);
+      if (!regular || regular >= base) {
+        setError("regularPrice", {
           type: "manual",
-          message: "Flash sale discount cannot exceed 35%.",
+          message:
+            "Regular sale requires a lower regular price than base price.",
         });
         return;
       }
@@ -79,12 +96,19 @@ export default function AddProductForm() {
     setIsLoading(true);
     try {
       // Data Pre-processing
+      const { stock, ...rest } = data;
       const payload = {
-        ...data,
+        ...rest,
         basePrice: Number(data.basePrice),
+        saleType: effectiveSaleType,
+        isFlashSale: effectiveSaleType === "flash",
         salePrice: data.salePrice ? Number(data.salePrice) : undefined,
+        regularPrice: data.regularPrice ? Number(data.regularPrice) : undefined,
         costPrice: data.costPrice ? Number(data.costPrice) : undefined,
-        stock: Number(data.stock),
+        inventory: {
+          ...data.inventory,
+          stock: Number(stock),
+        },
         tags: data.tags
           ? data.tags.split(",").map((t: string) => t.trim())
           : [],
@@ -128,6 +152,7 @@ export default function AddProductForm() {
   // Watch price fields to disable flash sale toggle when discount > 35%
   const basePrice = watch("basePrice");
   const salePrice = watch("salePrice");
+  const saleType = watch("saleType");
   const isFlashSale = watch("isFlashSale");
   const [flashDisabled, setFlashDisabled] = useState(false);
 
@@ -136,16 +161,37 @@ export default function AddProductForm() {
     const s = Number(salePrice || 0);
     if (b > 0 && s > 0) {
       const discount = ((b - s) / b) * 100;
-      if (discount > 35) {
+      if (discount < 15 || discount > 75) {
         setFlashDisabled(true);
-        setValue("isFlashSale", false);
+        setError("salePrice", {
+          type: "manual",
+          message: `Flash sale discount (${Math.round(discount)}%) must be between 15% and 75%.`,
+        });
       } else {
         setFlashDisabled(false);
+        if (errors.salePrice?.type === "manual") {
+          clearErrors("salePrice");
+        }
       }
     } else {
       setFlashDisabled(false);
+      if (errors.salePrice?.type === "manual") {
+        clearErrors("salePrice");
+      }
     }
-  }, [basePrice, salePrice, setValue]);
+  }, [basePrice, salePrice, setError, clearErrors, errors.salePrice?.type]);
+
+  // Sync isFlashSale flag with saleType
+  useEffect(() => {
+    if (saleType === "flash" && !isFlashSale) {
+      setValue("isFlashSale", true);
+    }
+    if (saleType !== "flash" && isFlashSale) {
+      setValue("isFlashSale", false);
+    }
+  }, [saleType, isFlashSale, setValue]);
+
+  // Removed the effect that was force-resetting saleType to undefined
 
   return (
     <form
@@ -218,6 +264,7 @@ export default function AddProductForm() {
               errors={errors}
               setValue={setValue}
               isFlashSale={isFlashSale}
+              saleType={saleType}
             />
           </div>
         </div>

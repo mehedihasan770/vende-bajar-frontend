@@ -1,433 +1,153 @@
 import React, { useEffect, useState } from "react";
 import { UseFormRegister, FieldErrors, UseFormSetValue } from "react-hook-form";
-import { Check, Tag, Truck } from "lucide-react";
+import { Tag } from "lucide-react";
 import { ProductFormValues } from "@/types/product";
 
 interface GeneralSectionProps {
   register: UseFormRegister<ProductFormValues>;
   errors: FieldErrors<ProductFormValues>;
   setValue: UseFormSetValue<ProductFormValues>;
-  disabledFlash?: boolean;
 }
 
 export default function GeneralSection({
   register,
   errors,
   setValue,
-  disabledFlash = false,
 }: GeneralSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
 
-  // Simple static category list — replace with API-driven list if available
   const categories = [
-    "Technology",
-    "Home Appliances",
-    "Fashion",
-    "Health",
-    "Sports",
-    "Books",
-    "Toys",
-    "Beauty",
+    "Technology", "Home Appliances", "Fashion", "Health", "Sports", "Books", "Toys", "Beauty"
   ];
 
   const [allCategories, setAllCategories] = useState<string[]>(categories);
   const [categoryInput, setCategoryInput] = useState<string>("");
   const [isCatOpen, setIsCatOpen] = useState(false);
 
-  const suggestedTags = [
-    "#smartphone",
-    "#laptop",
-    "#accessory",
-    "#android",
-    "#ios",
-  ];
+  const suggestedTags = ["#smartphone", "#laptop", "#accessory", "#android", "#ios"];
 
   useEffect(() => {
-    // Keep react-hook-form value in sync: store as comma separated list without spaces
     setValue("tags", tags.join(","));
   }, [tags, setValue]);
 
   useEffect(() => {
-    if (!selectedCategory) {
-      setValue("category", "" as any);
-      return;
-    }
-    setValue("category", selectedCategory as any);
+    if (selectedCategory) setValue("category", selectedCategory as any);
   }, [selectedCategory, setValue]);
-
-  function validateTag(raw: string) {
-    if (!raw.startsWith("#")) return false;
-    if (raw.includes(" ")) return false;
-    const withoutHash = raw.slice(1);
-    if (withoutHash.length === 0 || withoutHash.length > 10) return false; // max 10 chars after '#'
-    return true;
-  }
 
   function addTag(raw: string) {
     const tag = raw.trim();
-    if (!validateTag(tag)) return false;
-    if (tags.length >= 25) return false; // max 25 tags
-    if (tags.includes(tag)) return false;
+    if (!tag.startsWith("#") || tag.includes(" ") || tags.length >= 25 || tags.includes(tag)) return false;
     setTags((s) => [...s, tag]);
     return true;
   }
 
-  function handleTagKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      if (addTag(tagInput)) setTagInput("");
-    }
-  }
-
-  function removeTag(idx: number) {
-    setTags((s) => s.filter((_, i) => i !== idx));
-  }
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Name */}
-        <div className="md:col-span-2 min-w-0">
-          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
-            Product Name <span className="text-red-500">*</span>
-          </label>
-          <p className="text-[11px] text-gray-400 mb-3 truncate">
-            Give your product an attractive and descriptive name
-          </p>
+        <div className="md:col-span-2">
+          <label className="block text-sm font-bold text-gray-700 mb-1">Product Name <span className="text-red-500">*</span></label>
           <input
             {...register("name", { required: "Product name is required" })}
             type="text"
             className={`w-full px-4 py-3 rounded-2xl border ${errors.name ? "border-red-300" : "border-gray-200"} focus:ring-primary/10 focus:border-primary focus:outline-none focus:ring-4 transition-all`}
             placeholder="Enter product name"
           />
-          {errors.name && (
-            <p className="text-red-500 text-xs mt-1 font-medium">
-              {errors.name.message}
-            </p>
-          )}
+          {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
         </div>
 
-        {/* Category & SubCategory */}
-        <div className="min-w-0">
-          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
-            Category <span className="text-red-500">*</span>
-          </label>
-          <p className="text-[11px] text-gray-400 mb-2 truncate">
-            Select the primary category for this product
-          </p>
-          <div className="relative">
-            <div
-              className={`w-full rounded-2xl border ${errors.category ? "border-red-300" : "border-gray-200"} bg-white flex items-center`}
-            >
-              <input
-                value={categoryInput}
-                onChange={(e) => {
-                  setCategoryInput(e.target.value);
-                  setIsCatOpen(true);
-                  // don't immediately set form value until selection
-                }}
-                onFocus={() => setIsCatOpen(true)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    const val = categoryInput.trim();
-                    if (!val) return;
-                    const existing = allCategories.find(
-                      (c) => c.toLowerCase() === val.toLowerCase(),
-                    );
-                    if (existing) {
-                      setSelectedCategory(existing);
-                      setValue("category", existing as any);
-                      setIsCatOpen(false);
-                    } else if (allCategories.length < 100) {
-                      setAllCategories((s) => [...s, val]);
-                      setSelectedCategory(val);
-                      setValue("category", val as any);
-                      setIsCatOpen(false);
-                    }
-                  }
-                }}
-                type="text"
-                className="w-full px-4 py-3 rounded-2xl bg-transparent focus:outline-none"
-                placeholder="Select or type to search/add category"
-                aria-expanded={isCatOpen}
-              />
-              <button
-                type="button"
-                onClick={() => setIsCatOpen((s) => !s)}
-                aria-label="Toggle categories"
-                className="px-3 py-2 text-gray-500"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`h-5 w-5 transform transition-transform duration-200 ${isCatOpen ? "rotate-180" : ""}`}
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.936a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            <div
-              className={`absolute z-20 mt-2 w-full rounded-2xl shadow-lg max-h-60 overflow-auto transition-all duration-200 ${isCatOpen ? "opacity-100 translate-y-0 scale-100 pointer-events-auto" : "opacity-0 -translate-y-2 scale-95 pointer-events-none"} bg-white/70 backdrop-blur-sm border border-gray-200`}
-            >
-              {/* dropdown content animated with blur */}
-              {allCategories
-                .filter((c) =>
-                  c.toLowerCase().includes(categoryInput.toLowerCase()),
-                )
-                .slice(0, 100)
-                .map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    onClick={() => {
-                      setSelectedCategory(c);
-                      setCategoryInput(c);
-                      setValue("category", c as any);
-                      setIsCatOpen(false);
-                    }}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-50"
-                  >
-                    {c}
-                  </button>
-                ))}
-
-              {/* option to add new category when not found */}
-              {categoryInput.trim() &&
-                !allCategories.some(
-                  (x) => x.toLowerCase() === categoryInput.trim().toLowerCase(),
-                ) &&
-                allCategories.length < 100 && (
-                  <div className="border-t border-gray-100">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const val = categoryInput.trim();
-                        if (!val) return;
-                        setAllCategories((s) => [...s, val]);
-                        setSelectedCategory(val);
-                        setValue("category", val as any);
-                        setIsCatOpen(false);
-                      }}
-                      className="w-full text-left px-4 py-2 text-primary font-medium hover:bg-gray-50"
-                    >
-                      Add "{categoryInput.trim()}" as category
-                    </button>
-                  </div>
-                )}
-            </div>
+        {/* Category */}
+        <div className="relative">
+          <label className="block text-sm font-bold text-gray-700 mb-1">Category <span className="text-red-500">*</span></label>
+          <div className={`w-full rounded-2xl border ${errors.category ? "border-red-300" : "border-gray-200"} bg-white flex items-center`}>
+            <input
+              value={categoryInput}
+              onChange={(e) => { setCategoryInput(e.target.value); setIsCatOpen(true); }}
+              onFocus={() => setIsCatOpen(true)}
+              className="w-full px-4 py-3 rounded-2xl bg-transparent focus:outline-none"
+              placeholder="Select Category"
+            />
+            <button type="button" onClick={() => setIsCatOpen(!isCatOpen)} className="px-3 text-gray-500">
+               <svg className={`h-5 w-5 transform transition-transform ${isCatOpen ? "rotate-180" : ""}`} viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.936a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+               </svg>
+            </button>
           </div>
-          {errors.category && (
-            <p className="text-red-500 text-xs mt-1 font-medium">
-              {errors.category.message}
-            </p>
-          )}
+
+          <div className={`absolute z-30 mt-2 w-full rounded-2xl shadow-xl border border-gray-200 bg-white/70 backdrop-blur-md max-h-60 overflow-auto transition-all duration-300 origin-top ${isCatOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}`}>
+              {allCategories.filter(c => c.toLowerCase().includes(categoryInput.toLowerCase())).map(c => (
+                <button key={c} type="button" onClick={() => { setSelectedCategory(c); setCategoryInput(c); setIsCatOpen(false); }} className="w-full text-left px-4 py-3 hover:bg-primary/10 transition-colors text-sm font-medium">{c}</button>
+              ))}
+          </div>
+
+          {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category.message}</p>}
         </div>
-        <div className="min-w-0">
-          <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
-            Sub-Category (Optional)
-          </label>
-          <p className="text-[11px] text-gray-400 mb-2 truncate">
-            Specify a sub-category if applicable
-          </p>
+
+        {/* Brand */}
+        <div>
+          <label className="block text-sm font-bold text-gray-700 mb-1">Brand <span className="text-red-500">*</span></label>
           <input
-            {...register("subCategory")}
+            {...register("brand", { required: "Brand is required" })}
             type="text"
-            className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-primary/10 focus:border-primary focus:outline-none focus:ring-4 transition-all"
-            placeholder="e.g. Wireless"
+            className={`w-full px-4 py-3 rounded-2xl border ${errors.brand ? "border-red-300" : "border-gray-200"} focus:ring-primary/10 focus:border-primary focus:outline-none focus:ring-4 transition-all`}
+            placeholder="e.g. Sony"
           />
         </div>
+      </div>
 
-        {/* Brand & Tags (stacked: Tags below Brand) */}
-        <div className="md:col-span-2 flex flex-col gap-4 items-start">
-          <div className="min-w-0 w-full">
-            <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
-              Brand <span className="text-red-500">*</span>
+      {/* Featured Toggle & Tags */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+         <div className="md:col-span-1">
+            <label className="flex items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-gray-50/50 px-4 py-3 h-full">
+              <div className="flex items-center gap-3">
+                <div className="rounded-xl bg-orange-100 p-2 text-orange-500"><Tag size={16} /></div>
+                <div>
+                  <p className="text-sm font-bold text-gray-800">Featured</p>
+                  <p className="text-[10px] text-gray-500">Highlight this product</p>
+                </div>
+              </div>
+              <div className="relative inline-flex h-6 w-11 items-center">
+                <input {...register("isFeatured")} type="checkbox" className="peer sr-only" />
+                <span className="absolute inset-0 rounded-full bg-gray-200 transition-colors peer-checked:bg-orange-500" />
+                <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white transition-transform peer-checked:translate-x-5" />
+              </div>
             </label>
-            <p className="text-[11px] text-gray-400 mb-2 truncate">
-              The manufacturer or brand name
-            </p>
-            <input
-              {...register("brand", { required: "Brand is required" })}
-              type="text"
-              className={`w-full px-4 py-3 rounded-2xl border ${errors.brand ? "border-red-300" : "border-gray-200"} focus:ring-primary/10 focus:border-primary focus:outline-none focus:ring-4 transition-all`}
-              placeholder="e.g. Sony"
-            />
-            {errors.brand && (
-              <p className="text-red-500 text-xs mt-1 font-medium">
-                {errors.brand.message}
-              </p>
-            )}
-          </div>
+         </div>
 
-          <div className="min-w-0 w-full">
-            <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
-              Tags (Optional)
-            </label>
-            <p className="text-[11px] text-gray-400 mb-2 truncate">
-              Use hashtags. Click suggestions to add. Max 25 tags. Each tag must
-              start with '#', no spaces, max 10 chars after '#'.
-            </p>
-
-            <div className="mb-2 flex flex-wrap gap-2">
+         <div className="md:col-span-2">
+            <label className="block text-sm font-bold text-gray-700 mb-2">Tags (Max 25)</label>
+            <div className="flex flex-wrap gap-2 mb-3">
               {tags.map((t, i) => (
-                <span
-                  key={t}
-                  className="inline-flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full text-sm"
-                >
-                  <span className="font-mono text-xs">{t}</span>
-                  <button
-                    type="button"
-                    onClick={() => removeTag(i)}
-                    className="text-red-500"
-                  >
-                    ×
-                  </button>
+                <span key={t} className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">
+                  {t} <button type="button" onClick={() => setTags(tags.filter((_, idx) => idx !== i))} className="hover:text-red-500">×</button>
                 </span>
               ))}
             </div>
-
             <div className="flex gap-2">
               <input
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
-                onKeyDown={handleTagKeyDown}
-                type="text"
-                className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-primary/10 focus:border-primary focus:outline-none focus:ring-4 transition-all"
-                placeholder="#example (press Enter to add)"
+                onKeyDown={(e) => { if(e.key === "Enter") { e.preventDefault(); if(addTag(tagInput)) setTagInput(""); } }}
+                className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-primary"
+                placeholder="#tag"
               />
-              <button
-                type="button"
-                onClick={() => {
-                  if (addTag(tagInput)) setTagInput("");
-                }}
-                className="px-4 py-3 rounded-2xl bg-primary text-white"
-              >
-                Add
-              </button>
+              <button type="button" onClick={() => { if(addTag(tagInput)) setTagInput(""); }} className="bg-primary text-white px-4 py-2 rounded-xl">Add</button>
             </div>
+         </div>
+      </div>
 
-            <div className="mt-3 flex flex-wrap gap-2">
-              {suggestedTags.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => addTag(s)}
-                  className="text-[12px] px-3 py-1 bg-gray-50 border border-gray-200 rounded-full text-gray-700"
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-            {/* Hidden registered input value will be kept in sync via setValue */}
-            <input {...register("tags")} type="hidden" />
-          </div>
+      {/* Descriptions */}
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-bold text-gray-700 mb-1">Short Description</label>
+          <textarea {...register("shortDescription")} rows={2} className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-primary/10 resize-none" placeholder="A quick summary..." />
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <label className="flex items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="rounded-xl bg-orange-50 p-2 text-orange-500">
-              <Tag size={16} />
-            </div>
-            <div className="min-w-0 overflow-hidden">
-              <p className="text-sm font-semibold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis">
-                Featured
-              </p>
-              <p className="text-[11px] text-gray-500 whitespace-nowrap overflow-hidden text-ellipsis">
-                Show in featured lists
-              </p>
-            </div>
-          </div>
-          <div className="relative inline-flex h-6 w-11 items-center">
-            <input
-              {...register("isFeatured")}
-              type="checkbox"
-              className="peer sr-only"
-            />
-            <span className="absolute inset-0 rounded-full bg-gray-200 transition-colors peer-checked:bg-orange-500" />
-            <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
-          </div>
-        </label>
-
-        <label className="flex items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="rounded-xl bg-red-50 p-2 text-red-500">
-              <Truck size={16} />
-            </div>
-            <div className="min-w-0 overflow-hidden">
-              <p className="text-sm font-semibold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis">
-                Flash Sale
-              </p>
-              <p className="text-[11px] text-gray-500 whitespace-nowrap overflow-hidden text-ellipsis">
-                Run a limited-time offer
-              </p>
-            </div>
-          </div>
-          <div className="relative inline-flex h-6 w-11 items-center">
-            <input
-              {...register("isFlashSale")}
-              type="checkbox"
-              className="peer sr-only"
-              disabled={disabledFlash}
-              aria-disabled={disabledFlash}
-            />
-            <span className="absolute inset-0 rounded-full bg-gray-200 transition-colors peer-checked:bg-red-500 peer-disabled:bg-gray-200" />
-            <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
-          </div>
-        </label>
-      </div>
-
-      {disabledFlash && (
-        <p className="text-xs text-red-500">
-          Flash sale is disabled because the discount exceeds 35% or the pricing
-          is invalid.
-        </p>
-      )}
-
-      {/* Short Description */}
-      <div className="min-w-0">
-        <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
-          Short Description (Optional)
-        </label>
-        <p className="text-[11px] text-gray-400 mb-2 truncate">
-          A brief 1-2 line summary of the product
-        </p>
-        <textarea
-          {...register("shortDescription")}
-          rows={2}
-          className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-primary/10 focus:border-primary focus:outline-none focus:ring-4 transition-all resize-none"
-          placeholder="Brief summary of the product..."
-        />
-      </div>
-
-      {/* Full Description */}
-      <div className="min-w-0">
-        <label className="block text-sm font-bold text-gray-700 mb-1 truncate">
-          Full Description <span className="text-red-500">*</span>
-        </label>
-        <p className="text-[11px] text-gray-400 mb-2 truncate">
-          Provide detailed information about the product
-        </p>
-        <textarea
-          {...register("description", { required: "Description is required" })}
-          rows={5}
-          className={`w-full px-4 py-3 rounded-2xl border ${errors.description ? "border-red-300" : "border-gray-200"} focus:ring-primary/10 focus:border-primary focus:outline-none focus:ring-4 transition-all resize-none`}
-          placeholder="Detailed product features, specs, and info..."
-        />
-        {errors.description && (
-          <p className="text-red-500 text-xs mt-1 font-medium">
-            {errors.description.message}
-          </p>
-        )}
+        <div>
+          <label className="block text-sm font-bold text-gray-700 mb-1">Full Description <span className="text-red-500">*</span></label>
+          <textarea {...register("description", { required: "Description is required" })} rows={5} className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-primary/10 resize-none" placeholder="Detailed product info..." />
+        </div>
       </div>
     </div>
   );

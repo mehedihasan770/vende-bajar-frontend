@@ -8,6 +8,8 @@ export interface ProductFormData {
   description: string;
   basePrice: number;
   salePrice?: number;
+  saleType?: "flash" | "regular" | "seasonal";
+  regularPrice?: number;
   costPrice?: number;
   saleStartDate?: string;
   saleEndDate?: string;
