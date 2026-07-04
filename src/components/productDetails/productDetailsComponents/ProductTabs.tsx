@@ -120,7 +120,7 @@ export const ProductTabs = ({
                 ক্যাটাগরি
               </span>
               <span className="w-1/2 text-sm text-gray-600">
-                {product.category}
+                {typeof product.category === 'object' ? (product.category as any).name : product.category}
               </span>
             </div>
           </div>

@@ -14,27 +14,49 @@ export default function GeneralSection({
   errors,
   setValue,
 }: GeneralSectionProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
 
-  const categories = [
-    "Technology", "Home Appliances", "Fashion", "Health", "Sports", "Books", "Toys", "Beauty"
-  ];
-
-  const [allCategories, setAllCategories] = useState<string[]>(categories);
-  const [categoryInput, setCategoryInput] = useState<string>("");
+  const [allCategories, setAllCategories] = useState<{name: string, _id: string}[]>([]);
+  const [categoryDisplay, setCategoryDisplay] = useState<string>("");
   const [isCatOpen, setIsCatOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const suggestedTags = ["#smartphone", "#laptop", "#accessory", "#android", "#ios"];
+  // Fetch categories from API
+  const fetchCategories = async (pageNum: number) => {
+    if (isLoading || !hasMore) return;
+    setIsLoading(true);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/get-categories?page=${pageNum}&limit=10`);
+      const result = await res.json();
+      if (result.success) {
+        setAllCategories(prev => [...prev, ...result.data]);
+        setHasMore(result.data.length > 0 && result.meta.page < result.meta.totalPages);
+        setPage(pageNum + 1);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories(1);
+  }, []);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollHeight - scrollTop <= clientHeight + 50) {
+      fetchCategories(page);
+    }
+  };
 
   useEffect(() => {
     setValue("tags", tags.join(","));
   }, [tags, setValue]);
-
-  useEffect(() => {
-    if (selectedCategory) setValue("category", selectedCategory as any);
-  }, [selectedCategory, setValue]);
 
   function addTag(raw: string) {
     const tag = raw.trim();
@@ -61,28 +83,54 @@ export default function GeneralSection({
         {/* Category */}
         <div className="relative">
           <label className="block text-sm font-bold text-gray-700 mb-1">Category <span className="text-red-500">*</span></label>
-          <div className={`w-full rounded-2xl border ${errors.category ? "border-red-300" : "border-gray-200"} bg-white flex items-center`}>
+          <div
+            onClick={() => setIsCatOpen(!isCatOpen)}
+            className={`w-full rounded-2xl border ${errors.category ? "border-red-300" : "border-gray-200"} bg-white/60 backdrop-blur-sm flex items-center cursor-pointer`}
+          >
             <input
-              value={categoryInput}
-              onChange={(e) => { setCategoryInput(e.target.value); setIsCatOpen(true); }}
-              onFocus={() => setIsCatOpen(true)}
-              className="w-full px-4 py-3 rounded-2xl bg-transparent focus:outline-none"
+              readOnly
+              value={categoryDisplay}
+              className="w-full px-4 py-3 rounded-2xl bg-transparent focus:outline-none cursor-pointer"
               placeholder="Select Category"
             />
-            <button type="button" onClick={() => setIsCatOpen(!isCatOpen)} className="px-3 text-gray-500">
+            <input type="hidden" {...register("category", { required: "Category is required" })} />
+            <div className="px-3 text-gray-500">
                <svg className={`h-5 w-5 transform transition-transform ${isCatOpen ? "rotate-180" : ""}`} viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.936a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
                </svg>
-            </button>
+            </div>
           </div>
 
-          <div className={`absolute z-30 mt-2 w-full rounded-2xl shadow-xl border border-gray-200 bg-white/70 backdrop-blur-md max-h-60 overflow-auto transition-all duration-300 origin-top ${isCatOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}`}>
-              {allCategories.filter(c => c.toLowerCase().includes(categoryInput.toLowerCase())).map(c => (
-                <button key={c} type="button" onClick={() => { setSelectedCategory(c); setCategoryInput(c); setIsCatOpen(false); }} className="w-full text-left px-4 py-3 hover:bg-primary/10 transition-colors text-sm font-medium">{c}</button>
+          <div
+            onScroll={handleScroll}
+            className={`absolute z-30 mt-2 w-full rounded-2xl shadow-xl border border-gray-200 bg-white/70 backdrop-blur-sm max-h-60 overflow-auto transition-all duration-300 origin-top ${isCatOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}`}
+          >
+              {allCategories.map(c => (
+                <button
+                  key={c._id}
+                  type="button"
+                  onClick={() => { setCategoryDisplay(c.name); setValue("category", c._id); setIsCatOpen(false); }}
+                  className="w-full text-left px-4 py-3 hover:bg-primary/10 transition-colors text-sm font-medium border-b border-gray-100 last:border-0"
+                >
+                  {c.name}
+                </button>
               ))}
+              {isLoading && <div className="p-3 text-center text-xs text-gray-500">Loading more...</div>}
+              {allCategories.length === 0 && !isLoading && <div className="p-3 text-center text-xs text-gray-500">No categories found</div>}
           </div>
 
           {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category.message}</p>}
+        </div>
+
+        {/* Sub-Category */}
+        <div>
+          <label className="block text-sm font-bold text-gray-700 mb-1">Sub-Category (Optional)</label>
+          <input
+            {...register("subCategory")}
+            type="text"
+            className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:ring-primary/10 focus:border-primary focus:outline-none focus:ring-4 transition-all"
+            placeholder="e.g. Smart Phones"
+          />
         </div>
 
         {/* Brand */}

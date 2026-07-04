@@ -96,10 +96,11 @@ const staticRelatedProducts: RelatedProduct[] = [
 ];
 
 interface ID {
-  id: string;
+  id?: string;
+  slug?: string;
 }
 
-export default function ProductDetailsPage({ id }: ID) {
+export default function ProductDetailsPage({ id, slug }: ID) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
@@ -112,12 +113,13 @@ export default function ProductDetailsPage({ id }: ID) {
     isLoading: productLoading,
     error: productError,
   } = useQuery({
-    queryKey: ["product", id],
+    queryKey: ["product", id || slug],
     queryFn: async () => {
-      const res = await publicAxios.get(`/products/${id}`);
+      const endpoint = slug ? `/products/s/${slug}` : `/products/${id}`;
+      const res = await publicAxios.get(endpoint);
       return res.data;
     },
-    enabled: !!id,
+    enabled: !!id || !!slug,
     staleTime: 5 * 60 * 1000,
   });
 
@@ -178,12 +180,8 @@ export default function ProductDetailsPage({ id }: ID) {
           <ImageGallery
             images={allImages}
             productName={productData.name}
-            oldPrice={productData.basePrice}
-            price={
-              productData.finalPrice ??
-              productData.salePrice ??
-              productData.basePrice
-            }
+            oldPrice={productData.pricing?.basePrice || 0}
+            price={productData.finalPrice || 0}
             selectedImage={selectedImage}
             setSelectedImage={setSelectedImage}
           />
@@ -203,10 +201,10 @@ export default function ProductDetailsPage({ id }: ID) {
           setActiveTab={setActiveTab}
         />
 
-        <ReviewsSection productId={id} />
+        <ReviewsSection productId={id || (productData?._id as string)} />
 
         {/* সম্পর্কিত প্রোডাক্ট কম্পোনেন্ট */}
-        <RelatedProducts products={relatedProducts} />
+        <RelatedProducts productId={id || (productData?._id as string)} />
       </div>
     </div>
   );

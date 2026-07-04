@@ -8,12 +8,7 @@ import {
   useFieldArray,
 } from "react-hook-form";
 import { ImageIcon, Video, Plus, Trash2 } from "lucide-react";
-import { ProductFormData } from "@/types/product";
-
-type ProductFormValues = Omit<ProductFormData, "images" | "specifications"> & {
-  images: { url: string }[];
-  specifications: { key: string; value: string }[];
-};
+import { ProductFormValues } from "@/types/product";
 
 interface MediaSectionProps {
   register: UseFormRegister<ProductFormValues>;

@@ -6,31 +6,39 @@ export interface ProductFormData {
   tags: string;
   shortDescription?: string;
   description: string;
-  basePrice: number;
-  salePrice?: number;
-  saleType?: "flash" | "regular" | "seasonal";
-  regularPrice?: number;
-  costPrice?: number;
-  saleStartDate?: string;
-  saleEndDate?: string;
-  stock: number;
   sku: string;
   thumbnail: string;
   videoUrl?: string;
-  images: string[];
-  specifications?: Record<string, string>;
+  pricing: {
+    basePrice: number;
+    salePrice?: number;
+    saleType?: "flash" | "regular";
+    regularPrice?: number;
+    costPrice?: number;
+    saleStartDate?: string;
+    saleEndDate?: string;
+  };
   inventory: {
+    stock: number;
     lowStockThreshold: number;
+    isOutOfStock: boolean;
     allowBackorder: boolean;
   };
-  shipping: {
-    weight: number;
-    dimensions: {
-      length: number;
-      width: number;
-      height: number;
+  shippingClass: "standard" | "heavy" | "digital";
+  directPayment: boolean;
+  hasVariants: boolean;
+  variants: {
+    sku?: string;
+    attributes: {
+      color?: string;
+      size?: string;
     };
-  };
+    priceOverride?: number;
+    stock: number;
+    images: string[];
+    isDefault: boolean;
+  }[];
+  specifications_map?: Record<string, string>;
   isFeatured: boolean;
   isFlashSale: boolean;
   metaTitle?: string;
@@ -39,8 +47,19 @@ export interface ProductFormData {
 
 export type ProductFormValues = Omit<
   ProductFormData,
-  "images" | "specifications"
+  "images" | "specifications_map" | "variants"
 > & {
   images: { url: string }[];
   specifications: { key: string; value: string }[];
+  variants: {
+    sku?: string;
+    attributes: {
+      color?: string;
+      size?: string;
+    };
+    priceOverride?: number;
+    stock: number;
+    images: { url: string }[];
+    isDefault: boolean;
+  }[];
 };

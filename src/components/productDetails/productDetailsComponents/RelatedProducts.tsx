@@ -1,73 +1,48 @@
-// components/product/RelatedProducts.tsx
-import Link from 'next/link';
-import Image from 'next/image';
-import { HiOutlineStar } from 'react-icons/hi';
+"use client";
 
-// এই কম্পোনেন্টের নিজস্ব টাইপ
-interface RelatedProduct {
-  id: number;
-  name: string;
-  price: number;
-  oldPrice: number;
-  image: string;
-  rating: number;
-}
+import { useQuery } from "@tanstack/react-query";
+import { publicAxios } from "@/lib/axios";
+import ProductCard, { Product } from "@/components/shared/ProductCard";
+import ProductSkeleton from "@/components/skeletons/ProductSkeleton";
 
 interface RelatedProductsProps {
-  products: RelatedProduct[];
+  productId: string;
 }
 
-export const RelatedProducts = ({ products }: RelatedProductsProps) => {
-  const renderStars = (rating: number) => {
-    return [...Array(5)].map((_, i) => (
-      <HiOutlineStar
-        key={i}
-        className={`w-3 h-3 sm:w-4 sm:h-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
-      />
-    ));
-  };
+export const RelatedProducts = ({ productId }: RelatedProductsProps) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["relatedProducts", productId],
+    queryFn: async () => {
+      const res = await publicAxios.get(`/products/related/${productId}`);
+      return res.data;
+    },
+    enabled: !!productId,
+    staleTime: 1000 * 60 * 10, // 10 minutes cache
+  });
+
+  const products: Product[] = data?.data || [];
+
+  if (!isLoading && products.length === 0) return null;
 
   return (
-    <div className="mt-8 sm:mt-10 lg:mt-12">
-      <h2 className="text-lg sm:text-xl font-bold text-accent mb-4 sm:mb-5">
-        আপনার পছন্দ হতে পারে
-      </h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-        {products.map((item) => (
-          <div
-            key={item.id}
-            className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100"
-          >
-            <Link href={`/products/${item.id}`} className="block">
-              <div className="relative aspect-square bg-gray-50 p-3 sm:p-4">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  className="object-contain group-hover:scale-105 transition-transform duration-500"
-                />
-                {item.oldPrice > item.price && (
-                  <div className="absolute top-1 left-1 sm:top-2 sm:left-2 bg-primary text-white text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full">
-                    -{Math.round(((item.oldPrice - item.price) / item.oldPrice) * 100)}%
-                  </div>
-                )}
-              </div>
-              <div className="p-2 sm:p-3">
-                <h3 className="font-semibold text-accent text-xs sm:text-sm line-clamp-1">{item.name}</h3>
-                <div className="flex items-center gap-0.5 mt-1">
-                  {renderStars(item.rating)}
-                  <span className="text-[10px] sm:text-xs text-gray-500 ml-1">{item.rating}</span>
-                </div>
-                <div className="flex items-baseline gap-1 sm:gap-2 mt-1.5">
-                  <span className="font-bold text-primary text-xs sm:text-sm">৳{item.price.toLocaleString()}</span>
-                  {item.oldPrice > item.price && (
-                    <span className="text-[10px] sm:text-xs text-gray-400 line-through">৳{item.oldPrice.toLocaleString()}</span>
-                  )}
-                </div>
-              </div>
-            </Link>
-          </div>
-        ))}
+    <div className="mt-8 sm:mt-12 lg:mt-16 border-t border-gray-100 pt-8 sm:pt-12">
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
+        <div>
+          <span className="text-primary font-bold tracking-widest uppercase text-[9px] sm:text-[10px] mb-1 block">
+            Recommendations
+          </span>
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-gray-950 tracking-tight">
+            Related <span className="text-primary/90">Products</span>
+          </h2>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
+        {isLoading
+          ? [...Array(5)].map((_, i) => <ProductSkeleton key={i} />)
+          : products.map((item, index) => (
+              <ProductCard key={item._id} item={item} index={index} />
+            ))}
       </div>
     </div>
   );

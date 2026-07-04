@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { UseFormRegister, FieldErrors, UseFormSetValue } from "react-hook-form";
+import { UseFormRegister, FieldErrors, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { ProductFormValues } from "@/types/product";
 import DatePicker from "@/components/ui/DatePicker";
 import { DollarSign, Package, AlertTriangle, RefreshCcw } from "lucide-react";
@@ -9,6 +9,7 @@ interface InventorySectionProps {
   errors: FieldErrors<ProductFormValues>;
   setValue: UseFormSetValue<ProductFormValues>;
   saleType?: "flash" | "regular";
+  watch: UseFormWatch<ProductFormValues>;
 }
 
 export default function InventorySection({
@@ -16,6 +17,7 @@ export default function InventorySection({
   errors,
   setValue,
   saleType = "regular",
+  watch,
 }: InventorySectionProps) {
   const dateContainerRef = useRef<HTMLDivElement>(null);
   const [saleModeOpen, setSaleModeOpen] = useState(false);
@@ -23,6 +25,8 @@ export default function InventorySection({
     { label: "Flash Sale", value: "flash" },
     { label: "Regular / No Sale", value: "regular" },
   ];
+
+  const basePrice = watch("pricing.basePrice");
 
   return (
     <div className="space-y-12">
@@ -38,38 +42,57 @@ export default function InventorySection({
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-1">Base Price ($) <span className="text-red-500">*</span></label>
             <input
-              {...register("basePrice", { required: "Required", min: { value: 0.01, message: "Min 0.01" } })}
+              {...register("pricing.basePrice", { required: "Required", min: { value: 0.01, message: "Min 0.01" } })}
               type="number" step="0.01"
-              className={`w-full px-4 py-3 rounded-2xl border ${errors.basePrice ? "border-red-300" : "border-gray-200"} focus:outline-none focus:ring-4 focus:ring-primary/10`}
+              className={`w-full px-4 py-3 rounded-2xl border ${errors.pricing?.basePrice ? "border-red-300" : "border-gray-200"} focus:outline-none focus:ring-4 focus:ring-primary/10`}
               placeholder="100.00"
             />
-            {errors.basePrice && <p className="text-red-500 text-xs mt-1">{errors.basePrice.message}</p>}
+            {errors.pricing?.basePrice && <p className="text-red-500 text-xs mt-1">{errors.pricing.basePrice.message}</p>}
           </div>
 
           {/* Sale Mode Dropdown */}
           <div className="relative">
             <label className="block text-sm font-bold text-gray-700 mb-1">Sale Mode</label>
-            <button
-              type="button"
+            <div
               onClick={() => setSaleModeOpen(!saleModeOpen)}
-              className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-left flex items-center justify-between"
+              className="w-full rounded-2xl border border-gray-200 bg-white/60 backdrop-blur-sm flex items-center cursor-pointer overflow-hidden transition-all hover:border-primary/30"
             >
-              <span className="text-sm">{saleModeOptions.find(o => o.value === saleType)?.label}</span>
-              <svg className={`h-5 w-5 transition-transform ${saleModeOpen ? "rotate-180" : ""}`} viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.936a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
-              </svg>
-            </button>
-            <div className={`absolute z-30 mt-2 w-full rounded-2xl shadow-xl border border-gray-200 bg-white/70 backdrop-blur-md overflow-hidden transition-all duration-300 origin-top ${saleModeOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}`}>
-                {saleModeOptions.map(opt => (
-                  <button key={opt.value} type="button" onClick={() => { setValue("saleType", opt.value as any); setSaleModeOpen(false); }} className="w-full text-left px-4 py-3 hover:bg-primary/10 transition-colors text-sm font-medium">{opt.label}</button>
-                ))}
+              <input
+                readOnly
+                value={saleModeOptions.find(o => o.value === saleType)?.label || "Select Mode"}
+                className="w-full px-4 py-3 rounded-2xl bg-transparent focus:outline-none cursor-pointer text-sm font-medium"
+              />
+              <input type="hidden" {...register("pricing.saleType")} />
+              <div className="px-3 text-gray-500">
+                <svg className={`h-5 w-5 transform transition-transform ${saleModeOpen ? "rotate-180" : ""}`} viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.936a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                </svg>
+              </div>
+            </div>
+
+            <div
+              className={`absolute z-30 mt-2 w-full rounded-2xl shadow-xl border border-gray-200 bg-white/70 backdrop-blur-sm overflow-hidden transition-all duration-300 origin-top ${saleModeOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}`}
+            >
+              {saleModeOptions.map(opt => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => {
+                    setValue("pricing.saleType", opt.value as any);
+                    setSaleModeOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-3 hover:bg-primary/10 transition-colors text-sm font-medium border-b border-gray-100 last:border-0"
+                >
+                  {opt.label}
+                </button>
+              ))}
             </div>
           </div>
 
           {/* Cost Price */}
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-1">Cost Price (Optional)</label>
-            <input {...register("costPrice")} type="number" step="0.01" className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-primary/10" placeholder="0.00" />
+            <input {...register("pricing.costPrice")} type="number" step="0.01" className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-primary/10" placeholder="0.00" />
           </div>
         </div>
 
@@ -78,25 +101,23 @@ export default function InventorySection({
            {/* Regular Price (Fallback) */}
            <div>
               <label className="block text-sm font-bold text-gray-700 mb-1">
-                Standard Discount Price {saleType === "flash" && <span className="text-red-500">*</span>}
+                Standard Discount Price (Regular)
               </label>
               <input
-                {...register("regularPrice", {
-                  required: saleType === "flash" ? "Required as fallback" : false,
+                {...register("pricing.regularPrice", {
                   min: { value: 0.01, message: "Must be at least 0.01" },
                   validate: (val) => {
-                    const baseInput = document.getElementsByName("basePrice")[0] as HTMLInputElement;
-                    const base = Number(baseInput?.value || 0);
+                    const base = Number(basePrice || 0);
                     if (val && base && Number(val) >= base) return "Must be lower than Base Price";
                     return true;
                   }
                 })}
                 type="number" step="0.01"
-                className={`w-full px-4 py-3 rounded-2xl border ${errors.regularPrice ? "border-red-300" : "border-gray-200"} focus:outline-none focus:ring-4 focus:ring-primary/10`}
+                className={`w-full px-4 py-3 rounded-2xl border ${errors.pricing?.regularPrice ? "border-red-300" : "border-gray-200"} focus:outline-none focus:ring-4 focus:ring-primary/10`}
                 placeholder="80.00"
               />
-              <p className="text-[10px] text-gray-400 mt-1">Fallback price after flash sale expires.</p>
-              {errors.regularPrice && <p className="text-red-500 text-xs mt-1 font-medium">{errors.regularPrice.message}</p>}
+              <p className="text-[10px] text-gray-400 mt-1">Fallback price or regular discount (Optional).</p>
+              {errors.pricing?.regularPrice && <p className="text-red-500 text-xs mt-1 font-medium">{errors.pricing.regularPrice.message}</p>}
            </div>
 
            {/* Flash Price */}
@@ -104,21 +125,20 @@ export default function InventorySection({
              <div className="animate-in fade-in slide-in-from-right-4 duration-300">
                 <label className="block text-sm font-bold text-red-600 mb-1">Flash Sale Price <span className="text-red-500">*</span></label>
                 <input
-                  {...register("salePrice", {
-                    required: "Flash price is required",
+                  {...register("pricing.salePrice", {
+                    required: saleType === "flash" ? "Flash price is required" : false,
                     min: { value: 0.01, message: "Must be at least 0.01" },
                     validate: (val) => {
-                      const baseInput = document.getElementsByName("basePrice")[0] as HTMLInputElement;
-                      const base = Number(baseInput?.value || 0);
+                      const base = Number(basePrice || 0);
                       if (val && base && Number(val) >= base) return "Must be lower than Base Price";
                       return true;
                     }
                   })}
                   type="number" step="0.01"
-                  className={`w-full px-4 py-3 rounded-2xl border ${errors.salePrice ? "border-red-300" : "border-red-200"} bg-red-50/10 focus:ring-4 focus:ring-red-500/10 focus:border-red-500 focus:outline-none`}
+                  className={`w-full px-4 py-3 rounded-2xl border ${errors.pricing?.salePrice ? "border-red-300" : "border-red-200"} bg-red-50/10 focus:ring-4 focus:ring-red-500/10 focus:border-red-500 focus:outline-none`}
                   placeholder="40.00"
                 />
-                {errors.salePrice && <p className="text-red-500 text-xs mt-1 font-medium">{errors.salePrice.message}</p>}
+                {errors.pricing?.salePrice && <p className="text-red-500 text-xs mt-1 font-medium">{errors.pricing.salePrice.message}</p>}
              </div>
            )}
         </div>
@@ -129,13 +149,25 @@ export default function InventorySection({
              <div className="absolute -top-3 left-6 bg-red-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">Schedule</div>
              <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Start Date</label>
-                <DatePicker containerRef={dateContainerRef} value={undefined} placeholder="Pick Start" onChange={(iso) => setValue("saleStartDate", iso || "")} />
-                {errors.saleStartDate && <p className="text-red-500 text-xs mt-1 font-medium">{errors.saleStartDate.message}</p>}
+                <input type="hidden" {...register("pricing.saleStartDate", { required: saleType === "flash" ? "Start date is required" : false })} />
+                <DatePicker
+                  containerRef={dateContainerRef}
+                  value={watch("pricing.saleStartDate")}
+                  placeholder="Pick Start"
+                  onChange={(iso) => setValue("pricing.saleStartDate", iso || "", { shouldValidate: true })}
+                />
+                {errors.pricing?.saleStartDate && <p className="text-red-500 text-xs mt-1 font-medium">{errors.pricing.saleStartDate.message}</p>}
              </div>
              <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">End Date</label>
-                <DatePicker containerRef={dateContainerRef} value={undefined} placeholder="Pick End" onChange={(iso) => setValue("saleEndDate", iso || "")} />
-                {errors.saleEndDate && <p className="text-red-500 text-xs mt-1 font-medium">{errors.saleEndDate.message}</p>}
+                <input type="hidden" {...register("pricing.saleEndDate", { required: saleType === "flash" ? "End date is required" : false })} />
+                <DatePicker
+                  containerRef={dateContainerRef}
+                  value={watch("pricing.saleEndDate")}
+                  placeholder="Pick End"
+                  onChange={(iso) => setValue("pricing.saleEndDate", iso || "", { shouldValidate: true })}
+                />
+                {errors.pricing?.saleEndDate && <p className="text-red-500 text-xs mt-1 font-medium">{errors.pricing.saleEndDate.message}</p>}
              </div>
           </div>
         )}
@@ -151,8 +183,8 @@ export default function InventorySection({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-1">Stock Amount <span className="text-red-500">*</span></label>
-            <input {...register("stock", { required: "Required", min: { value: 0, message: "Min 0" } })} type="number" className={`w-full px-4 py-3 rounded-2xl border ${errors.stock ? "border-red-300" : "border-gray-200"} focus:outline-none focus:ring-4 focus:ring-primary/10`} placeholder="0" />
-            {errors.stock && <p className="text-red-500 text-xs mt-1 font-medium">{errors.stock.message}</p>}
+            <input {...register("inventory.stock", { required: "Required", min: { value: 0, message: "Min 0" } })} type="number" className={`w-full px-4 py-3 rounded-2xl border ${errors.inventory?.stock ? "border-red-300" : "border-gray-200"} focus:outline-none focus:ring-4 focus:ring-primary/10`} placeholder="0" />
+            {errors.inventory?.stock && <p className="text-red-500 text-xs mt-1 font-medium">{errors.inventory.stock.message}</p>}
           </div>
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-1">SKU Code</label>

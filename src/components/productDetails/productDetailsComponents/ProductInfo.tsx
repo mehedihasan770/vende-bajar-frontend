@@ -31,19 +31,23 @@ interface ProductInfoData {
   slug?: string;
   description?: string;
   shortDescription?: string;
-  category?: string;
+  category?: any;
   subCategory?: string;
   brand?: string;
   tags?: string[];
-  basePrice: number;
-  salePrice?: number;
-  finalPrice?: number;
-  saleType?: string;
-  regularPrice?: number;
-  isSaleActive?: boolean;
-  saleStartDate?: string;
-  saleEndDate?: string;
-  costPrice?: number;
+  pricing: {
+    basePrice: number;
+    salePrice?: number;
+    saleType?: string;
+    regularPrice?: number;
+    saleStartDate?: string;
+    saleEndDate?: string;
+    costPrice?: number;
+  };
+  finalPrice: number;
+  discountPercentage: number;
+  isFlashSaleActive: boolean;
+  isSaleActive: boolean;
   stock?: number;
   sku?: string;
   thumbnail?: string;
@@ -51,7 +55,6 @@ interface ProductInfoData {
   videoUrl?: string;
   specifications?: Record<string, string | string[] | number | undefined>;
   isFeatured?: boolean;
-  isFlashSale?: boolean;
   isBestSeller?: boolean;
   status?: string;
   rating: number;
@@ -61,6 +64,7 @@ interface ProductInfoData {
   metaTitle?: string;
   metaDescription?: string;
   inventory?: {
+    stock: number;
     lowStockThreshold?: number;
     allowBackorder?: boolean;
     isOutOfStock?: boolean;
@@ -95,28 +99,22 @@ export const ProductInfo = ({
 }: ProductInfoProps) => {
   const stockAmount = product.inventory?.stock ?? product.stock ?? 0;
   const isOutOfStock = product.inventory?.isOutOfStock ?? stockAmount <= 0;
-  const displayPrice =
-    product.finalPrice ?? product.salePrice ?? product.basePrice;
-  const hasDiscount =
-    (product.discountPercentage ?? 0) > 0 || displayPrice < product.basePrice;
-  const discountAmount = product.basePrice - displayPrice;
+  const displayPrice = product.finalPrice;
+  const hasDiscount = (product.discountPercentage ?? 0) > 0;
+  const discountAmount = (product.pricing?.basePrice || 0) - displayPrice;
 
-  const isFlashSaleActive =
-    product.saleType === "flash" &&
-    product.isSaleActive === true &&
-    product.saleStartDate &&
-    product.saleEndDate;
+  const isFlashSaleActive = product.isFlashSaleActive;
 
   const [flashCountdown, setFlashCountdown] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isFlashSaleActive) {
+    if (!isFlashSaleActive || !product.pricing?.saleEndDate || !product.pricing?.saleStartDate) {
       setFlashCountdown(null);
       return;
     }
 
-    const start = new Date(product.saleStartDate as string);
-    const end = new Date(product.saleEndDate as string);
+    const start = new Date(product.pricing.saleStartDate as string);
+    const end = new Date(product.pricing.saleEndDate as string);
     const update = () => {
       const now = new Date();
       if (
@@ -194,12 +192,12 @@ export const ProductInfo = ({
 
       <div className="flex items-baseline gap-2 sm:gap-3 flex-wrap">
         <span className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">
-          ৳{displayPrice.toLocaleString()}
+          ৳{(displayPrice || 0).toLocaleString()}
         </span>
         {hasDiscount && (
           <>
             <span className="text-sm sm:text-base text-gray-400 line-through">
-              ৳{product.basePrice.toLocaleString()}
+              ৳{(product.pricing?.basePrice || 0).toLocaleString()}
             </span>
             <span className="text-xs sm:text-sm text-green-600 font-medium">
               Save ৳{discountAmount.toLocaleString()}
@@ -251,18 +249,24 @@ export const ProductInfo = ({
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-2 lg:gap-3 pt-1">
+      <div className="flex items-center gap-3 pt-2">
+
+      <button
+         disabled={stockAmount === 0}
+         className="flex-[1.5] bg-primary text-white py-2.5 lg:py-3 border border-primary rounded-2xl font-semibold text-sm sm:text-base hover:bg-primary/95 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed">
+          Buy Now
+       </button>
+
         <button
           disabled={stockAmount === 0}
-          className="flex-1 bg-primary text-white py-2.5 lg:py-3 border border-primary rounded-2xl font-semibold text-sm sm:text-base hover:bg-primary/90 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 border-2 border-primary text-primary py-2.5 lg:py-3 rounded-2xl font-semibold text-sm sm:text-base hover:bg-primary/5 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <HiOutlineShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
-          Add to Cart
+          Cart
         </button>
 
-        <button className="py-2.5 lg:py-3 px-2 border-2 border-primary text-primary rounded-2xl font-semibold text-sm sm:text-base hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
-          <HiOutlineHeart className="w-4 h-4 sm:w-5 sm:h-5" />
-          Wishlist
+        <button className="p-2.5 lg:p-3 border-2 border-gray-200 text-gray-400 rounded-2xl hover:border-primary hover:text-primary transition-all duration-300 flex items-center justify-center">
+          <HiOutlineHeart className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
       </div>
 

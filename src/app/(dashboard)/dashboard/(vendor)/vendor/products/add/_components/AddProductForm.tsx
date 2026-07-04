@@ -12,6 +12,7 @@ import GeneralSection from "./sections/GeneralSection";
 import InventorySection from "./sections/InventorySection";
 import MediaSection from "./sections/MediaSection";
 import ShippingSEOSection from "./sections/ShippingSEOSection";
+import VariantSection from "./sections/VariantSection";
 
 export default function AddProductForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,65 +30,55 @@ export default function AddProductForm() {
   } = useForm<ProductFormValues>({
     mode: "onChange",
     defaultValues: {
-      inventory: { lowStockThreshold: 5, allowBackorder: false },
-      shipping: { weight: 0, dimensions: { length: 0, width: 0, height: 0 } },
+      pricing: {
+        basePrice: 0,
+        saleType: "regular",
+        regularPrice: undefined,
+        costPrice: undefined,
+      },
+      inventory: {
+        stock: 0,
+        lowStockThreshold: 5,
+        allowBackorder: false
+      },
+      shippingClass: "standard",
+      directPayment: false,
       category: "",
       isFeatured: false,
       isFlashSale: false,
-      saleType: "regular",
-      regularPrice: undefined,
       tags: "",
       images: [{ url: "" }],
       specifications: [{ key: "", value: "" }],
+      variants: [],
     },
   });
 
   const onSubmit: SubmitHandler<ProductFormValues> = async (data) => {
-    // Client-side validations before submit
-    // 1) sale dates
-    if (data.saleStartDate && data.saleEndDate) {
-      const start = new Date(data.saleStartDate);
-      const end = new Date(data.saleEndDate);
-      if (end <= start) {
-        // require end > start (minimum 1 day difference)
-        setError("saleEndDate", {
+    // 1. Validation Logic
+    if (data.pricing.saleType === "flash") {
+      const start = data.pricing.saleStartDate ? new Date(data.pricing.saleStartDate) : null;
+      const end = data.pricing.saleEndDate ? new Date(data.pricing.saleEndDate) : null;
+
+      if (!start || isNaN(start.getTime()) || !end || isNaN(end.getTime()) || end <= start) {
+        setError("pricing.saleEndDate", {
           type: "manual",
-          message:
-            "Sale end date must be after the start date (minimum 1 day).",
+          message: "Flash sale requires valid dates, and end date must be after start date.",
         });
         return;
       }
-    }
 
-    const effectiveSaleType =
-      data.saleType || (data.isFlashSale ? "flash" : undefined);
-
-    if (effectiveSaleType === "flash") {
-      const base = Number(data.basePrice || 0);
-      const sale = Number(data.salePrice || 0);
-      if (!sale || base <= 0 || !data.saleStartDate || !data.saleEndDate) {
-        toast.error(
-          "Flash sale requires a valid sale price, start date, and end date.",
-        );
+      const base = Number(data.pricing.basePrice || 0);
+      const sale = Number(data.pricing.salePrice || 0);
+      if (base <= 0) {
+        setError("pricing.basePrice", { type: "manual", message: "Base price required" });
         return;
       }
       const discount = ((base - sale) / base) * 100;
-      if (discount < 15 || discount > 75) {
-        toast.error(
-          "Flash sale discount must be between 15% and 75%.",
-        );
-        return;
-      }
-    }
 
-    if (effectiveSaleType === "regular") {
-      const base = Number(data.basePrice || 0);
-      const regular = Number(data.regularPrice || 0);
-      if (!regular || regular >= base) {
-        setError("regularPrice", {
+      if (discount < 15 || discount > 75) {
+        setError("pricing.salePrice", {
           type: "manual",
-          message:
-            "Regular sale requires a lower regular price than base price.",
+          message: `Flash discount (${Math.round(discount)}%) must be 15-75%.`,
         });
         return;
       }
@@ -95,45 +86,35 @@ export default function AddProductForm() {
 
     setIsLoading(true);
     try {
-      // Data Pre-processing
-      const { stock, ...rest } = data;
+      // Data Processing for Backend Schema
       const payload = {
-        ...rest,
-        basePrice: Number(data.basePrice),
-        saleType: effectiveSaleType,
-        isFlashSale: effectiveSaleType === "flash",
-        salePrice: data.salePrice ? Number(data.salePrice) : undefined,
-        regularPrice: data.regularPrice ? Number(data.regularPrice) : undefined,
-        costPrice: data.costPrice ? Number(data.costPrice) : undefined,
+        ...data,
+        subCategory: data.subCategory || undefined,
+        tags: data.tags ? data.tags.split(",").map((t) => t.trim()) : [],
+        images: data.images.map((img) => img.url).filter((url) => url !== ""),
+        specifications: data.specifications.reduce((acc, spec) => {
+          if (spec.key && spec.value) acc[spec.key] = spec.value;
+          return acc;
+        }, {} as Record<string, string>),
+        pricing: {
+          ...data.pricing,
+          basePrice: Number(data.pricing.basePrice),
+          salePrice: data.pricing.salePrice ? Number(data.pricing.salePrice) : undefined,
+          regularPrice: data.pricing.regularPrice ? Number(data.pricing.regularPrice) : undefined,
+          costPrice: data.pricing.costPrice ? Number(data.pricing.costPrice) : undefined,
+        },
         inventory: {
           ...data.inventory,
-          stock: Number(stock),
+          stock: Number(data.inventory.stock),
+          lowStockThreshold: Number(data.inventory.lowStockThreshold),
         },
-        tags: data.tags
-          ? data.tags.split(",").map((t: string) => t.trim())
-          : [],
-        images: data.images
-          ? data.images
-              .map((item) => item.url.trim())
-              .filter((url) => url.length > 0)
-          : [],
-        specifications: data.specifications
-          ? data.specifications.reduce<Record<string, string>>((acc, item) => {
-              const key = item.key.trim();
-              const value = item.value.trim();
-              if (key && value) acc[key] = value;
-              return acc;
-            }, {})
-          : {},
-        shipping: {
-          ...data.shipping,
-          weight: Number(data.shipping.weight),
-          dimensions: {
-            length: Number(data.shipping.dimensions.length),
-            width: Number(data.shipping.dimensions.width),
-            height: Number(data.shipping.dimensions.height),
-          },
-        },
+        variants: data.variants.map(v => ({
+          ...v,
+          stock: Number(v.stock),
+          priceOverride: Number(v.priceOverride),
+          images: [] // Currently keeping empty or map if added
+        })),
+        status: "pending"
       };
 
       const res = await privateAxios.post("/products/add", payload);
@@ -149,148 +130,86 @@ export default function AddProductForm() {
     }
   };
 
-  // Watch price fields to disable flash sale toggle when discount > 35%
-  const basePrice = watch("basePrice");
-  const salePrice = watch("salePrice");
-  const saleType = watch("saleType");
+  const basePrice = watch("pricing.basePrice");
+  const salePrice = watch("pricing.salePrice");
+  const saleType = watch("pricing.saleType");
   const isFlashSale = watch("isFlashSale");
   const [flashDisabled, setFlashDisabled] = useState(false);
 
   useEffect(() => {
     const b = Number(basePrice || 0);
     const s = Number(salePrice || 0);
-    if (b > 0 && s > 0) {
+    if (saleType === "flash" && b > 0 && s > 0) {
       const discount = ((b - s) / b) * 100;
       if (discount < 15 || discount > 75) {
         setFlashDisabled(true);
-        setError("salePrice", {
+        setError("pricing.salePrice", {
           type: "manual",
-          message: `Flash sale discount (${Math.round(discount)}%) must be between 15% and 75%.`,
+          message: `Flash discount (${Math.round(discount)}%) must be 15-75%.`,
         });
       } else {
         setFlashDisabled(false);
-        if (errors.salePrice?.type === "manual") {
-          clearErrors("salePrice");
-        }
+        clearErrors("pricing.salePrice");
       }
     } else {
       setFlashDisabled(false);
-      if (errors.salePrice?.type === "manual") {
-        clearErrors("salePrice");
-      }
+      clearErrors("pricing.salePrice");
     }
-  }, [basePrice, salePrice, setError, clearErrors, errors.salePrice?.type]);
+  }, [basePrice, salePrice, saleType, setError, clearErrors]);
 
-  // Sync isFlashSale flag with saleType
   useEffect(() => {
-    if (saleType === "flash" && !isFlashSale) {
-      setValue("isFlashSale", true);
-    }
-    if (saleType !== "flash" && isFlashSale) {
-      setValue("isFlashSale", false);
-    }
-  }, [saleType, isFlashSale, setValue]);
+    if (saleType === "flash" && !isFlashSale) setValue("isFlashSale", true);
+    if (saleType !== "flash" && isFlashSale) setValue("isFlashSale", false);
 
-  // Removed the effect that was force-resetting saleType to undefined
+    if (saleType !== "flash") {
+      clearErrors(["pricing.saleStartDate", "pricing.saleEndDate", "pricing.salePrice"]);
+    }
+  }, [saleType, isFlashSale, setValue, clearErrors]);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="max-w-6xl mx-auto pb-20 px-0"
-    >
-      {/* Header with Publish Button */}
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-6xl mx-auto pb-20 px-0">
       <div className="flex flex-col gap-5 mb-10 pb-6 border-b border-gray-200 md:flex-row md:items-center md:justify-between">
-        <div className="min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/60">
-              Vendor Module
-            </span>
-          </div>
-          <h2 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight flex flex-wrap items-center gap-3">
-            <CheckCircle2
-              className="w-8 h-8 text-primary animate-pulse"
-              strokeWidth={2}
-            />
+        <div>
+          <h2 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight flex items-center gap-3">
+            <CheckCircle2 className="w-8 h-8 text-primary" />
             Add New Product
           </h2>
-          <p className="text-[12px] md:text-[13px] text-gray-500 mt-2 font-medium flex flex-wrap items-center gap-2">
-            <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-            Path:{" "}
-            <code className="bg-gray-50 text-primary border border-gray-100 px-1.5 py-0.5 rounded font-mono text-[11px]">
-              vendor/products/add
-            </code>
-          </p>
         </div>
-        <div className="w-full md:w-auto">
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="group inline-flex w-full md:w-auto justify-center items-center gap-2 px-5 py-3 bg-primary text-white rounded-3xl font-black shadow-lg shadow-primary/20 hover:bg-primary/95 active:scale-95 transition-all disabled:opacity-70 disabled:pointer-events-none"
-          >
-            {isLoading ? (
-              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            ) : (
-              <Save size={18} />
-            )}
-            <span className="text-sm">post</span>
-          </button>
-        </div>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="inline-flex justify-center items-center gap-2 px-8 py-3 bg-primary text-white rounded-3xl font-black shadow-lg hover:bg-primary/95 transition-all disabled:opacity-70"
+        >
+          {isLoading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Save size={18} />}
+          <span>Post Product</span>
+        </button>
       </div>
 
       <div className="space-y-8">
-        {/* Section 01 */}
-        <div className="bg-white rounded-4xl border-none sm:border sm:border-gray-200 px-0 py-0 sm:px-4 sm:py-8 lg:p-10 shadow-none sm:shadow-sm lg:shadow-md space-y-8">
-          <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em] border-b border-primary/10 pb-2 px-0 sm:px-4 lg:px-0">
-            01. General Information
-          </h4>
-          <div className="space-y-8 px-0 sm:px-4 lg:px-0">
-            <GeneralSection
-              register={register}
-              errors={errors}
-              setValue={setValue}
-              disabledFlash={flashDisabled}
-            />
-          </div>
+        <div className="bg-white rounded-4xl sm:border border-gray-200 p-6 lg:p-10 space-y-8 shadow-sm">
+          <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em] border-b border-primary/10 pb-2">01. General Information</h4>
+          <GeneralSection register={register} errors={errors} setValue={setValue} />
         </div>
 
-        {/* Section 02 */}
-        <div className="bg-white rounded-4xl border-none sm:border sm:border-gray-200 px-0 py-0 sm:px-4 sm:py-8 lg:p-10 shadow-none sm:shadow-sm lg:shadow-md space-y-8">
-          <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em] border-b border-primary/10 pb-2 px-0 sm:px-4 lg:px-0">
-            02. Pricing & Inventory
-          </h4>
-          <div className="space-y-8 px-0 sm:px-4 lg:px-0">
-            <InventorySection
-              register={register}
-              errors={errors}
-              setValue={setValue}
-              isFlashSale={isFlashSale}
-              saleType={saleType}
-            />
-          </div>
+        <div className="bg-white rounded-4xl sm:border border-gray-200 p-6 lg:p-10 space-y-8 shadow-sm">
+          <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em] border-b border-primary/10 pb-2">02. Pricing & Inventory</h4>
+          <InventorySection register={register} errors={errors} setValue={setValue} saleType={saleType} watch={watch} />
         </div>
 
-        {/* Section 03 */}
-        <div className="bg-white rounded-4xl border-none sm:border sm:border-gray-200 px-0 py-0 sm:px-4 sm:py-8 lg:p-10 shadow-none sm:shadow-sm lg:shadow-md space-y-8">
-          <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em] border-b border-primary/10 pb-2 px-0 sm:px-4 lg:px-0">
-            03. Media & Gallery
-          </h4>
-          <div className="space-y-8 px-0 sm:px-4 lg:px-0">
-            <MediaSection
-              register={register}
-              errors={errors}
-              control={control}
-            />
-          </div>
+        {/* Section 2.5: Variants */}
+        <div className="bg-white rounded-4xl sm:border border-gray-200 p-6 lg:p-10 space-y-8 shadow-sm">
+          <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em] border-b border-primary/10 pb-2">02.5. Product Variants (Color/Size)</h4>
+          <VariantSection register={register} errors={errors} control={control} />
         </div>
 
-        {/* Section 04 */}
-        <div className="bg-white rounded-4xl border-none sm:border sm:border-gray-200 px-0 py-0 sm:px-4 sm:py-8 lg:p-10 shadow-none sm:shadow-sm lg:shadow-md space-y-8">
-          <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em] border-b border-primary/10 pb-2 px-0 sm:px-4 lg:px-0">
-            04. Shipping & SEO
-          </h4>
-          <div className="space-y-8 px-0 sm:px-4 lg:px-0">
-            <ShippingSEOSection register={register} />
-          </div>
+        <div className="bg-white rounded-4xl sm:border border-gray-200 p-6 lg:p-10 space-y-8 shadow-sm">
+          <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em] border-b border-primary/10 pb-2">03. Media & Gallery</h4>
+          <MediaSection register={register} errors={errors} control={control} />
+        </div>
+
+        <div className="bg-white rounded-4xl sm:border border-gray-200 p-6 lg:p-10 space-y-8 shadow-sm">
+          <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em] border-b border-primary/10 pb-2">04. Shipping & SEO</h4>
+          <ShippingSEOSection register={register} setValue={setValue} watch={watch} />
         </div>
       </div>
     </form>

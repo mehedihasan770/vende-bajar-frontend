@@ -36,7 +36,7 @@ const FlashSale = ({
 
   const targetDate = useMemo(() => {
     const validDates = products
-      .map((product) => product.saleEndDate)
+      .map((product) => product.pricing?.saleEndDate)
       .filter(Boolean)
       .map((date) => new Date(date as string))
       .filter((date) => !isNaN(date.getTime()));

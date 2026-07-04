@@ -12,18 +12,20 @@ export interface Product {
   brand?: string;
   shortDescription?: string;
   category: any;
-  basePrice: number;
-  salePrice?: number;
-  finalPrice?: number;
-  saleType?: string;
-  saleStartDate?: string;
-  saleEndDate?: string;
-  isSaleActive?: boolean;
-  isFlashSale?: boolean;
   thumbnail: string;
   rating: number;
   numReviews: number;
-  discountPercentage?: number;
+  pricing: {
+    basePrice: number;
+    salePrice?: number;
+    saleType?: string;
+    saleStartDate?: string;
+    saleEndDate?: string;
+  };
+  finalPrice: number;
+  discountPercentage: number;
+  isFlashSaleActive: boolean;
+  isSaleActive: boolean;
 }
 
 interface ProductCardProps {
@@ -35,25 +37,20 @@ const ProductCard = ({ item, index = 0 }: ProductCardProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [flashCountdown, setFlashCountdown] = useState<string | null>(null);
 
-  const displayPrice = item.finalPrice ?? item.salePrice ?? item.basePrice;
-  const hasDiscount =
-    (item.discountPercentage ?? 0) > 0 || displayPrice < item.basePrice;
-
-  const flashSaleActive =
-    (item.saleType === "flash" || item.saleType == null) &&
-    item.isSaleActive === true &&
-    item.isFlashSale === true;
+  const displayPrice = item.finalPrice;
+  const hasDiscount = (item.discountPercentage ?? 0) > 0;
+  const flashSaleActive = item.isFlashSaleActive;
 
   useEffect(() => {
-    if (!flashSaleActive || !item.saleEndDate || !item.saleStartDate) {
+    if (!flashSaleActive || !item.pricing?.saleEndDate || !item.pricing?.saleStartDate) {
       setFlashCountdown(null);
       return;
     }
 
     const updateCountdown = () => {
       const now = new Date();
-      const start = new Date(item.saleStartDate as string);
-      const end = new Date(item.saleEndDate as string);
+      const start = new Date(item.pricing.saleStartDate as string);
+      const end = new Date(item.pricing.saleEndDate as string);
       if (isNaN(start.getTime()) || isNaN(end.getTime())) {
         setFlashCountdown(null);
         return;
@@ -89,8 +86,8 @@ const ProductCard = ({ item, index = 0 }: ProductCardProps) => {
     setIsFavorite(!isFavorite);
   };
 
-  const categoryName =
-    typeof item.category === "object" ? item.category.name : item.category;
+  const categorySlug =
+    item.category?.slug || (typeof item.category === "string" ? item.category : "all");
 
   const isValidUrl = (url: string) => {
     try {
@@ -118,19 +115,28 @@ const ProductCard = ({ item, index = 0 }: ProductCardProps) => {
       className="group bg-white rounded-[24px] p-[3px] transition-all duration-300 flex flex-col relative h-full shadow-sm hover:shadow-xl border border-gray-100"
     >
       <Link
-        href={`/products/${item._id}`}
+        href={`/products/${categorySlug}/${item.slug}`}
         className="flex flex-col grow relative"
       >
         {/* Top Section */}
         <div className="relative w-full aspect-[4/3] bg-gray-100 rounded-[20px] p-[1px]">
           <div className="relative w-full h-full bg-[#F4F5F7] rounded-[19px] overflow-hidden isolate transform-gpu">
-            {/* Top Left: Category Badge */}
-            <div className="absolute top-3 left-3 z-20 flex flex-col gap-1.5">
-              <div className="bg-white/90 backdrop-blur-sm rounded-full px-2.5 h-5 flex items-center justify-center shadow-sm border border-gray-50">
-                <span className="text-[8px] sm:text-[9px] font-bold tracking-wider text-accent uppercase leading-none mt-[1px]">
-                  {categoryName}
-                </span>
-              </div>
+            {/* Top Left: Badges */}
+            <div className="absolute top-3 left-3 z-20 flex flex-col gap-1.5 items-start">
+              {hasDiscount && (
+                <div className="bg-primary/90 backdrop-blur-sm rounded-full px-2.5 h-5 flex items-center justify-center shadow-sm border border-primary/20">
+                  <span className="text-[8px] sm:text-[9px] font-black tracking-wider text-white uppercase leading-none mt-[1px]">
+                    -{item.discountPercentage}% OFF
+                  </span>
+                </div>
+              )}
+              {flashCountdown && (
+                <div className="bg-secondary/90 backdrop-blur-sm rounded-full px-2.5 h-5 flex items-center justify-center shadow-sm border border-secondary/20 animate-pulse">
+                  <span className="text-[8px] sm:text-[9px] font-black tracking-wider text-white uppercase leading-none mt-[1px]">
+                    ⚡ {flashCountdown}
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Top Right: Favorite Button */}
@@ -163,14 +169,15 @@ const ProductCard = ({ item, index = 0 }: ProductCardProps) => {
         {/* Bottom Section */}
         <div className="mt-[3px] bg-gray-100 rounded-[20px] p-[1px] flex flex-col grow">
           <div className="bg-white rounded-[19px] p-3 sm:p-4 flex flex-col grow">
-            <div className="flex items-center justify-between mb-1 min-h-[16px]">
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+            <div className="flex items-center justify-between mb-1 min-h-[16px] gap-2">
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest truncate flex-1">
                 {item.brand || "Vende Bajar"}
               </span>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 shrink-0 bg-gray-50 px-1.5 py-0.5 rounded-lg border border-gray-100">
                 <Star size={10} className="fill-yellow-400 text-yellow-400" />
-                <span className="text-[10px] font-bold text-accent">
+                <span className="text-[10px] font-black text-accent">
                   {item.rating || 0}
+                  <span className="text-gray-400 font-bold ml-0.5">({item.numReviews || 0})</span>
                 </span>
               </div>
             </div>
@@ -188,16 +195,11 @@ const ProductCard = ({ item, index = 0 }: ProductCardProps) => {
             <div className="flex items-center justify-between mt-auto">
               <div className="flex flex-col">
                 <span className="text-sm sm:text-base font-black text-primary tracking-tighter">
-                  ৳{displayPrice.toLocaleString()}
+                  ৳{(displayPrice || 0).toLocaleString()}
                 </span>
                 {hasDiscount && (
                   <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 line-through">
-                    ৳{item.basePrice.toLocaleString()}
-                  </span>
-                )}
-                {flashCountdown && (
-                  <span className="text-[9px] sm:text-[10px] font-semibold text-secondary mt-1">
-                    Sale ends in {flashCountdown}
+                    ৳{(item.pricing?.basePrice || 0).toLocaleString()}
                   </span>
                 )}
               </div>
